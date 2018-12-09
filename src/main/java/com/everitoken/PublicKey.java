@@ -31,7 +31,7 @@ public class PublicKey {
 
     public static boolean isValidPublicKey(String key) {
         // key is invalid if not prefixed with "EVT"
-        if (!key.startsWith("EVT")) {
+        if (!key.startsWith(Constants.EVT)) {
             return false;
         }
 

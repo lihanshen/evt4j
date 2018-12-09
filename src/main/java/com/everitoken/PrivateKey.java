@@ -1,15 +1,13 @@
 package com.everitoken;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.*;
 import org.bitcoinj.params.MainNetParams;
-import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class PrivateKey {
-    private static final String nullAddress = "EVT00000000000000000000000000000000000000000000000000";
+    private static final String nullAddress = Constants.NullAddress;
     private ECKey key;
 
     public PrivateKey(ECKey key) {
@@ -20,7 +18,7 @@ public class PrivateKey {
         BigInteger prvKey = this.key.getPrivKey();
         byte[] pubKey = ECKey.publicKeyFromPrivate(prvKey, true);
 
-        return "EVT" + Utils.base58Check(pubKey);
+        return Constants.EVT + Utils.base58Check(pubKey);
     }
 
     public String toWif() {

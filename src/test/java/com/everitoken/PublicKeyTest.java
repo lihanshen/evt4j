@@ -13,13 +13,13 @@ public class PublicKeyTest {
     }
 
     @Test
-    public void isValidPublicKeyWithPrefix() {
+    public void isValidPublicKeyInvalidKey() {
         String key = "EVT76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        assertTrue("Invalid key with EVT prefix", PublicKey.isValidPublicKey(key));
+        assertFalse("Invalid key", PublicKey.isValidPublicKey(key));
     }
 
     @Test
-    public void isValidPublicKey() {
+    public void isValidPublicKeyValidKey() {
         String key = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
         assertTrue("valid key", PublicKey.isValidPublicKey(key));
     }

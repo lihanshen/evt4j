@@ -3,11 +3,11 @@
 * [x] randomPrivateKey
 * [x] seedPrivateKey
 * [x] isValidPrivateKey
-* isValidPublicKey
-* isValidAddress
-* sign
-* signHash
-* random32BytesAsHex
-* random32Bytes
-* randomName128
+* [x] isValidPublicKey
+* [ ] isValidAddress
+* [ ] sign
+* [ ] signHash
+* [x] random32BytesAsHex
+* [x] random32Bytes
+* [x] randomName128
 * [x] getNullAddress

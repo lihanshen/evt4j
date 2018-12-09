@@ -4,6 +4,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Base58;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
+import java.security.SecureRandom;
+
 class Utils {
     private static byte[] ripemd160(byte[] data) {
         RIPEMD160Digest digest = new RIPEMD160Digest();
@@ -30,7 +32,6 @@ class Utils {
         byte[] hash = ripemd160(data);
 
         // if pass, return data, otherwise throw ex
-
         // compare two checksum
         boolean isEqual = true;
         for (int i = 0; i < checksum.length; i++) {
@@ -44,5 +45,43 @@ class Utils {
         }
 
         return data;
+    }
+
+    private static String byte2Hex(byte[] data) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : data) {
+            sb.append(String.format("%02x", b));
+        }
+
+        return sb.toString();
+    }
+
+    public static void main(String[] arsg) {
+        System.out.println(randomName128());
+    }
+
+    public static String randomName128() {
+        String candidates = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.-";
+        int length = candidates.length();
+        StringBuilder sb = new StringBuilder();
+        byte[] random = random32Bytes();
+
+        for (int i = 0; i < 21; i++) {
+           sb.append(candidates.charAt(random[i] & 0xff % length));
+        }
+
+        return sb.toString();
+    }
+
+    public static String random32BytesAsHex() {
+        byte[] randomBytes = random32Bytes();
+        return byte2Hex(randomBytes);
+    }
+
+    public static byte[] random32Bytes() {
+        SecureRandom random = new SecureRandom();
+        byte[] values = new byte[32];
+        random.nextBytes(values);
+        return values;
     }
 }
