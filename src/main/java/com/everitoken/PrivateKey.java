@@ -4,12 +4,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.*;
 import org.bitcoinj.params.MainNetParams;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
-import org.spongycastle.crypto.util.PublicKeyFactory;
-import sun.applet.Main;
 
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 
 public class PrivateKey {
@@ -24,14 +20,7 @@ public class PrivateKey {
         BigInteger prvKey = this.key.getPrivKey();
         byte[] pubKey = ECKey.publicKeyFromPrivate(prvKey, true);
 
-        // TODO refactor out
-        RIPEMD160Digest digest = new RIPEMD160Digest();
-        digest.update(pubKey,0, pubKey.length);
-        byte[] out = new byte[20];
-        digest.doFinal(out, 0);
-        byte[] concat = ArrayUtils.addAll(pubKey, ArrayUtils.subarray(out, 0,4));
-
-        return "EVT" + Base58.encode(concat);
+        return "EVT" + Utils.base58Check(pubKey);
     }
 
     public String toWif() {

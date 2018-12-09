@@ -12,7 +12,6 @@ import org.spongycastle.math.ec.FixedPointUtil;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Objects;
 
 public class PublicKey {
     private LazyECPoint pub;
@@ -21,25 +20,33 @@ public class PublicKey {
     private static final SecureRandom secureRandom;
     public static final BigInteger HALF_CURVE_ORDER;
 
-    public static void main(String[] args) {
-        // TODO cleanup
-        String key = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        PublicKey k = new PublicKey(key);
-        System.out.println(k);
-    }
-
     public PublicKey(String key) {
         // strip "EVT" as prefix
         String noPrefixKey = key.substring(3);
         // base58 decode
         byte[] decodedKeyBytes = Base58.decode(noPrefixKey);
         byte[] pubKeyBytes = ArrayUtils.subarray(decodedKeyBytes, 0, decodedKeyBytes.length - 4);
-        // TODO check key
         this.pub = new LazyECPoint(CURVE.getCurve(), pubKeyBytes);
     }
 
     public static boolean isValidPublicKey(String key) {
-        return true;
+        // key is invalid if not prefixed with "EVT"
+        if (!key.startsWith("EVT")) {
+            return false;
+        }
+
+        // key is invalid when checksum doesn't match
+        String keyWithoutPrefix = key.substring(3);
+        byte[] publicKeyInBytes;
+        try {
+             publicKeyInBytes = com.everitoken.Utils.base58CheckDecode(keyWithoutPrefix);
+        } catch (Exception ex) {
+            return false;
+        }
+
+        LazyECPoint pub = new LazyECPoint(CURVE.getCurve(), publicKeyInBytes);
+
+        return pub.isValid();
     }
 
     static {
