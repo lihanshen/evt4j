@@ -1,2 +1,2 @@
-# evt2j
+# evt4j
 Official Java SDK for everiToken public chain.
