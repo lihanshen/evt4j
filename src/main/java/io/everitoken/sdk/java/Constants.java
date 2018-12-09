@@ -1,4 +1,4 @@
-package com.everitoken;
+package io.everitoken.sdk.java;
 
 public class Constants {
     public static final String EVT = "EVT";

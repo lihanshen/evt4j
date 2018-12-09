@@ -1,4 +1,4 @@
-package com.everitoken;
+package io.everitoken.sdk.java;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Base58;
@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class PublicKey {
+    private static final String nullAddress = Constants.NullAddress;
     private LazyECPoint pub;
     private static final X9ECParameters CURVE_PARAMS = CustomNamedCurves.getByName("secp256k1");
     public static final ECDomainParameters CURVE;
@@ -39,7 +40,7 @@ public class PublicKey {
         String keyWithoutPrefix = key.substring(3);
         byte[] publicKeyInBytes;
         try {
-             publicKeyInBytes = com.everitoken.Utils.base58CheckDecode(keyWithoutPrefix);
+             publicKeyInBytes = io.everitoken.sdk.java.Utils.base58CheckDecode(keyWithoutPrefix);
         } catch (Exception ex) {
             return false;
         }
@@ -47,6 +48,10 @@ public class PublicKey {
         LazyECPoint pub = new LazyECPoint(CURVE.getCurve(), publicKeyInBytes);
 
         return pub.isValid();
+    }
+
+    public static String getNullAddress() {
+        return nullAddress;
     }
 
     static {

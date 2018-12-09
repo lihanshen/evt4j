@@ -1,4 +1,4 @@
-package com.everitoken;
+package io.everitoken.sdk.java;
 
 import org.bitcoinj.core.*;
 import org.bitcoinj.params.MainNetParams;
@@ -7,7 +7,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class PrivateKey {
-    private static final String nullAddress = Constants.NullAddress;
     private ECKey key;
 
     public PrivateKey(ECKey key) {
@@ -18,6 +17,7 @@ public class PrivateKey {
         BigInteger prvKey = this.key.getPrivKey();
         byte[] pubKey = ECKey.publicKeyFromPrivate(prvKey, true);
 
+        // TODO return public key class instead
         return Constants.EVT + Utils.base58Check(pubKey);
     }
 
@@ -60,7 +60,4 @@ public class PrivateKey {
         }
     }
 
-    public static String getNullAddress() {
-        return nullAddress;
-    }
 }

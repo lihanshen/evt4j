@@ -1,4 +1,4 @@
-package com.everitoken;
+package io.everitoken.sdk.java;
 
 import org.junit.Rule;
 import org.junit.Test;

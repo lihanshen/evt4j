@@ -1,4 +1,4 @@
-package com.everitoken;
+package io.everitoken.sdk.java;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Base58;
@@ -54,10 +54,6 @@ class Utils {
         }
 
         return sb.toString();
-    }
-
-    public static void main(String[] arsg) {
-        System.out.println(randomName128());
     }
 
     public static String randomName128() {
