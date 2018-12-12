@@ -5,6 +5,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class PublicKeyTest {
+    private final String validPublicKey = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
+    private final String inValidPublicKey = "EVT76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
+
+    @Test
+    public void testConstructorWithValidPublicKey() {
+        boolean throwEx = false;
+        try {
+            PublicKey publicKey = new PublicKey(validPublicKey);
+        } catch (EvtSdkException ex) {
+            throwEx = true;
+        }
+        assertTrue("No exception is thrown with valid public key", !throwEx);
+    }
+
+    @Test
+    public void testConstructorWithInValidPublicKey() {
+        boolean throwEx = false;
+        try {
+            PublicKey publicKey = new PublicKey(inValidPublicKey);
+        } catch (EvtSdkException ex) {
+            throwEx = true;
+        }
+        assertTrue("Exception is thrown with invalid public key", throwEx);
+    }
 
     @Test
     public void isValidPublicKeyPrefix() {
@@ -14,19 +38,16 @@ public class PublicKeyTest {
 
     @Test
     public void isValidPublicKeyInvalidKey() {
-        String key = "EVT76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        assertFalse("Invalid key", PublicKey.isValidPublicKey(key));
+        assertFalse("Invalid key", PublicKey.isValidPublicKey(inValidPublicKey));
     }
 
     @Test
     public void isValidPublicKeyValidKey() {
-        String key = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        assertTrue("valid key", PublicKey.isValidPublicKey(key));
+        assertTrue("valid key", PublicKey.isValidPublicKey(validPublicKey));
     }
 
     @Test
     public void isValidPublicKeyWithInvalidKey() {
-        String key = "EVT76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        assertFalse("invalid key", PublicKey.isValidPublicKey(key));
+        assertFalse("invalid key", PublicKey.isValidPublicKey(inValidPublicKey));
     }
 }

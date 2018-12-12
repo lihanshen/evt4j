@@ -16,7 +16,7 @@ public class UtilsTest {
         boolean hasError = false;
         try {
             Utils.base58CheckDecode(key);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             hasError = true;
         }
 
@@ -29,7 +29,7 @@ public class UtilsTest {
         boolean hasError = false;
         try {
             Utils.base58CheckDecode(key);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             hasError = true;
         }
 

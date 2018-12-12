@@ -1,67 +1,67 @@
 package io.everitoken.sdk.java;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.bitcoinj.core.Base58;
-import org.bitcoinj.core.Utils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.LazyECPoint;
-import org.bitcoinj.crypto.LinuxSecureRandom;
-import org.spongycastle.asn1.x9.X9ECParameters;
-import org.spongycastle.crypto.ec.CustomNamedCurves;
-import org.spongycastle.crypto.params.ECDomainParameters;
-import org.spongycastle.math.ec.FixedPointUtil;
-
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import org.spongycastle.crypto.digests.SHA256Digest;
+import org.spongycastle.crypto.params.ECPublicKeyParameters;
+import org.spongycastle.crypto.signers.ECDSASigner;
+import org.spongycastle.crypto.signers.HMacDSAKCalculator;
+import org.spongycastle.math.ec.ECPoint;
 
 public class PublicKey {
     private static final String nullAddress = Constants.NullAddress;
     private LazyECPoint pub;
-    private static final X9ECParameters CURVE_PARAMS = CustomNamedCurves.getByName("secp256k1");
-    public static final ECDomainParameters CURVE;
-    private static final SecureRandom secureRandom;
-    public static final BigInteger HALF_CURVE_ORDER;
 
-    public PublicKey(String key) {
-        // strip "EVT" as prefix
-        String noPrefixKey = key.substring(3);
-        // base58 decode
-        byte[] decodedKeyBytes = Base58.decode(noPrefixKey);
-        byte[] pubKeyBytes = ArrayUtils.subarray(decodedKeyBytes, 0, decodedKeyBytes.length - 4);
-        this.pub = new LazyECPoint(CURVE.getCurve(), pubKeyBytes);
+    public PublicKey(String key) throws EvtSdkException {
+        Pair<Boolean, byte[]> pair = validPublicKey(key);
+
+        if (!pair.getLeft()) {
+            throw new EvtSdkException(null, ErrorCode.PUBLIC_KEY_INVALID);
+        }
+
+        this.pub = new LazyECPoint(ECKey.CURVE.getCurve(), pair.getRight());
+    }
+
+    private ECPoint getPoint() {
+        return this.pub.getDetachedPoint();
     }
 
     public static boolean isValidPublicKey(String key) {
+        return validPublicKey(key).getLeft();
+    }
+
+    private static Pair<Boolean, byte[]> validPublicKey(String key) {
         // key is invalid if not prefixed with "EVT"
         if (!key.startsWith(Constants.EVT)) {
-            return false;
+            return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
         }
 
         // key is invalid when checksum doesn't match
         String keyWithoutPrefix = key.substring(3);
         byte[] publicKeyInBytes;
         try {
-             publicKeyInBytes = io.everitoken.sdk.java.Utils.base58CheckDecode(keyWithoutPrefix);
+            publicKeyInBytes = Utils.base58CheckDecode(keyWithoutPrefix);
         } catch (Exception ex) {
-            return false;
+            return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
         }
 
-        LazyECPoint pub = new LazyECPoint(CURVE.getCurve(), publicKeyInBytes);
+        LazyECPoint pub = new LazyECPoint(ECKey.CURVE.getCurve(), publicKeyInBytes);
 
-        return pub.isValid();
+        return new ImmutablePair<Boolean, byte[]>(pub.isValid(), publicKeyInBytes);
+    }
+
+    public boolean verify(byte[] data, Signature signature) {
+        ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
+        ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(this.getPoint(), ECKey.CURVE);
+
+        signer.init(false, publicKeyParams);
+
+        return signer.verifySignature(data, signature.getR(), signature.getS());
     }
 
     public static String getNullAddress() {
         return nullAddress;
-    }
-
-    static {
-        if (Utils.isAndroidRuntime()) {
-            new LinuxSecureRandom();
-        }
-
-        FixedPointUtil.precompute(CURVE_PARAMS.getG(), 12);
-        CURVE = new ECDomainParameters(CURVE_PARAMS.getCurve(), CURVE_PARAMS.getG(), CURVE_PARAMS.getN(), CURVE_PARAMS.getH());
-        HALF_CURVE_ORDER = CURVE_PARAMS.getN().shiftRight(1);
-        secureRandom = new SecureRandom();
     }
 }

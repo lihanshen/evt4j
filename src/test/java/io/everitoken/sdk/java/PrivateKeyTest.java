@@ -8,15 +8,19 @@ public class PrivateKeyTest {
 
     @Test
     public void getNullAddress() {
-        String nullAddress = PrivateKey.getNullAddress();
+        String nullAddress = PublicKey.getNullAddress();
         assertEquals(nullAddress, "EVT00000000000000000000000000000000000000000000000000");
     }
 
     @Test
     public void toPublicKey() {
         String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
-        String publicKey = PrivateKey.fromWif(wif).toPublicKey();
-        assertEquals(publicKey, "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
+        try {
+            String publicKey = PrivateKey.fromWif(wif).toPublicKey();
+            assertEquals(publicKey, "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
+        } catch (EvtSdkException e) {
+
+        }
     }
 
     @Test

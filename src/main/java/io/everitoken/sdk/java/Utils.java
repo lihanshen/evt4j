@@ -1,15 +1,19 @@
 package io.everitoken.sdk.java;
 
+import com.google.common.io.BaseEncoding;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.Base58;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.security.SecureRandom;
 
+
 class Utils {
+    public static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
+
     private static byte[] ripemd160(byte[] data) {
         RIPEMD160Digest digest = new RIPEMD160Digest();
-        digest.update(data,0, data.length);
+        digest.update(data, 0, data.length);
         byte[] out = new byte[20];
         digest.doFinal(out, 0);
         return out;
@@ -17,16 +21,17 @@ class Utils {
 
     public static String base58Check(byte[] key) {
         byte[] hash = ripemd160(key);
-        byte[] concat = ArrayUtils.addAll(key, ArrayUtils.subarray(hash, 0,4));
+        byte[] concat = ArrayUtils.addAll(key, ArrayUtils.subarray(hash, 0, 4));
         return Base58.encode(concat);
     }
 
+    // TODO throw custom Exception
     public static byte[] base58CheckDecode(String key) throws Exception {
         // base58 decode
         byte[] decoded = Base58.decode(key);
         // split the byte slice
         byte[] data = ArrayUtils.subarray(decoded, 0, decoded.length - 4);
-        byte[] checksum = ArrayUtils.subarray(decoded, decoded.length -4, decoded.length);
+        byte[] checksum = ArrayUtils.subarray(decoded, decoded.length - 4, decoded.length);
 
         // ripemd160 input, get 4 bytes to compare
         byte[] hash = ripemd160(data);
@@ -47,15 +52,6 @@ class Utils {
         return data;
     }
 
-    private static String byte2Hex(byte[] data) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : data) {
-            sb.append(String.format("%02x", b));
-        }
-
-        return sb.toString();
-    }
-
     public static String randomName128() {
         String candidates = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.-";
         int length = candidates.length();
@@ -63,7 +59,7 @@ class Utils {
         byte[] random = random32Bytes();
 
         for (int i = 0; i < 21; i++) {
-           sb.append(candidates.charAt(random[i] & 0xff % length));
+            sb.append(candidates.charAt(random[i] & 0xff % length));
         }
 
         return sb.toString();
@@ -71,7 +67,7 @@ class Utils {
 
     public static String random32BytesAsHex() {
         byte[] randomBytes = random32Bytes();
-        return byte2Hex(randomBytes);
+        return HEX.encode(randomBytes);
     }
 
     public static byte[] random32Bytes() {
