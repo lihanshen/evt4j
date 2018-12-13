@@ -4,11 +4,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.LazyECPoint;
-import org.spongycastle.crypto.digests.SHA256Digest;
-import org.spongycastle.crypto.params.ECPublicKeyParameters;
-import org.spongycastle.crypto.signers.ECDSASigner;
-import org.spongycastle.crypto.signers.HMacDSAKCalculator;
-import org.spongycastle.math.ec.ECPoint;
 
 public class PublicKey {
     private static final String nullAddress = Constants.NullAddress;
@@ -21,11 +16,21 @@ public class PublicKey {
             throw new EvtSdkException(null, ErrorCode.PUBLIC_KEY_INVALID);
         }
 
-        this.pub = new LazyECPoint(ECKey.CURVE.getCurve(), pair.getRight());
+        pub = new LazyECPoint(ECKey.CURVE.getCurve(), pair.getRight());
     }
 
-    private ECPoint getPoint() {
-        return this.pub.getDetachedPoint();
+    public PublicKey(byte[] key) throws EvtSdkException {
+        LazyECPoint point = new LazyECPoint(ECKey.CURVE.getCurve(), key);
+
+        if (!point.isValid()) {
+            throw new EvtSdkException(null, ErrorCode.PUBLIC_KEY_INVALID);
+        }
+
+        pub = point;
+    }
+
+    public LazyECPoint get() {
+        return pub;
     }
 
     public static boolean isValidPublicKey(String key) {
@@ -33,7 +38,6 @@ public class PublicKey {
     }
 
     private static Pair<Boolean, byte[]> validPublicKey(String key) {
-        // key is invalid if not prefixed with "EVT"
         if (!key.startsWith(Constants.EVT)) {
             return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
         }
@@ -52,13 +56,8 @@ public class PublicKey {
         return new ImmutablePair<Boolean, byte[]>(pub.isValid(), publicKeyInBytes);
     }
 
-    public boolean verify(byte[] data, Signature signature) {
-        ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
-        ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(this.getPoint(), ECKey.CURVE);
-
-        signer.init(false, publicKeyParams);
-
-        return signer.verifySignature(data, signature.getR(), signature.getS());
+    public String getEncoded(boolean compressed) {
+        return String.format("%s%s", Constants.EVT, Utils.base58Check(pub.getEncoded(compressed)));
     }
 
     public static String getNullAddress() {

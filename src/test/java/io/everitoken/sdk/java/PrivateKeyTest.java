@@ -7,17 +7,11 @@ import static org.junit.Assert.*;
 public class PrivateKeyTest {
 
     @Test
-    public void getNullAddress() {
-        String nullAddress = PublicKey.getNullAddress();
-        assertEquals(nullAddress, "EVT00000000000000000000000000000000000000000000000000");
-    }
-
-    @Test
     public void toPublicKey() {
         String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
         try {
-            String publicKey = PrivateKey.fromWif(wif).toPublicKey();
-            assertEquals(publicKey, "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
+            PublicKey publicKey = PrivateKey.fromWif(wif).toPublicKey();
+            assertEquals(publicKey.getEncoded(true), "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
         } catch (EvtSdkException e) {
 
         }
@@ -25,12 +19,16 @@ public class PrivateKeyTest {
 
     @Test
     public void seedPrivateKey() {
-        String publicKey = "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND";
+        String publicKeyStr = "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND";
         String privateKey = "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D";
         PrivateKey key = PrivateKey.seedPrivateKey("seed");
 
-        assertEquals(key.toPublicKey(), publicKey);
-        assertEquals(key.toWif(), privateKey);
+        try {
+            PublicKey publicKey = key.toPublicKey();
+            assertEquals(publicKey.getEncoded(true), publicKeyStr);
+            assertEquals(key.toWif(), privateKey);
+        } catch (Exception ex) {
+        }
     }
 
     @Test

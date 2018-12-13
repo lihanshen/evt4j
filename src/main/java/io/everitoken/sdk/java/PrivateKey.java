@@ -1,11 +1,10 @@
 package io.everitoken.sdk.java;
 
-import org.bitcoinj.core.*;
+import org.bitcoinj.core.DumpedPrivateKey;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.params.MainNetParams;
-import org.spongycastle.crypto.digests.SHA256Digest;
-import org.spongycastle.crypto.params.ECPrivateKeyParameters;
-import org.spongycastle.crypto.signers.ECDSASigner;
-import org.spongycastle.crypto.signers.HMacDSAKCalculator;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -21,44 +20,25 @@ public class PrivateKey {
         }
 
         DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParam, wif);
-        this.key = dumpedPrivateKey.getKey();
+        key = dumpedPrivateKey.getKey();
     }
 
     private PrivateKey(ECKey key) {
         this.key = key;
     }
 
-    public String toPublicKey() {
-        BigInteger prvKey = this.key.getPrivKey();
-        byte[] pubKey = ECKey.publicKeyFromPrivate(prvKey, true);
-
-        // TODO return public key class instead
-        return Constants.EVT + Utils.base58Check(pubKey);
+    public BigInteger getD() {
+        return key.getPrivKey();
     }
 
-    private byte[] getPrivKeyBytes() {
-        return key.getPrivKeyBytes();
+    public PublicKey toPublicKey() throws EvtSdkException {
+        return new PublicKey(key.getPubKey());
     }
 
     public String toWif() {
-        ECKey decompressedKey = this.key.decompress();
+        ECKey decompressedKey = key.decompress();
         NetworkParameters networkParameters = MainNetParams.get();
         return decompressedKey.getPrivateKeyAsWiF(networkParameters);
-    }
-
-    public Signature sign(String data) {
-        byte[] hash = Sha256Hash.hash(data.getBytes());
-        return signHash(Utils.HEX.encode(hash));
-    }
-
-    public Signature signHash(String hash) {
-        BigInteger privateKeyForSigning = new BigInteger(1, this.getPrivKeyBytes());
-        ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
-        ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(privateKeyForSigning, ECKey.CURVE);
-        signer.init(true, privKey);
-        BigInteger[] signature = signer.generateSignature(Utils.HEX.decode(hash));
-
-        return new Signature(signature[0], signature[1]);
     }
 
     public static PrivateKey randomPrivateKey() {

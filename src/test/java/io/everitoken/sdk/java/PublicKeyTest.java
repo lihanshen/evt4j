@@ -50,4 +50,11 @@ public class PublicKeyTest {
     public void isValidPublicKeyWithInvalidKey() {
         assertFalse("invalid key", PublicKey.isValidPublicKey(inValidPublicKey));
     }
+
+    @Test
+    public void getNullAddress() {
+        String nullAddress = PublicKey.getNullAddress();
+        assertEquals(nullAddress, "EVT00000000000000000000000000000000000000000000000000");
+    }
+
 }
