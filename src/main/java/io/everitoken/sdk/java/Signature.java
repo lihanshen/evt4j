@@ -1,7 +1,6 @@
 package io.everitoken.sdk.java;
 
 import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.Sha256Hash;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.crypto.params.ECPrivateKeyParameters;
 import org.spongycastle.crypto.params.ECPublicKeyParameters;
@@ -36,19 +35,6 @@ public class Signature {
     public Signature toCanonicalised() {
         signature = signature.toCanonicalised();
         return this;
-    }
-
-    public static void main(String[] args) {
-        try {
-            String message = "helloworld";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
-            Signature sig = signHash(Sha256Hash.hash(message.getBytes()), key);
-
-            boolean verifyResult = verify(Sha256Hash.hash(message.getBytes()), sig, key.toPublicKey());
-            System.out.println(verifyResult);
-        } catch (Exception ex) {
-            System.out.println("error occurred");
-        }
     }
 
     public static Signature signHash(byte[] hash, PrivateKey key) {
