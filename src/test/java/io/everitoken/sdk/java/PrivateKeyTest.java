@@ -11,7 +11,7 @@ public class PrivateKeyTest {
         String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
         try {
             PublicKey publicKey = PrivateKey.fromWif(wif).toPublicKey();
-            assertEquals(publicKey.getEncoded(true), "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
+            assertEquals(publicKey.toString(), "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
         } catch (EvtSdkException e) {
 
         }
@@ -25,7 +25,7 @@ public class PrivateKeyTest {
 
         try {
             PublicKey publicKey = key.toPublicKey();
-            assertEquals(publicKey.getEncoded(true), publicKeyStr);
+            assertEquals(publicKey.toString(), publicKeyStr);
             assertEquals(key.toWif(), privateKey);
         } catch (Exception ex) {
         }
@@ -41,11 +41,5 @@ public class PrivateKeyTest {
                 "Invalid private key",
                 PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER7XsAR2eCcpt3D")
         );
-    }
-
-    @Test
-    public void randomPrivateKey() {
-        PrivateKey key = PrivateKey.randomPrivateKey();
-
     }
 }

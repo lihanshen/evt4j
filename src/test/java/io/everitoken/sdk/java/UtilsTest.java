@@ -4,7 +4,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UtilsTest {
     @Rule
@@ -34,5 +35,17 @@ public class UtilsTest {
         }
 
         assertFalse("Checksum successful", hasError);
+    }
+
+    @Test
+    public void random32BytesAsHex() {
+        String str32BytesInHex = Utils.random32BytesAsHex();
+        assertTrue("Message should be 64 characters", str32BytesInHex.length() == 64);
+    }
+
+    @Test
+    public void random32Bytes() {
+        byte[] bytes32 = Utils.random32Bytes();
+        assertTrue("Message should be 32 bytes long", bytes32.length == 32);
     }
 }

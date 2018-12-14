@@ -56,8 +56,12 @@ public class PublicKey {
         return new ImmutablePair<Boolean, byte[]>(pub.isValid(), publicKeyInBytes);
     }
 
+    public String toString() {
+        return String.format("%s%s", Constants.EVT, Utils.base58Check(pub.getEncoded(true)));
+    }
+
     public String getEncoded(boolean compressed) {
-        return String.format("%s%s", Constants.EVT, Utils.base58Check(pub.getEncoded(compressed)));
+        return Utils.HEX.encode(this.pub.getEncoded(compressed));
     }
 
     public static String getNullAddress() {

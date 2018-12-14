@@ -25,8 +25,7 @@ class Utils {
         return Base58.encode(concat);
     }
 
-    // TODO throw custom Exception
-    public static byte[] base58CheckDecode(String key) throws Exception {
+    public static byte[] base58CheckDecode(String key) throws EvtSdkException {
         // base58 decode
         byte[] decoded = Base58.decode(key);
         // split the byte slice
@@ -39,6 +38,7 @@ class Utils {
         // if pass, return data, otherwise throw ex
         // compare two checksum
         boolean isEqual = true;
+
         for (int i = 0; i < checksum.length; i++) {
             if (hash[i] != checksum[i]) {
                 isEqual = false;
@@ -46,7 +46,7 @@ class Utils {
         }
 
         if (!isEqual) {
-            throw new Exception("Checksum doesn't match.");
+            throw new EvtSdkException(null, ErrorCode.BASE58_CHECK_FAILURE);
         }
 
         return data;
