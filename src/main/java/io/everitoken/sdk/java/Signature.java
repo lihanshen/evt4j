@@ -115,7 +115,7 @@ public class Signature {
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
         ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(
-                publicKey.get().get(), // ECPoint
+                publicKey.getPoint().get(), // ECPoint
                 ECKey.CURVE
         );
 

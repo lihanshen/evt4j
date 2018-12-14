@@ -29,7 +29,7 @@ public class PublicKey {
         pub = point;
     }
 
-    public LazyECPoint get() {
+    public LazyECPoint getPoint() {
         return pub;
     }
 
@@ -61,7 +61,7 @@ public class PublicKey {
     }
 
     public String getEncoded(boolean compressed) {
-        return Utils.HEX.encode(this.pub.getEncoded(compressed));
+        return Utils.HEX.encode(pub.getEncoded(compressed));
     }
 
     public static String getNullAddress() {
