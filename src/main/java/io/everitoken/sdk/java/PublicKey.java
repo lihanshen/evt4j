@@ -33,11 +33,23 @@ public class PublicKey {
         return pub;
     }
 
+    public static boolean isValidAddress(String key) {
+        if (key.equals(Constants.NullAddress)) {
+            return true;
+        }
+
+        return isValidPublicKey(key);
+    }
+
     public static boolean isValidPublicKey(String key) {
         return validPublicKey(key).getLeft();
     }
 
     private static Pair<Boolean, byte[]> validPublicKey(String key) {
+        if (key.length() < 8) {
+            return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
+        }
+
         if (!key.startsWith(Constants.EVT)) {
             return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
         }

@@ -57,4 +57,13 @@ public class PublicKeyTest {
         assertEquals(nullAddress, "EVT00000000000000000000000000000000000000000000000000");
     }
 
+    @Test
+    public void isValidAddress() {
+        String nullAddress = PublicKey.getNullAddress();
+        assertTrue(PublicKey.isValidAddress(nullAddress));
+        assertFalse(PublicKey.isValidPublicKey(nullAddress));
+        assertTrue(PublicKey.isValidAddress("EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa"));
+        assertFalse(PublicKey.isValidAddress("EOS6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+        assertFalse(PublicKey.isValidAddress("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDWFRvsv2FxgND"));
+    }
 }

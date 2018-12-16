@@ -13,6 +13,7 @@ Official Java SDK for everiToken public chain.
 
 ### PublicKey
 * **static** `isValidPublicKey`
+* **static** `isValidAddress`
 * **static** `getNullAddress`
 * `toString`
 * `getEncoded`
