@@ -30,10 +30,6 @@ public class PublicKey {
         pub = point;
     }
 
-    public LazyECPoint getPoint() {
-        return pub;
-    }
-
     public static boolean isValidAddress(String key) {
         if (key.equals(Params.NullAddress)) {
             return true;
@@ -69,15 +65,19 @@ public class PublicKey {
         return new ImmutablePair<Boolean, byte[]>(pub.isValid(), publicKeyInBytes);
     }
 
+    public static String getNullAddress() {
+        return nullAddress;
+    }
+
+    public LazyECPoint getPoint() {
+        return pub;
+    }
+
     public String toString() {
         return String.format("%s%s", Params.EVT, Utils.base58Check(pub.getEncoded(true)));
     }
 
     public String getEncoded(boolean compressed) {
         return Utils.HEX.encode(pub.getEncoded(compressed));
-    }
-
-    public static String getNullAddress() {
-        return nullAddress;
     }
 }

@@ -9,7 +9,7 @@ public abstract class Params {
         private String url;
 
         NET(String url) {
-            url = url;
+            this.url = url;
         }
 
         public String getUrl() {
@@ -20,10 +20,10 @@ public abstract class Params {
     public static final String EVT = "EVT";
     public static final String NullAddress = "EVT00000000000000000000000000000000000000000000000000";
 
-    protected String protocol;
-    protected String host;
-    protected int port;
-    protected int networkTimeout; // millisecond
+    private String protocol;
+    private String host;
+    private int port;
+    private int networkTimeout; // millisecond
 
     protected Params(String protocol, String host, int port, int networkTimeout) {
         this.protocol = protocol;
