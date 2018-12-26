@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 public class PrivateKey {
     private ECKey key;
 
-    public PrivateKey(String wif) throws IllegalArgumentException {
+    private PrivateKey(String wif) throws IllegalArgumentException {
         NetworkParameters networkParam = MainNetParams.get();
 
         if (wif.length() != 51 && wif.length() != 52) {
