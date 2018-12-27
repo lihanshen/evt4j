@@ -1,13 +1,12 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.params.Params;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.LazyECPoint;
 
 public class PublicKey {
-    private static final String nullAddress = Params.NullAddress;
+    private static final String nullAddress = Constants.NullAddress;
     private LazyECPoint pub;
 
     public PublicKey(String key) throws EvtSdkException {
@@ -31,7 +30,7 @@ public class PublicKey {
     }
 
     public static boolean isValidAddress(String key) {
-        if (key.equals(Params.NullAddress)) {
+        if (key.equals(Constants.NullAddress)) {
             return true;
         }
 
@@ -47,7 +46,7 @@ public class PublicKey {
             return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
         }
 
-        if (!key.startsWith(Params.EVT)) {
+        if (!key.startsWith(Constants.EVT)) {
             return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
         }
 
@@ -74,7 +73,7 @@ public class PublicKey {
     }
 
     public String toString() {
-        return String.format("%s%s", Params.EVT, Utils.base58Check(pub.getEncoded(true)));
+        return String.format("%s%s", Constants.EVT, Utils.base58Check(pub.getEncoded(true)));
     }
 
     public String getEncoded(boolean compressed) {

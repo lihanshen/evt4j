@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.params;
 
-public abstract class Params {
+public abstract class NetParams {
     protected static enum NET {
         MAINNET1("mainnet1.everitoken.io"),
         MAINNET2("mainnet2.everitoken.io"),
@@ -17,15 +17,12 @@ public abstract class Params {
         }
     }
 
-    public static final String EVT = "EVT";
-    public static final String NullAddress = "EVT00000000000000000000000000000000000000000000000000";
-
     private String protocol;
     private String host;
     private int port;
     private int networkTimeout; // millisecond
 
-    protected Params(String protocol, String host, int port, int networkTimeout) {
+    protected NetParams(String protocol, String host, int port, int networkTimeout) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
