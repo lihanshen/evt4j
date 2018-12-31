@@ -9,7 +9,6 @@ import io.everitoken.sdk.java.ErrorCode;
 import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.params.NetParams;
 
-// TODO write tests
 public abstract class ApiResource {
 
     private String name;
@@ -22,21 +21,17 @@ public abstract class ApiResource {
         this.method = method;
     }
 
-    public ApiResponse get(NetParams netParams) {
-        ApiResponse res = new ApiResponse(null, null);
+    public ApiResponse<JsonNode> get(NetParams netParams) {
+        ApiResponse<JsonNode> res = new ApiResponse<>(null, null);
         try {
             HttpResponse<JsonNode> json = Unirest.get(getUrl(netParams)).asJson();
-            res.setPayload(json);
+            res.setPayload(json.getBody());
         } catch (UnirestException ex) {
             // TODO error code with custom error message from server side
             res.setError(new EvtSdkException(null, ErrorCode.API_RESOURCE_FAILURE));
         }
 
         return res;
-    }
-
-    public String getName() {
-        return name;
     }
 
     private String getUri() {

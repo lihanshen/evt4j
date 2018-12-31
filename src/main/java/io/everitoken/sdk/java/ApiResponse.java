@@ -1,17 +1,14 @@
 package io.everitoken.sdk.java;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-
 import javax.annotation.Nullable;
 
 // TODO write tests
-public class ApiResponse {
-    private HttpResponse<JsonNode> payload;
+public class ApiResponse<T> {
+    private T payload;
 
     private EvtSdkException error;
 
-    public ApiResponse(HttpResponse<JsonNode> payload, @Nullable EvtSdkException error) {
+    public ApiResponse(T payload, @Nullable EvtSdkException error) {
         this.payload = payload;
         this.error = error;
     }
@@ -24,11 +21,11 @@ public class ApiResponse {
         return error;
     }
 
-    public HttpResponse<JsonNode> getPayload() {
+    public T getPayload() {
         return payload;
     }
 
-    public void setPayload(HttpResponse<JsonNode> payload) {
+    public void setPayload(T payload) {
         this.payload = payload;
     }
 

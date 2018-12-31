@@ -32,3 +32,10 @@ Official Java SDK for everiToken public chain.
 Make sure maven is installed
 
 `mvn test`
+
+## ApiParams
+* PublicKeysParam
+* ActionsParam
+* TokenParam
+* BalanceParam
+* IdParam // NameParam
