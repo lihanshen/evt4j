@@ -3,18 +3,16 @@ package io.everitoken.sdk.java.apiResources;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import io.everitoken.sdk.java.ApiResponse;
-import io.everitoken.sdk.java.ErrorCode;
-import io.everitoken.sdk.java.EvtSdkException;
+import com.mashape.unirest.request.body.RequestBodyEntity;
 import io.everitoken.sdk.java.model.DomainName;
+import io.everitoken.sdk.java.params.ApiParams;
 import io.everitoken.sdk.java.params.NetParams;
-import io.everitoken.sdk.java.params.PublicKeysParams;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HistoryDomain extends ApiResource {
     private static final String name = "historyDomain";
@@ -25,29 +23,10 @@ public class HistoryDomain extends ApiResource {
         super(name, uri, method);
     }
 
-    public ApiResponse<List<DomainName>> get(NetParams netParams, PublicKeysParams publicKeysParams) {
-        ApiResponse<List<DomainName>> res = new ApiResponse<>(null, null);
-        try {
-
-            // build the body and send along with the request
-            JSONObject body = getBodyPayload(publicKeysParams);
-            HttpResponse<JsonNode> json = Unirest.post(getUrl(netParams)).body(body).asJson();
-
-            res.setPayload(parseResult(json));
-        } catch (UnirestException ex) {
-            // TODO error code with custom error message from server side
-            res.setError(new EvtSdkException(null, ErrorCode.API_RESOURCE_FAILURE));
-        }
-
-        return res;
-    }
-
-    private JSONObject getBodyPayload(PublicKeysParams publicKeysParams) {
-        JSONObject jsonObject = new JSONObject();
-        JSONArray keys = new JSONArray(publicKeysParams.getPublicKeyAsStringList());
-        jsonObject.put("keys", keys);
-
-        return jsonObject;
+    @Override
+    public RequestBodyEntity buildRequest(NetParams netParams, @Nullable ApiParams apiParams) {
+        Objects.requireNonNull(apiParams);
+        return Unirest.post(getUrl(netParams)).body(apiParams.asJson());
     }
 
     private List<DomainName> parseResult(HttpResponse<JsonNode> json) {
@@ -60,5 +39,4 @@ public class HistoryDomain extends ApiResource {
 
         return domainNameList;
     }
-
 }

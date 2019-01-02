@@ -4,12 +4,16 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.BaseRequest;
 import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.ErrorCode;
 import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.params.ApiParams;
 import io.everitoken.sdk.java.params.NetParams;
 
-public abstract class ApiResource {
+import javax.annotation.Nullable;
+
+public class ApiResource {
 
     private String name;
     private String uri;
@@ -21,10 +25,14 @@ public abstract class ApiResource {
         this.method = method;
     }
 
-    public ApiResponse<JsonNode> get(NetParams netParams) {
+    protected BaseRequest buildRequest(NetParams netParams, @Nullable ApiParams apiParams) {
+        return Unirest.get(getUrl(netParams));
+    }
+
+    public ApiResponse<JsonNode> get(NetParams netParams, @Nullable ApiParams apiParams) {
         ApiResponse<JsonNode> res = new ApiResponse<>(null, null);
         try {
-            HttpResponse<JsonNode> json = Unirest.get(getUrl(netParams)).asJson();
+            HttpResponse<JsonNode> json = buildRequest(netParams, apiParams).asJson();
             res.setPayload(json.getBody());
         } catch (UnirestException ex) {
             // TODO error code with custom error message from server side

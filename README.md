@@ -39,3 +39,26 @@ Make sure maven is installed
 * TokenParam
 * BalanceParam
 * IdParam // NameParam
+
+## Apis
+* [x] getInfo
+* [x] getHeadBlockHeaderState
+* [x] getCreatedDomain
+* [x] getOwnedTokens
+* [ ] getManagedGroups
+* [ ] getCreatedFungibles
+* [ ] getActions
+* [ ] getToken
+* [ ] getFungibleBalance
+* [ ] getTransactionDetailById
+* [ ] getDomainDetail
+* [ ] getGroupDetail
+* [ ] getFungibleActionsByAddress
+* [ ] getTransactionsDetailOfPublicKeys
+* [ ] getFungibleSymbolDetail
+* [ ] getRequiredKeysForSuspendedTransaction
+* [ ] getStatusOfEvtLink
+* [ ] getSuspendedTransactionDetail
+* [ ] getEstimatedChargeForTransaction
+* [ ] generateUnsignedTransaction
+* [ ] pushTransaction
