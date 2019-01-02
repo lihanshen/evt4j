@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.apiResources;
 
-import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
+import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.model.DomainName;
 import io.everitoken.sdk.java.params.ApiParams;
 import io.everitoken.sdk.java.params.NetParams;
@@ -29,10 +29,11 @@ public class HistoryDomain extends ApiResource {
         return Unirest.post(getUrl(netParams)).body(apiParams.asJson());
     }
 
-    private List<DomainName> parseResult(HttpResponse<JsonNode> json) {
-        List<DomainName> domainNameList = new ArrayList<>();
+    public List<DomainName> get(NetParams netParams, @Nullable ApiParams apiParams) {
+        ApiResponse<JsonNode> res = super.makeRequest(netParams, apiParams);
 
-        JSONArray domains = json.getBody().getArray();
+        List<DomainName> domainNameList = new ArrayList<>();
+        JSONArray domains = res.getPayload().getArray();
         for (int i = 0; i < domains.length(); i++) {
             domainNameList.add(new DomainName(domains.getString(i)));
         }

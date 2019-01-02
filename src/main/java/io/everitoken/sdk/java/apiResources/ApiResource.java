@@ -13,7 +13,7 @@ import io.everitoken.sdk.java.params.NetParams;
 
 import javax.annotation.Nullable;
 
-public class ApiResource {
+public abstract class ApiResource {
 
     private String name;
     private String uri;
@@ -29,7 +29,7 @@ public class ApiResource {
         return Unirest.get(getUrl(netParams));
     }
 
-    public ApiResponse<JsonNode> get(NetParams netParams, @Nullable ApiParams apiParams) {
+    public ApiResponse<JsonNode> makeRequest(NetParams netParams, @Nullable ApiParams apiParams) {
         ApiResponse<JsonNode> res = new ApiResponse<>(null, null);
         try {
             HttpResponse<JsonNode> json = buildRequest(netParams, apiParams).asJson();
