@@ -2,9 +2,11 @@ package io.everitoken.sdk.java;
 
 import io.everitoken.sdk.java.apiResources.*;
 import io.everitoken.sdk.java.keyProvider.KeyProvider;
+import io.everitoken.sdk.java.model.Action;
 import io.everitoken.sdk.java.model.DomainName;
 import io.everitoken.sdk.java.model.GroupName;
 import io.everitoken.sdk.java.model.TokenName;
+import io.everitoken.sdk.java.params.ActionParams;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.PublicKeysParams;
 import io.everitoken.sdk.java.params.TestNetNetParams;
@@ -57,6 +59,11 @@ public class Api {
         return historyFungibles.get(netParams, publicKeysParams);
     }
 
+    public List<Action> getActions(ActionParams actionParams) throws EvtSdkException {
+        HistoryAction historyAction = new HistoryAction();
+        return historyAction.get(netParams, actionParams);
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
@@ -77,6 +84,11 @@ public class Api {
 
 //            JSONObject res = api.getCreatedFungibles(publicKeysParams);
 //            System.out.println(res);
+
+//            ActionParams actionParams = new ActionParams("testdomainfei1");
+//            List<Action> res = api.getActions(actionParams);
+//            System.out.println(res);
+
 
         } catch (Exception ex) {
             System.out.println("error");

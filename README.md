@@ -47,7 +47,7 @@ Make sure maven is installed
 * [x] getOwnedTokens
 * [x] getManagedGroups
 * [x] getCreatedFungibles
-* [ ] getActions
+* [x] getActions
 * [ ] getToken
 * [ ] getFungibleBalance
 * [ ] getTransactionDetailById
@@ -68,5 +68,5 @@ Make sure maven is installed
 
 PrivateKey: `5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D` 
 
-PubilcKey: `EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND`
+PublicKey: `EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND`
 
