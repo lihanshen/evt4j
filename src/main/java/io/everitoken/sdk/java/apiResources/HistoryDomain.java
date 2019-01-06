@@ -34,6 +34,7 @@ public class HistoryDomain extends ApiResource {
 
         List<DomainName> domainNameList = new ArrayList<>();
         JSONArray domains = res.getPayload().getArray();
+        
         for (int i = 0; i < domains.length(); i++) {
             domainNameList.add(new DomainName(domains.getString(i)));
         }

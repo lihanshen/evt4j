@@ -6,6 +6,7 @@ import io.everitoken.sdk.java.apiResources.HistoryToken;
 import io.everitoken.sdk.java.apiResources.Info;
 import io.everitoken.sdk.java.keyProvider.KeyProvider;
 import io.everitoken.sdk.java.model.DomainName;
+import io.everitoken.sdk.java.model.TokenName;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.PublicKeysParams;
 import io.everitoken.sdk.java.params.TestNetNetParams;
@@ -43,11 +44,11 @@ public class Api {
         return historyDomain.get(netParams, publicKeysParams);
     }
 
-    public JSONObject getOwnedTokens(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public List<TokenName> getOwnedTokens(PublicKeysParams publicKeysParams) throws EvtSdkException {
         HistoryToken historyToken = new HistoryToken();
         return historyToken.get(netParams, publicKeysParams);
     }
-   
+
     public static void main(String[] args) {
         Api api = new Api();
 
@@ -55,8 +56,8 @@ public class Api {
             PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
                     "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
             });
-            JSONObject res = api.getOwnedTokens(publicKeysParams);
-            System.out.println(res);
+            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
+            res.stream().forEach(token -> System.out.println(token.toString()));
         } catch (Exception ex) {
             System.out.println("error");
         }

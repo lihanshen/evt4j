@@ -16,4 +16,8 @@ public class TokenName {
     public String getDomain() {
         return domain;
     }
+
+    public String toString() {
+        return String.format("%s: %s, %s, %s", "Token", getName(), "Domain", getDomain());
+    }
 }
