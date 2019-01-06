@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.params;
 
 public abstract class NetParams {
-    protected static enum NET {
+    public static enum NET {
         MAINNET1("mainnet1.everitoken.io"),
         MAINNET2("mainnet2.everitoken.io"),
         TESTNET("testnet1.everitoken.io");

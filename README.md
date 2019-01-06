@@ -48,6 +48,8 @@ Make sure maven is installed
 * [x] getManagedGroups
 * [x] getCreatedFungibles
 * [x] getActions
+* [x] getTransactionIdsInBlock
+* [ ] getTokens
 * [ ] getToken
 * [ ] getFungibleBalance
 * [ ] getTransactionDetailById

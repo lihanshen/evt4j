@@ -36,6 +36,7 @@ public abstract class ApiResource {
             res.setPayload(json.getBody());
         } catch (UnirestException ex) {
             // TODO error code with custom error message from server side
+            System.out.println(ex.getMessage());
             res.setError(new EvtSdkException(null, ErrorCode.API_RESOURCE_FAILURE));
         }
 

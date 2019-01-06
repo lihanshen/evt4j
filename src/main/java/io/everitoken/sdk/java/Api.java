@@ -6,10 +6,8 @@ import io.everitoken.sdk.java.model.Action;
 import io.everitoken.sdk.java.model.DomainName;
 import io.everitoken.sdk.java.model.GroupName;
 import io.everitoken.sdk.java.model.TokenName;
-import io.everitoken.sdk.java.params.ActionParams;
-import io.everitoken.sdk.java.params.NetParams;
-import io.everitoken.sdk.java.params.PublicKeysParams;
-import io.everitoken.sdk.java.params.TestNetNetParams;
+import io.everitoken.sdk.java.params.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.annotation.Nullable;
@@ -64,14 +62,21 @@ public class Api {
         return historyAction.get(netParams, actionParams);
     }
 
+    public JSONArray getTransactionIdsInBlock(TextIdParams idParams) throws EvtSdkException {
+        TransactionIds transactionIds = new TransactionIds();
+        return transactionIds.get(netParams, idParams);
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
-            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
-            });
+//            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
+//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
+//            });
+//            JSONObject res = api.getHeadBlockHeaderState();
+//            System.out.println(res);
 
 //            List<DomainName> res = api.getCreatedDomains(publicKeysParams);
 //            res.stream().forEach(domain -> System.out.println(domain.toString()));
@@ -89,9 +94,14 @@ public class Api {
 //            List<Action> res = api.getActions(actionParams);
 //            System.out.println(res);
 
+//            JSONObject headerState = api.getHeadBlockHeaderState();
+//            System.out.println(headerState.getString("id"));
+//            JSONArray res = api.getTransactionIdsInBlock(new TextIdParams(headerState.getString("id")));
+//            System.out.println(res);
 
         } catch (Exception ex) {
             System.out.println("error");
+            System.out.println(ex.getStackTrace());
         }
     }
 }
