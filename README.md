@@ -45,7 +45,7 @@ Make sure maven is installed
 * [x] getHeadBlockHeaderState
 * [x] getCreatedDomain
 * [x] getOwnedTokens
-* [ ] getManagedGroups
+* [x] getManagedGroups
 * [ ] getCreatedFungibles
 * [ ] getActions
 * [ ] getToken
@@ -62,3 +62,11 @@ Make sure maven is installed
 * [ ] getEstimatedChargeForTransaction
 * [ ] generateUnsignedTransaction
 * [ ] pushTransaction
+
+
+## Misc
+
+PrivateKey: `5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D` 
+
+PubilcKey: `EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND`
+

@@ -1,11 +1,9 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.apiResources.HeadBlockHeaderState;
-import io.everitoken.sdk.java.apiResources.HistoryDomain;
-import io.everitoken.sdk.java.apiResources.HistoryToken;
-import io.everitoken.sdk.java.apiResources.Info;
+import io.everitoken.sdk.java.apiResources.*;
 import io.everitoken.sdk.java.keyProvider.KeyProvider;
 import io.everitoken.sdk.java.model.DomainName;
+import io.everitoken.sdk.java.model.GroupName;
 import io.everitoken.sdk.java.model.TokenName;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.PublicKeysParams;
@@ -49,15 +47,21 @@ public class Api {
         return historyToken.get(netParams, publicKeysParams);
     }
 
+    public List<GroupName> getManagedGroups(PublicKeysParams publicKeysParams) throws EvtSdkException {
+        HistoryGroup historyGroup = new HistoryGroup();
+        return historyGroup.get(netParams, publicKeysParams);
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
 
         try {
             PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
+                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
             });
-            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
-            res.stream().forEach(token -> System.out.println(token.toString()));
+            List<GroupName> res = api.getManagedGroups(publicKeysParams);
+            res.stream().forEach(group -> System.out.println(group.getName()));
+            System.out.println(res);
         } catch (Exception ex) {
             System.out.println("error");
         }
