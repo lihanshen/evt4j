@@ -52,16 +52,32 @@ public class Api {
         return historyGroup.get(netParams, publicKeysParams);
     }
 
+    public JSONObject getCreatedFungibles(PublicKeysParams publicKeysParams) throws EvtSdkException {
+        HistoryFungibles historyFungibles = new HistoryFungibles();
+        return historyFungibles.get(netParams, publicKeysParams);
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
-
+        // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
+        //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
             PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
                     "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
             });
-            List<GroupName> res = api.getManagedGroups(publicKeysParams);
-            res.stream().forEach(group -> System.out.println(group.getName()));
-            System.out.println(res);
+
+//            List<DomainName> res = api.getCreatedDomains(publicKeysParams);
+//            res.stream().forEach(domain -> System.out.println(domain.toString()));
+
+//            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
+//            res.stream().forEach(token -> System.out.println(token.toString()));
+
+//            List<GroupName> res = api.getManagedGroups(publicKeysParams);
+//            res.stream().forEach(group -> System.out.println(group.toString()));
+
+//            JSONObject res = api.getCreatedFungibles(publicKeysParams);
+//            System.out.println(res);
+
         } catch (Exception ex) {
             System.out.println("error");
         }

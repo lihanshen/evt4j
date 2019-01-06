@@ -46,7 +46,7 @@ Make sure maven is installed
 * [x] getCreatedDomain
 * [x] getOwnedTokens
 * [x] getManagedGroups
-* [ ] getCreatedFungibles
+* [x] getCreatedFungibles
 * [ ] getActions
 * [ ] getToken
 * [ ] getFungibleBalance

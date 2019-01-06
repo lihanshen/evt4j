@@ -1,16 +1,11 @@
 package io.everitoken.sdk.java.model;
 
-public class TokenName {
-    private final String name;
+public class TokenName extends NameableResource {
     private final String domain;
 
     public TokenName(String name, String domain) {
-        this.name = name;
+        super(name);
         this.domain = domain;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getDomain() {
@@ -18,6 +13,6 @@ public class TokenName {
     }
 
     public String toString() {
-        return String.format("%s: %s, %s, %s", "Token", getName(), "Domain", getDomain());
+        return String.format("%s, %s -> %s", super.toString(), "Domain", getDomain());
     }
 }

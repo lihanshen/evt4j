@@ -1,13 +1,7 @@
 package io.everitoken.sdk.java.model;
 
-public class GroupName {
-    private final String name;
-
+public class GroupName extends NameableResource {
     public GroupName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+        super(name);
     }
 }
