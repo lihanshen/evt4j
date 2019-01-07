@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 
 public class TokenDetailData extends NameableResource {
     private String domain;
-    private List<PublicKey> owners;
+    private List<PublicKey> owner;
     private JSONArray metas;
 
     public TokenDetailData(JSONObject raw) {
@@ -21,7 +21,7 @@ public class TokenDetailData extends NameableResource {
         metas = raw.getJSONArray("metas");
 
         JSONArray owner = raw.getJSONArray("owner");
-        owners = StreamSupport.stream(owner.spliterator(), true).map(publicKey -> {
+        this.owner = StreamSupport.stream(owner.spliterator(), true).map(publicKey -> {
             try {
                 return new PublicKey((String) publicKey);
             } catch (EvtSdkException ex) {
@@ -34,8 +34,8 @@ public class TokenDetailData extends NameableResource {
         return domain;
     }
 
-    public List<PublicKey> getOwners() {
-        return owners;
+    public List<PublicKey> getOwner() {
+        return owner;
     }
 
     public JSONArray getMetas() {
@@ -43,8 +43,8 @@ public class TokenDetailData extends NameableResource {
     }
 
     public String toString() {
-        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "Domain", getDomain(), "owners",
-                             owners.stream().map(PublicKey::toString).reduce(String::concat)
+        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "Domain", getDomain(), "owner",
+                             owner.stream().map(PublicKey::toString).reduce(String::concat)
         );
     }
 }

@@ -103,7 +103,7 @@ public class Api {
 
             TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
             TokenDetailData res1 = api.getToken(tokenDetailParams);
-            res1.getOwners().forEach(publicKey -> System.out.println(publicKey.toString()));
+            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
         } catch (Exception ex) {
             System.out.println("error");
