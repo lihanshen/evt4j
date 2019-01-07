@@ -1,6 +1,8 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.request.GetRequest;
 import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.params.ApiParams;
 import io.everitoken.sdk.java.params.NetParams;
@@ -15,6 +17,11 @@ public class HeadBlockHeaderState extends ApiResource {
 
     public HeadBlockHeaderState() {
         super(name, uri, method);
+    }
+
+    @Override
+    protected GetRequest buildRequest(NetParams netParams, @Nullable ApiParams apiParams) {
+        return Unirest.get(getUrl(netParams));
     }
 
     public JSONObject get(NetParams netParams, @Nullable ApiParams apiParams) {

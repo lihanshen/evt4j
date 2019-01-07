@@ -75,7 +75,7 @@ public class Api {
 //            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
 //                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
 //            });
-//            JSONObject res = api.getHeadBlockHeaderState();
+//            JSONObject res = api.getInfo();
 //            System.out.println(res);
 
 //            List<DomainName> res = api.getCreatedDomains(publicKeysParams);
@@ -92,7 +92,7 @@ public class Api {
 
 //            ActionParams actionParams = new ActionParams("testdomainfei1");
 //            List<Action> res = api.getActions(actionParams);
-//            System.out.println(res);
+//            res.forEach(action -> System.out.println(action.getTrxId()));
 
 //            JSONObject headerState = api.getHeadBlockHeaderState();
 //            System.out.println(headerState.getString("id"));

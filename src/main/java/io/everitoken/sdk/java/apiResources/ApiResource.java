@@ -25,8 +25,8 @@ public abstract class ApiResource {
         this.method = method;
     }
 
-    protected BaseRequest buildRequest(NetParams netParams, @Nullable ApiParams apiParams) {
-        return Unirest.get(getUrl(netParams));
+    protected BaseRequest buildRequest(NetParams netParams, ApiParams apiParams) {
+        return Unirest.post(getUrl(netParams)).body(apiParams.asJson());
     }
 
     public ApiResponse<JsonNode> makeRequest(NetParams netParams, @Nullable ApiParams apiParams) {
@@ -36,7 +36,7 @@ public abstract class ApiResource {
             res.setPayload(json.getBody());
         } catch (UnirestException ex) {
             // TODO error code with custom error message from server side
-            System.out.println(ex.getMessage());
+            System.out.println(String.format("%s: %s", "Error in ApiResource class", ex.getMessage()));
             res.setError(new EvtSdkException(null, ErrorCode.API_RESOURCE_FAILURE));
         }
 
