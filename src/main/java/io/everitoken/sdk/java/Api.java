@@ -2,10 +2,7 @@ package io.everitoken.sdk.java;
 
 import io.everitoken.sdk.java.apiResources.*;
 import io.everitoken.sdk.java.keyProvider.KeyProvider;
-import io.everitoken.sdk.java.model.Action;
-import io.everitoken.sdk.java.model.DomainName;
-import io.everitoken.sdk.java.model.GroupName;
-import io.everitoken.sdk.java.model.TokenName;
+import io.everitoken.sdk.java.model.*;
 import io.everitoken.sdk.java.params.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,8 +50,8 @@ public class Api {
     }
 
     public JSONObject getCreatedFungibles(PublicKeysParams publicKeysParams) throws EvtSdkException {
-        HistoryFungibles historyFungibles = new HistoryFungibles();
-        return historyFungibles.get(netParams, publicKeysParams);
+        HistoryFungible historyFungible = new HistoryFungible();
+        return historyFungible.get(netParams, publicKeysParams);
     }
 
     public List<Action> getActions(ActionParams actionParams) throws EvtSdkException {
@@ -67,6 +64,11 @@ public class Api {
         return transactionIds.get(netParams, idParams);
     }
 
+    public TokenDetailData getToken(TokenDetailParams tokenDetailParams) throws EvtSdkException {
+        TokenDetail tokenDetail = new TokenDetail();
+        return tokenDetail.get(netParams, tokenDetailParams);
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
@@ -77,9 +79,9 @@ public class Api {
 //            });
 //            JSONObject res = api.getInfo();
 //            System.out.println(res);
-
-//            List<DomainName> res = api.getCreatedDomains(publicKeysParams);
-//            res.stream().forEach(domain -> System.out.println(domain.toString()));
+//
+//            List<DomainName> res1 = api.getCreatedDomains(publicKeysParams);
+//            res1.stream().forEach(domain -> System.out.println(domain.toString()));
 
 //            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
 //            res.stream().forEach(token -> System.out.println(token.toString()));
@@ -98,6 +100,10 @@ public class Api {
 //            System.out.println(headerState.getString("id"));
 //            JSONArray res = api.getTransactionIdsInBlock(new TextIdParams(headerState.getString("id")));
 //            System.out.println(res);
+
+            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
+            TokenDetailData res1 = api.getToken(tokenDetailParams);
+            res1.getOwners().forEach(publicKey -> System.out.println(publicKey.toString()));
 
         } catch (Exception ex) {
             System.out.println("error");

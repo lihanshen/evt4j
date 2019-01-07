@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class HistoryGroup extends ApiResource {
-    private static final String name = "historyGroups";
+    private static final String name = "historyGroup";
     private static final String uri = "/v1/history/get_groups";
     private static final String method = "POST";
 

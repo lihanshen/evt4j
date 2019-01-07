@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class HistoryAction extends ApiResource {
-    private static final String name = "historyToken";
+    private static final String name = "historyAction";
     private static final String uri = "/v1/history/get_actions";
     private static final String method = "POST";
 

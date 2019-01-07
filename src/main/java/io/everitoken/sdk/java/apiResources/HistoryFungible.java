@@ -7,13 +7,13 @@ import io.everitoken.sdk.java.params.NetParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class HistoryFungibles extends ApiResource {
+public class HistoryFungible extends ApiResource {
     private static final String name = "historyFungibles";
     private static final String uri = "/v1/history/get_fungibles";
     private static final String method = "POST";
     private static final String IDS_KEY = "ids";
 
-    public HistoryFungibles() {
+    public HistoryFungible() {
         super(name, uri, method);
     }
 

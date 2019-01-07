@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.model;
 
 public abstract class NameableResource {
-    private String name;
+    protected String name;
 
     public NameableResource(String name) {
         this.name = name;
