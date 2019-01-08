@@ -33,13 +33,6 @@ Make sure maven is installed
 
 `mvn test`
 
-## ApiParams
-* PublicKeysParam
-* ActionsParam
-* TokenParam
-* BalanceParam
-* IdParam // NameParam
-
 ## Apis
 * [x] getInfo
 * [x] getHeadBlockHeaderState
@@ -51,7 +44,7 @@ Make sure maven is installed
 * [x] getTransactionIdsInBlock // needs testing
 * [ ] getTokens
 * [x] getToken
-* [ ] getFungibleBalance
+* [x] getFungibleBalance
 * [ ] getTransactionDetailById
 * [ ] getDomainDetail
 * [ ] getGroupDetail
