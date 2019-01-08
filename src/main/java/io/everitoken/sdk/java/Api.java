@@ -74,6 +74,11 @@ public class Api {
         return fungibleBalance.get(netParams, fungibleBalanceParams);
     }
 
+    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) {
+        HistoryTransactionDetail historyTransactionDetail = new HistoryTransactionDetail();
+        return historyTransactionDetail.get(netParams, transactionDetailParams);
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
@@ -110,10 +115,17 @@ public class Api {
 //            TokenDetailData res1 = api.getToken(tokenDetailParams);
 //            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
-            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
-                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
-            JSONArray res = api.getFungibleBalance(fungibleBalanceParams);
-            System.out.println(res);
+//            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
+//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
+//            JSONArray res = api.getFungibleBalance(fungibleBalanceParams);
+//            System.out.println(res);
+
+            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
+                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
+            );
+
+            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
+            System.out.println(res.getTransaction());
 
         } catch (Exception ex) {
             System.out.println("error");

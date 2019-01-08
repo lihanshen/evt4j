@@ -45,7 +45,7 @@ Make sure maven is installed
 * [ ] getTokens
 * [x] getToken
 * [x] getFungibleBalance
-* [ ] getTransactionDetailById
+* [x] getTransactionDetailById
 * [ ] getDomainDetail
 * [ ] getGroupDetail
 * [ ] getFungibleActionsByAddress
@@ -65,3 +65,4 @@ PrivateKey: `5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D`
 
 PublicKey: `EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND`
 
+Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"what":"unknown transaction","name":"unknown_transaction_exception","details":[{"file":"evt_pg_query.cpp","method":"get_transaction_resume","line_number":677,"message":"Cannot find transaction"}]}}`
