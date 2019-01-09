@@ -1,10 +1,9 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.ApiResponse;
+import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.model.TransactionDetail;
 import io.everitoken.sdk.java.params.RequestParams;
-import org.json.JSONObject;
 
 public class HistoryTransactionDetail extends ApiResource {
     private static final String name = "transactionIds";
@@ -19,10 +18,8 @@ public class HistoryTransactionDetail extends ApiResource {
         super(name, uri, method);
     }
 
-    public TransactionDetail get(RequestParams requestParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
-        JSONObject payload = res.getPayload().getObject();
-
-        return new TransactionDetail(payload);
+    public TransactionDetail request(RequestParams requestParams) throws EvtSdkException {
+        JsonNode res = super.makeRequest(requestParams);
+        return new TransactionDetail(res.getObject());
     }
 }

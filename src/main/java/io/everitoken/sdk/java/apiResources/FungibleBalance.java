@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.ApiResponse;
+import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
 
@@ -14,10 +14,8 @@ public class FungibleBalance extends ApiResource {
         super(name, uri, method);
     }
 
-    public JSONArray get(RequestParams requestParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
-        JSONArray payload = res.getPayload().getArray();
-
-        return payload;
+    public JSONArray request(RequestParams requestParams) throws EvtSdkException {
+        JsonNode res = super.makeRequest(requestParams);
+        return res.getArray();
     }
 }

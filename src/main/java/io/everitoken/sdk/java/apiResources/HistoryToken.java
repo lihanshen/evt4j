@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.ApiResponse;
+import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.model.TokenName;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
@@ -37,9 +37,9 @@ public class HistoryToken extends ApiResource {
      * @param requestParams
      * @return List<TokenName>
      */
-    public List<TokenName> get(RequestParams requestParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
-        JSONObject payload = res.getPayload().getObject();
+    public List<TokenName> request(RequestParams requestParams) throws EvtSdkException {
+        JsonNode res = super.makeRequest(requestParams);
+        JSONObject payload = res.getObject();
 
         List<TokenName> tokens = new ArrayList<>();
 

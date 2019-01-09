@@ -3,7 +3,7 @@ package io.everitoken.sdk.java.apiResources;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
-import io.everitoken.sdk.java.ApiResponse;
+import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
 
@@ -21,8 +21,8 @@ public class Info extends ApiResource {
         return Unirest.get(getUrl(requestParams.getNetParams()));
     }
 
-    public JSONObject get(RequestParams requestParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
-        return res.getPayload().getObject();
+    public JSONObject request(RequestParams requestParams) throws EvtSdkException {
+        JsonNode res = super.makeRequest(requestParams);
+        return res.getObject();
     }
 }

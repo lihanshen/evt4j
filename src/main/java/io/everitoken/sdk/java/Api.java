@@ -25,58 +25,58 @@ public class Api {
 
     public JSONObject getInfo() throws EvtSdkException {
         Info info = new Info();
-        return info.get(RequestParams.of(netParams));
+        return info.request(RequestParams.of(netParams));
     }
 
     public JSONObject getHeadBlockHeaderState() throws EvtSdkException {
         HeadBlockHeaderState headBlockHeaderState = new HeadBlockHeaderState();
-        return headBlockHeaderState.get(RequestParams.of(netParams));
+        return headBlockHeaderState.request(RequestParams.of(netParams));
     }
 
 
     public List<DomainName> getCreatedDomains(PublicKeysParams publicKeysParams) throws EvtSdkException {
         HistoryDomain historyDomain = new HistoryDomain();
-        return historyDomain.get(RequestParams.of(netParams, publicKeysParams));
+        return historyDomain.request(RequestParams.of(netParams, publicKeysParams));
     }
 
     public List<TokenName> getOwnedTokens(PublicKeysParams publicKeysParams) throws EvtSdkException {
         HistoryToken historyToken = new HistoryToken();
-        return historyToken.get(RequestParams.of(netParams, publicKeysParams));
+        return historyToken.request(RequestParams.of(netParams, publicKeysParams));
     }
 
     public List<GroupName> getManagedGroups(PublicKeysParams publicKeysParams) throws EvtSdkException {
         HistoryGroup historyGroup = new HistoryGroup();
-        return historyGroup.get(RequestParams.of(netParams, publicKeysParams));
+        return historyGroup.request(RequestParams.of(netParams, publicKeysParams));
     }
 
     public JSONObject getCreatedFungibles(PublicKeysParams publicKeysParams) throws EvtSdkException {
         HistoryFungible historyFungible = new HistoryFungible();
-        return historyFungible.get(RequestParams.of(netParams, publicKeysParams));
+        return historyFungible.request(RequestParams.of(netParams, publicKeysParams));
     }
 
     public List<Action> getActions(ActionParams actionParams) throws EvtSdkException {
         HistoryAction historyAction = new HistoryAction();
-        return historyAction.get(RequestParams.of(netParams, actionParams));
+        return historyAction.request(RequestParams.of(netParams, actionParams));
     }
 
     public JSONArray getTransactionIdsInBlock(TextIdParams idParams) throws EvtSdkException {
         TransactionIds transactionIds = new TransactionIds();
-        return transactionIds.get(RequestParams.of(netParams, idParams));
+        return transactionIds.request(RequestParams.of(netParams, idParams));
     }
 
     public TokenDetailData getToken(TokenDetailParams tokenDetailParams) throws EvtSdkException {
         TokenDetail tokenDetail = new TokenDetail();
-        return tokenDetail.get(RequestParams.of(netParams, tokenDetailParams));
+        return tokenDetail.request(RequestParams.of(netParams, tokenDetailParams));
     }
 
-    public JSONArray getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) {
+    public JSONArray getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) throws EvtSdkException {
         FungibleBalance fungibleBalance = new FungibleBalance();
-        return fungibleBalance.get(RequestParams.of(netParams, fungibleBalanceParams));
+        return fungibleBalance.request(RequestParams.of(netParams, fungibleBalanceParams));
     }
 
-    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) {
+    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws EvtSdkException {
         HistoryTransactionDetail historyTransactionDetail = new HistoryTransactionDetail();
-        return historyTransactionDetail.get(RequestParams.of(netParams, transactionDetailParams));
+        return historyTransactionDetail.request(RequestParams.of(netParams, transactionDetailParams));
     }
 
     public static void main(String[] args) {
@@ -85,11 +85,11 @@ public class Api {
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
 //            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
+//                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
 //            });
 //            JSONObject res = api.getInfo();
 //            System.out.println(res);
-//
+
 //            List<DomainName> res1 = api.getCreatedDomains(publicKeysParams);
 //            res1.stream().forEach(domain -> System.out.println(domain.toString()));
 
@@ -111,14 +111,15 @@ public class Api {
 //            JSONArray res = api.getTransactionIdsInBlock(new TextIdParams(headerState.getString("id")));
 //            System.out.println(res);
 
-//            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
-//            TokenDetailData res1 = api.getToken(tokenDetailParams);
-//            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
+            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
+            TokenDetailData res1 = api.getToken(tokenDetailParams);
+            System.out.println(res1.getDomain());
+            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
-            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
-                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
-            JSONArray res = api.getFungibleBalance(fungibleBalanceParams);
-            System.out.println(res);
+//            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
+//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
+//            JSONArray res = api.getFungibleBalance(fungibleBalanceParams);
+//            System.out.println(res);
 
 //            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
 //                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
@@ -127,9 +128,8 @@ public class Api {
 //            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
 
-        } catch (Exception ex) {
-            System.out.println("error");
-            System.out.println(ex.getStackTrace());
+        } catch (EvtSdkException ex) {
+            System.out.println(ex.getMeta());
         }
     }
 }

@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.ApiResponse;
+import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.model.Action;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
@@ -20,9 +20,10 @@ public class HistoryAction extends ApiResource {
         super(name, uri, method);
     }
 
-    public List<Action> get(RequestParams requestParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
-        JSONArray payload = res.getPayload().getArray();
+    public List<Action> request(RequestParams requestParams) throws EvtSdkException {
+        JsonNode res = super.makeRequest(requestParams);
+        JSONArray payload = res.getArray();
+
         return StreamSupport.stream(payload.spliterator(), true)
                 .map(raw -> new Action((JSONObject) raw))
                 .collect(Collectors.toList());
