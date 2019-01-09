@@ -3,8 +3,7 @@ package io.everitoken.sdk.java.apiResources;
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.model.TransactionDetail;
-import io.everitoken.sdk.java.params.ApiParams;
-import io.everitoken.sdk.java.params.NetParams;
+import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
 
 public class HistoryTransactionDetail extends ApiResource {
@@ -20,8 +19,8 @@ public class HistoryTransactionDetail extends ApiResource {
         super(name, uri, method);
     }
 
-    public TransactionDetail get(NetParams netParams, ApiParams apiParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(netParams, apiParams);
+    public TransactionDetail get(RequestParams requestParams) {
+        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
         JSONObject payload = res.getPayload().getObject();
 
         return new TransactionDetail(payload);

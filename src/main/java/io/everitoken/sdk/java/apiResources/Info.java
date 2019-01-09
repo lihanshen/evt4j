@@ -4,11 +4,8 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
 import io.everitoken.sdk.java.ApiResponse;
-import io.everitoken.sdk.java.params.ApiParams;
-import io.everitoken.sdk.java.params.NetParams;
+import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
-
-import javax.annotation.Nullable;
 
 public class Info extends ApiResource {
     private static final String name = "info";
@@ -20,12 +17,12 @@ public class Info extends ApiResource {
     }
 
     @Override
-    protected GetRequest buildRequest(NetParams netParams, @Nullable ApiParams apiParams) {
-        return Unirest.get(getUrl(netParams));
+    protected GetRequest buildRequest(RequestParams requestParams) {
+        return Unirest.get(getUrl(requestParams.getNetParams()));
     }
 
-    public JSONObject get(NetParams netParams, @Nullable ApiParams apiParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(netParams, apiParams);
+    public JSONObject get(RequestParams requestParams) {
+        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
         return res.getPayload().getObject();
     }
 }

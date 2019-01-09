@@ -3,8 +3,7 @@ package io.everitoken.sdk.java.apiResources;
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.model.TokenName;
-import io.everitoken.sdk.java.params.ApiParams;
-import io.everitoken.sdk.java.params.NetParams;
+import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,12 +34,11 @@ public class HistoryToken extends ApiResource {
      * ]
      * ```
      *
-     * @param netParams
-     * @param apiParams
+     * @param requestParams
      * @return List<TokenName>
      */
-    public List<TokenName> get(NetParams netParams, ApiParams apiParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(netParams, apiParams);
+    public List<TokenName> get(RequestParams requestParams) {
+        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
         JSONObject payload = res.getPayload().getObject();
 
         List<TokenName> tokens = new ArrayList<>();

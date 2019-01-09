@@ -3,8 +3,7 @@ package io.everitoken.sdk.java.apiResources;
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.model.GroupName;
-import io.everitoken.sdk.java.params.ApiParams;
-import io.everitoken.sdk.java.params.NetParams;
+import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -20,8 +19,8 @@ public class HistoryGroup extends ApiResource {
         super(name, uri, method);
     }
 
-    public List<GroupName> get(NetParams netParams, ApiParams apiParams) {
-        ApiResponse<JsonNode> res = super.makeRequest(netParams, apiParams);
+    public List<GroupName> get(RequestParams requestParams) {
+        ApiResponse<JsonNode> res = super.makeRequest(requestParams);
         JSONArray payload = res.getPayload().getArray();
 
         return StreamSupport.stream(payload.spliterator(), false)

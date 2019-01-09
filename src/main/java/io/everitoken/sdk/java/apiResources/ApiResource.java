@@ -8,10 +8,8 @@ import com.mashape.unirest.request.BaseRequest;
 import io.everitoken.sdk.java.ApiResponse;
 import io.everitoken.sdk.java.ErrorCode;
 import io.everitoken.sdk.java.EvtSdkException;
-import io.everitoken.sdk.java.params.ApiParams;
 import io.everitoken.sdk.java.params.NetParams;
-
-import javax.annotation.Nullable;
+import io.everitoken.sdk.java.params.RequestParams;
 
 public abstract class ApiResource {
 
@@ -25,19 +23,19 @@ public abstract class ApiResource {
         this.method = method;
     }
 
-    protected BaseRequest buildRequest(NetParams netParams, ApiParams apiParams) {
-        return Unirest.post(getUrl(netParams)).body(apiParams.asJson());
+    protected BaseRequest buildRequest(RequestParams requestParams) {
+        return Unirest.post(getUrl(requestParams.getNetParams())).body(requestParams.getApiParams().asJson());
     }
 
-    public ApiResponse<JsonNode> makeRequest(NetParams netParams, @Nullable ApiParams apiParams) {
+    public ApiResponse<JsonNode> makeRequest(RequestParams requestParams) {
         ApiResponse<JsonNode> res = new ApiResponse<>(null, null);
         try {
-            HttpResponse<JsonNode> json = buildRequest(netParams, apiParams).asJson();
+            HttpResponse<JsonNode> json = buildRequest(requestParams).asJson();
             res.setPayload(json.getBody());
         } catch (UnirestException ex) {
             // TODO error code with custom error message from server side
             System.out.println(String.format("%s: %s", "Error in ApiResource class", ex.getMessage()));
-            res.setError(new EvtSdkException(null, ErrorCode.API_RESOURCE_FAILURE));
+            res.setError(new EvtSdkException(null, ErrorCode.API_RESPONSE_FAILURE, ex.getMessage()));
         }
 
         return res;
