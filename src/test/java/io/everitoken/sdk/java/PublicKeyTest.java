@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PublicKeyTest {
     private final String validPublicKey = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
@@ -16,7 +16,7 @@ public class PublicKeyTest {
         } catch (EvtSdkException ex) {
             throwEx = true;
         }
-        assertTrue("No exception is thrown with valid public key", !throwEx);
+        assertTrue(!throwEx, "No exception is thrown with valid public key");
     }
 
     @Test
@@ -27,28 +27,28 @@ public class PublicKeyTest {
         } catch (EvtSdkException ex) {
             throwEx = true;
         }
-        assertTrue("Exception is thrown with invalid public key", throwEx);
+        assertTrue(throwEx, "Exception is thrown with invalid public key");
     }
 
     @Test
     public void isValidPublicKeyPrefix() {
         String key = "SOMEOTHERKEY";
-        assertFalse("Invalid key without EVT prefix", PublicKey.isValidPublicKey(key));
+        assertFalse(PublicKey.isValidPublicKey(key), "Invalid key without EVT prefix");
     }
 
     @Test
     public void isValidPublicKeyInvalidKey() {
-        assertFalse("Invalid key", PublicKey.isValidPublicKey(inValidPublicKey));
+        assertFalse(PublicKey.isValidPublicKey(inValidPublicKey), "Invalid key");
     }
 
     @Test
     public void isValidPublicKeyValidKey() {
-        assertTrue("valid key", PublicKey.isValidPublicKey(validPublicKey));
+        assertTrue(PublicKey.isValidPublicKey(validPublicKey), "valid key" );
     }
 
     @Test
     public void isValidPublicKeyWithInvalidKey() {
-        assertFalse("invalid key", PublicKey.isValidPublicKey(inValidPublicKey));
+        assertFalse(PublicKey.isValidPublicKey(inValidPublicKey), "invalid key" );
     }
 
     @Test

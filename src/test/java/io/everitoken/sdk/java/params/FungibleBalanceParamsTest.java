@@ -1,10 +1,10 @@
 package io.everitoken.sdk.java.params;
 
 import org.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FungibleBalanceParamsTest {
 
@@ -20,7 +20,7 @@ public class FungibleBalanceParamsTest {
             throwException = true;
         }
 
-        assertFalse("Don't throw exceptions when valid public key is passed", throwException);
+        assertFalse(throwException, "Don't throw exceptions when valid public key is passed" );
     }
 
     @Test
@@ -30,14 +30,14 @@ public class FungibleBalanceParamsTest {
         try {
             FungibleBalanceParams params = new FungibleBalanceParams(validPublicKey, symbolId);
             JSONObject json = params.asJson();
-            assertTrue("correct address", json.getString("address").equals(validPublicKey));
-            assertTrue("correct symbol id", json.getString("sym_id").equals(symbolId));
+            assertTrue(json.getString("address").equals(validPublicKey), "correct address" );
+            assertTrue(json.getString("sym_id").equals(symbolId), "correct symbol id" );
 
         } catch (Exception ex) {
             throwException = true;
         }
 
-        assertFalse("Don't throw exceptions when valid public key is passed", throwException);
+        assertFalse(throwException, "Don't throw exceptions when valid public key is passed" );
     }
 
     @Test
@@ -47,13 +47,13 @@ public class FungibleBalanceParamsTest {
         try {
             FungibleBalanceParams params = new FungibleBalanceParams(validPublicKey);
             JSONObject json = params.asJson();
-            assertTrue("correct address", json.getString("address").equals(validPublicKey));
-            assertFalse("correct symbol id", json.has("sym_id"));
+            assertTrue(json.getString("address").equals(validPublicKey), "correct address");
+            assertFalse(json.has("sym_id"), "correct symbol id" );
 
         } catch (Exception ex) {
             throwException = true;
         }
 
-        assertFalse("Don't throw exceptions when valid public key is passed", throwException);
+        assertFalse(throwException, "Don't throw exceptions when valid public key is passed");
     }
 }

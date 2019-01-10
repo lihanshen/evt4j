@@ -2,9 +2,9 @@ package io.everitoken.sdk.java.model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenDetailDataTest {
 
@@ -19,6 +19,6 @@ public class TokenDetailDataTest {
 
         TokenDetailData tokenDetailData = new TokenDetailData(raw);
 
-        assertTrue("Should filter out invalid public key", tokenDetailData.getOwner().size() == 1);
+        assertTrue(tokenDetailData.getOwner().size() == 1, "Should filter out invalid public key");
     }
 }

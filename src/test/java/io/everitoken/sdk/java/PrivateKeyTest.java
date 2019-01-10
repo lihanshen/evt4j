@@ -1,11 +1,10 @@
 package io.everitoken.sdk.java;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PrivateKeyTest {
-
     @Test
     public void toPublicKey() {
         String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
@@ -34,12 +33,12 @@ public class PrivateKeyTest {
     @Test
     public void isValidPrivateKey() {
         assertTrue(
-                "Valid private key",
-                PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
+                PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"),
+                "Valid private key"
         );
         assertFalse(
-                "Invalid private key",
-                PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER7XsAR2eCcpt3D")
+                PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER7XsAR2eCcpt3D"),
+                "Invalid private key"
         );
     }
 }

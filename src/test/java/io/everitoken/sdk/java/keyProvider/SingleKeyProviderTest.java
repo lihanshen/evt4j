@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.keyProvider;
 
 import io.everitoken.sdk.java.EvtSdkException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SingleKeyProviderTest {
     public final String validPrivateKey = "5JswhuLDEq7BENcNsu41Eg7dZCiv4TG8WffTNvbexbC1tyCN9EU";
@@ -18,7 +18,7 @@ public class SingleKeyProviderTest {
             hasException = true;
         }
 
-        assertTrue("Valid private key don't throw exception", !hasException);
+        assertTrue(!hasException, "Valid private key don't throw exception" );
     }
 
     @Test
@@ -31,7 +31,7 @@ public class SingleKeyProviderTest {
             exception = ex;
             hasException = true;
         }
-        assertTrue("Invalid private key throws exception", hasException);
-        assertTrue("Error is an instance of EvtSdkException", exception instanceof EvtSdkException);
+        assertTrue(hasException, "Invalid private key throws exception" );
+        assertTrue(exception instanceof EvtSdkException, "Error is an instance of EvtSdkException");
     }
 }

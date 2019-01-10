@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SignatureTest {
 
@@ -15,7 +15,7 @@ public class SignatureTest {
             Signature sig = Signature.sign((message.getBytes()), key);
 
             boolean verifyResult = Signature.verify(message.getBytes(), sig, key.toPublicKey());
-            assertTrue("Able to verify", verifyResult);
+            assertTrue(verifyResult, "Able to verify");
         } catch (Exception ex) {
 
         }
@@ -28,9 +28,9 @@ public class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
-            assertTrue("recId equals either 0 or 1", sig.getRecId() == 0);
+            assertTrue(sig.getRecId() == 0, "recId equals either 0 or 1");
         } catch (EvtSdkException ex) {
-            assertTrue("No exception is throw", hasError);
+            assertTrue(hasError, "No exception is throw");
         }
     }
 
@@ -46,7 +46,7 @@ public class SignatureTest {
 
             assertTrue(PublicKey.isValidPublicKey(publicKey.toString()));
         } catch (Exception ex) {
-            assertTrue("No exception is throw", hasError);
+            assertTrue(hasError, "No exception is throw");
         }
     }
 

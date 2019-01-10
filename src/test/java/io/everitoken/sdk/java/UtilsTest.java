@@ -1,17 +1,14 @@
 package io.everitoken.sdk.java;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UtilsTest {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
 
     @Test
+    @DisplayName("Base58 Invalid Key")
     public void base58CheckDecodeWithInvalidKey() {
         String key = "76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
         boolean hasError = false;
@@ -21,10 +18,11 @@ public class UtilsTest {
             hasError = true;
         }
 
-        assertTrue("Checksum failed", hasError);
+        assertTrue(hasError, "Checksum failed");
     }
 
     @Test
+    @DisplayName("Base58 Valid Key")
     public void base58CheckDecodeWithValidKey() {
         String key = "76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
         boolean hasError = false;
@@ -34,18 +32,19 @@ public class UtilsTest {
             hasError = true;
         }
 
-        assertFalse("Checksum successful", hasError);
+        assertFalse(hasError, "Checksum successful");
     }
 
     @Test
+    @DisplayName("Test")
     public void random32BytesAsHex() {
         String str32BytesInHex = Utils.random32BytesAsHex();
-        assertTrue("Message should be 64 characters", str32BytesInHex.length() == 64);
+        assertEquals(64, str32BytesInHex.length(), "Message should be 64 characters");
     }
 
     @Test
     public void random32Bytes() {
         byte[] bytes32 = Utils.random32Bytes();
-        assertTrue("Message should be 32 bytes long", bytes32.length == 32);
+        assertEquals(32, bytes32.length, "Message should be 32 bytes long");
     }
 }

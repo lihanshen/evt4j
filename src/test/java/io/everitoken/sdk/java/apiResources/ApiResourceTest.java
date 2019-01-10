@@ -2,9 +2,9 @@ package io.everitoken.sdk.java.apiResources;
 
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.TestNetNetParams;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApiResourceTest {
 
@@ -18,8 +18,8 @@ public class ApiResourceTest {
         ApiResource info = new Info();
         NetParams netParams = new TestNetNetParams();
         String url = info.getUrl(netParams);
-        assertTrue("url of getInfo", url.contains("testnet1.everitoken.io"));
-        assertTrue("url of getInfo", url.endsWith("/v1/chain/get_info"));
+        assertTrue(url.contains("testnet1.everitoken.io"), "url of getInfo");
+        assertTrue (url.endsWith("/v1/chain/get_info"), "url of getInfo");
     }
 
     @Test
@@ -27,6 +27,6 @@ public class ApiResourceTest {
         // TODO test not equal
         ApiResource info = new Info();
         ApiResource info1 = new Info();
-        assertTrue("Should equal", info.equals(info1));
+        assertTrue(info.equals(info1), "Should equal");
     }
 }
