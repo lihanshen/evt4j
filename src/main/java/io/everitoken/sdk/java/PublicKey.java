@@ -34,6 +34,10 @@ public class PublicKey {
             return true;
         }
 
+        if (key.length() == 53 && key.charAt(3) == '0') {
+            return true;
+        }
+
         return isValidPublicKey(key);
     }
 

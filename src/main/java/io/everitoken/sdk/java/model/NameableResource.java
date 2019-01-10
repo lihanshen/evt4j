@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.model;
 
-public abstract class NameableResource {
+public abstract class NameableResource implements Namable {
     protected String name;
 
     public NameableResource(String name) {

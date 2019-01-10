@@ -10,14 +10,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class TokenDetailData extends NameableResource {
-    private String domain;
+public class TokenDetailData extends NameableResource implements Meta {
+    private String name;
     private List<PublicKey> owner;
     private JSONArray metas;
 
     public TokenDetailData(JSONObject raw) {
         super(raw.getString("name"));
-        domain = raw.getString("domain");
+        name = raw.getString("domain");
         metas = raw.getJSONArray("metas");
 
         JSONArray owner = raw.getJSONArray("owner");
@@ -30,8 +30,8 @@ public class TokenDetailData extends NameableResource {
         }).filter(key -> !Objects.isNull(key)).collect(Collectors.toList());
     }
 
-    public String getDomain() {
-        return domain;
+    public String getName() {
+        return name;
     }
 
     public List<PublicKey> getOwner() {
@@ -43,7 +43,7 @@ public class TokenDetailData extends NameableResource {
     }
 
     public String toString() {
-        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "Domain", getDomain(), "owner",
+        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "Domain", getName(), "owner",
                              owner.stream().map(PublicKey::toString).reduce(String::concat)
         );
     }
