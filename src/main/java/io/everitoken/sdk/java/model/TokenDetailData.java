@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class TokenDetailData extends NameableResource implements Meta {
-    private String name;
     private List<PublicKey> owner;
     private JSONArray metas;
 

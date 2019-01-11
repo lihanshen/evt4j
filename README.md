@@ -46,8 +46,8 @@ Make sure maven is installed
 * [x] getToken
 * [x] getFungibleBalance
 * [x] getTransactionDetailById
-* [ ] getDomainDetail
-* [ ] getGroupDetail
+* [x] getDomainDetail
+* [x] getGroupDetail
 * [ ] getFungibleActionsByAddress
 * [ ] getTransactionsDetailOfPublicKeys
 * [ ] getFungibleSymbolDetail

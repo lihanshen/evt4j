@@ -84,6 +84,11 @@ public class Api {
         return domainDetail.request(RequestParams.of(netParams, nameParams));
     }
 
+    public GroupDetailData getGroupDetail(NameParams nameParams) throws EvtSdkException {
+        GroupDetail groupDetail = new GroupDetail();
+        return groupDetail.request(RequestParams.of(netParams, nameParams));
+    }
+
     public static void main(String[] args) {
         Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
@@ -116,14 +121,18 @@ public class Api {
 //            JSONArray res = api.getTransactionIdsInBlock(new TextIdParams(headerState.getString("id")));
 //            System.out.println(res);
 
-//            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
-//            TokenDetailData res1 = api.getToken(tokenDetailParams);
-//            System.out.println(res1.getDomain());
-//            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
+            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
+            TokenDetailData res1 = api.getToken(tokenDetailParams);
+            System.out.println(res1.getName());
+            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
-            NameParams nameParams = new NameParams("testdomainfei1");
-            DomainDetailData res = api.getDomainDetail(nameParams);
-            System.out.println(res.getTransfer());
+//            NameParams nameParams = new NameParams("testdomainfei1");
+//            DomainDetailData res = api.getDomainDetail(nameParams);
+//            System.out.println(res.getTransfer());
+
+//            NameParams nameParams = new NameParams("testgroupcreationfei");
+//            GroupDetailData res = api.getGroupDetail(nameParams);
+//            System.out.println(res.getRoot());
 
 //            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
 //                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
