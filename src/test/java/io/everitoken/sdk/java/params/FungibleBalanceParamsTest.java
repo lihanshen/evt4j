@@ -16,7 +16,7 @@ public class FungibleBalanceParamsTest {
 
     @Test
     @DisplayName("Don't throw exceptions when valid public key is passed")
-    public void failWhenInvalidPublickeyPassed() {
+    public void failWhenInvalidPublicKeyPassed() {
         Assertions.assertDoesNotThrow(() -> {
             new FungibleBalanceParams(validPublicKey, null);
         });
