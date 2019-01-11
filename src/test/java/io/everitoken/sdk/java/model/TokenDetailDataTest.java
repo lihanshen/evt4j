@@ -19,6 +19,6 @@ public class TokenDetailDataTest {
 
         TokenDetailData tokenDetailData = new TokenDetailData(raw);
 
-        assertTrue(tokenDetailData.getOwner().size() == 1, "Should filter out invalid public key");
+        assertTrue(tokenDetailData.getOwner().size() == 1, "Should filter out invalid public keys");
     }
 }

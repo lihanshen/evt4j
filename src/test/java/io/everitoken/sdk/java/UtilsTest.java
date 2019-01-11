@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,33 +11,21 @@ public class UtilsTest {
     @Test
     @DisplayName("Base58 Invalid Key")
     public void base58CheckDecodeWithInvalidKey() {
-        String key = "76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        boolean hasError = false;
-        try {
+        Assertions.assertThrows(EvtSdkException.class, () -> {
+            String key = "76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
             Utils.base58CheckDecode(key);
-        } catch (Exception ex) {
-            hasError = true;
-        }
-
-        assertTrue(hasError, "Checksum failed");
+        });
     }
 
     @Test
-    @DisplayName("Base58 Valid Key")
+    @DisplayName("Base58 Valid Key, Checksum successful")
     public void base58CheckDecodeWithValidKey() {
-        String key = "76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
-        boolean hasError = false;
-        try {
-            Utils.base58CheckDecode(key);
-        } catch (Exception ex) {
-            hasError = true;
-        }
-
-        assertFalse(hasError, "Checksum successful");
+        Assertions.assertDoesNotThrow(() -> {
+            Utils.base58CheckDecode("76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa");
+        });
     }
 
     @Test
-    @DisplayName("Test")
     public void random32BytesAsHex() {
         String str32BytesInHex = Utils.random32BytesAsHex();
         assertEquals(64, str32BytesInHex.length(), "Message should be 64 characters");
