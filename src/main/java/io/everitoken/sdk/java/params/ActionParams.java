@@ -6,9 +6,9 @@ import org.json.JSONObject;
 public class ActionParams implements ApiParams, Paginatable {
     private String domain;
     private String key;
-    private String[] names = {};
-    private int skip = 0;
-    private int take = 10;
+    private String[] names;
+    private int skip;
+    private int take;
 
     public ActionParams(String domain, String key, String[] names, int skip, int take) {
         this.domain = domain;

@@ -48,7 +48,7 @@ Make sure maven is installed
 * [x] getTransactionDetailById
 * [x] getDomainDetail
 * [x] getGroupDetail
-* [ ] getFungibleActionsByAddress
+* [x] getFungibleActionsByAddress // needs testing with real data
 * [ ] getTransactionsDetailOfPublicKeys
 * [ ] getFungibleSymbolDetail
 * [ ] getRequiredKeysForSuspendedTransaction
