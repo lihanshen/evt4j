@@ -28,14 +28,14 @@ public class Api {
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
-            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
-            });
+//            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
+//                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
+//            });
 //            JSONObject res = api.getInfo();
 //            System.out.println(res);
 
-            List<DomainName> res1 = api.getCreatedDomains(publicKeysParams);
-            res1.stream().forEach(domain -> System.out.println(domain.toString()));
+//            List<DomainName> res1 = api.getCreatedDomains(publicKeysParams);
+//            res1.stream().forEach(domain -> System.out.println(domain.toString()));
 
 //            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
 //            res.stream().forEach(token -> System.out.println(token.toString()));
@@ -79,6 +79,8 @@ public class Api {
 //
 //            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
+            JSONObject res = api.getFungibleSymbolDetail(new IdParams(1));
+            System.out.println(res);
 
         } catch (EvtSdkException ex) {
             System.out.println(ex.getMeta());
@@ -139,5 +141,9 @@ public class Api {
 
     public GroupDetailData getGroupDetail(NameParams nameParams) throws EvtSdkException {
         return new GroupDetail().request(RequestParams.of(netParams, nameParams));
+    }
+
+    public JSONObject getFungibleSymbolDetail(IdParams idParams) throws EvtSdkException {
+        return new FungibleDetail().request(RequestParams.of(netParams, idParams));
     }
 }

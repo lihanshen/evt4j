@@ -41,16 +41,16 @@ Make sure maven is installed
 * [x] getManagedGroups
 * [x] getCreatedFungibles
 * [x] getActions
-* [x] getTransactionIdsInBlock // needs testing
+* [-] getTransactionIdsInBlock // needs testing
 * [ ] getTokens
 * [x] getToken
 * [x] getFungibleBalance
 * [x] getTransactionDetailById
 * [x] getDomainDetail
 * [x] getGroupDetail
-* [x] getFungibleActionsByAddress // needs testing with real data
+* [-] getFungibleActionsByAddress // needs testing with real data
 * [ ] getTransactionsDetailOfPublicKeys
-* [ ] getFungibleSymbolDetail
+* [-] getFungibleSymbolDetail
 * [ ] getRequiredKeysForSuspendedTransaction
 * [ ] getStatusOfEvtLink
 * [ ] getSuspendedTransactionDetail
