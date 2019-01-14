@@ -3,12 +3,10 @@ package io.everitoken.sdk.java.model;
 import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.PublicKey;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class GroupDetailData extends NameableResource implements Meta {
     private PublicKey key;
@@ -16,11 +14,16 @@ public class GroupDetailData extends NameableResource implements Meta {
     private JSONArray metas;
 
     // TODO implement root tree structure, extract to a separate model for node
-    public GroupDetailData(JSONObject raw) throws EvtSdkException {
+    private GroupDetailData(JSONObject raw) throws EvtSdkException, JSONException {
         super(raw.getString("name"));
         key = new PublicKey(raw.getString("key"));
         metas = raw.getJSONArray("metas");
         root = raw.getJSONObject("root");
+    }
+
+    public static GroupDetailData create(JSONObject raw) throws EvtSdkException, NullPointerException {
+        Objects.requireNonNull(raw);
+        return new GroupDetailData(raw);
     }
 
     public String getName() {

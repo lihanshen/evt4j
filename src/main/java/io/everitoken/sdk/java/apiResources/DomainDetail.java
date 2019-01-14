@@ -15,6 +15,6 @@ public class DomainDetail extends ApiResource {
 
     public DomainDetailData request(RequestParams requestParams) throws EvtSdkException {
         JsonNode res = super.makeRequest(requestParams);
-        return new DomainDetailData(res.getObject());
+        return DomainDetailData.create(res.getObject());
     }
 }

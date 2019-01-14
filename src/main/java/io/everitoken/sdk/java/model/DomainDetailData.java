@@ -4,12 +4,10 @@ import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.PublicKey;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class DomainDetailData extends NameableResource implements Meta, Addressable {
     private JSONArray metas;
@@ -21,7 +19,7 @@ public class DomainDetailData extends NameableResource implements Meta, Addressa
     private DateTime createdTime;
 
     // TODO: protect transfer, issue and manage with interface
-    public DomainDetailData(JSONObject raw) throws EvtSdkException {
+    private DomainDetailData(JSONObject raw) throws EvtSdkException, JSONException {
         super(raw.getString("name"));
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
@@ -33,8 +31,9 @@ public class DomainDetailData extends NameableResource implements Meta, Addressa
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(PublicKey.isValidAddress("EVT0000005ZbVoKRDdy6N4r22sSn3WDyB4YkTcf5R1dSjAsmRnFEF"));
+    public static DomainDetailData create(JSONObject raw) throws NullPointerException, JSONException, EvtSdkException {
+        Objects.requireNonNull(raw);
+        return new DomainDetailData(raw);
     }
 
     public String getName() {

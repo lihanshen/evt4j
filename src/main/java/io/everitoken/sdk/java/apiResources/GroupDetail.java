@@ -15,6 +15,6 @@ public class GroupDetail extends ApiResource {
 
     public GroupDetailData request(RequestParams requestParams) throws EvtSdkException {
         JsonNode res = super.makeRequest(requestParams);
-        return new GroupDetailData(res.getObject());
+        return GroupDetailData.create(res.getObject());
     }
 }
