@@ -8,12 +8,11 @@ import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
 
 public class Info extends ApiResource {
-    private static final String name = "info";
     private static final String uri = "/v1/chain/get_info";
     private static final String method = "GET";
 
     public Info() {
-        super(name, uri, method);
+        super(uri, method);
     }
 
     @Override

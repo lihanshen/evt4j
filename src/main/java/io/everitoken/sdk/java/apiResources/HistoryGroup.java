@@ -11,12 +11,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class HistoryGroup extends ApiResource {
-    private static final String name = "historyGroup";
     private static final String uri = "/v1/history/get_groups";
     private static final String method = "POST";
 
     public HistoryGroup() {
-        super(name, uri, method);
+        super(uri, method);
     }
 
     public List<GroupName> request(RequestParams requestParams) throws EvtSdkException {

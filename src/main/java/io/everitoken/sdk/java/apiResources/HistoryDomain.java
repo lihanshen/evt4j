@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryDomain extends ApiResource {
-    private static final String name = "historyDomain";
     private static final String uri = "/v1/history/get_domains";
     private static final String method = "POST";
 
     public HistoryDomain() {
-        super(name, uri, method);
+        super(uri, method);
     }
 
     public List<DomainName> request(RequestParams requestParams) throws EvtSdkException {

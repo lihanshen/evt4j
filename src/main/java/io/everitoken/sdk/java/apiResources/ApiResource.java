@@ -11,13 +11,10 @@ import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.RequestParams;
 
 public abstract class ApiResource {
-
-    private String name;
     private String uri;
     private String method;
 
-    protected ApiResource(String name, String uri, String method) {
-        this.name = name;
+    protected ApiResource(String uri, String method) {
         this.uri = uri;
         this.method = method;
     }
