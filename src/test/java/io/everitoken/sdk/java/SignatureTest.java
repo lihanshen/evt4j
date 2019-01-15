@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SignatureTest {
+class SignatureTest {
 
     @Test
     @DisplayName("Sign and verify")
-    public void SignAndVerify() {
+    void SignAndVerify() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
@@ -24,7 +24,7 @@ public class SignatureTest {
 
     @Test
     @DisplayName("Signature has Recover Id")
-    public void SignatureHasRecId() {
+    void SignatureHasRecId() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
@@ -35,7 +35,7 @@ public class SignatureTest {
 
     @Test
     @DisplayName("Can recover public key from signature")
-    public void RecoverPublicKeyFromSignatureSuccessful() {
+    void RecoverPublicKeyFromSignatureSuccessful() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
@@ -49,7 +49,7 @@ public class SignatureTest {
 
     @Test
     @DisplayName("Return false when public key recovered from signature doesn't match")
-    public void RecoverPublicKeyFromSignatureFailed() {
+    void RecoverPublicKeyFromSignatureFailed() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");

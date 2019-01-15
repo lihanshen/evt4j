@@ -24,7 +24,7 @@ public class HistoryAction extends ApiResource {
         JSONArray payload = res.getArray();
 
         return StreamSupport.stream(payload.spliterator(), true)
-                .map(raw -> new Action((JSONObject) raw))
+                .map(raw -> Action.create((JSONObject) raw))
                 .collect(Collectors.toList());
     }
 }

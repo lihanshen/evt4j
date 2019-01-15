@@ -15,15 +15,18 @@ public class Action implements Transactable {
     private String key;
     private DateTime timestamp;
 
-    public Action(JSONObject raw) throws JSONException, NullPointerException {
-        Objects.requireNonNull(raw);
-
+    private Action(JSONObject raw) throws JSONException {
         trxId = raw.getString("trx_id");
         data = raw.getJSONObject("data");
         domain = raw.getString("domain");
         key = raw.getString("key");
         name = raw.getString("name");
         timestamp = new DateTime(raw.getString("timestamp"));
+    }
+
+    public static Action create(JSONObject raw) throws JSONException, NullPointerException {
+        Objects.requireNonNull(raw);
+        return new Action(raw);
     }
 
     public String getTrxId() {

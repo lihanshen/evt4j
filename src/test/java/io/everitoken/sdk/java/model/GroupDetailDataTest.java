@@ -12,7 +12,7 @@ class GroupDetailDataTest {
 
     @Test
     @DisplayName("Throw JSON exception if can't parse json")
-    public void throwJSONException() {
+    void throwJSONException() {
         Assertions.assertThrows(JSONException.class, () -> {
             GroupDetailData.create(new JSONObject());
         });
@@ -20,7 +20,7 @@ class GroupDetailDataTest {
 
     @Test
     @DisplayName("Throw when public key is invalid")
-    public void throwPublicKeyException() {
+    void throwPublicKeyException() {
         Assertions.assertThrows(EvtSdkException.class, () -> {
             JSONObject json = new JSONObject();
             json.put("name", "testName");
@@ -31,7 +31,7 @@ class GroupDetailDataTest {
 
     @Test
     @DisplayName("Don't throw when everything is fine")
-    public void notThrowWhenPayloadIsGood() {
+    void notThrowWhenPayloadIsGood() {
         Assertions.assertDoesNotThrow(() -> {
             JSONObject json = new JSONObject();
             json.put("name", "testName");

@@ -10,8 +10,8 @@ class ActionTest {
 
     @Test
     @DisplayName("Should throw correct exception")
-    public void throwCorrectException() {
-        Assertions.assertThrows(JSONException.class, () -> new Action(new JSONObject()));
+    void throwCorrectException() {
+        Assertions.assertThrows(JSONException.class, () -> Action.create(new JSONObject()));
     }
 
 }

@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PrivateKeyTest {
+class PrivateKeyTest {
     @Test
-    public void toPublicKey() {
+    void toPublicKey() {
         Assertions.assertDoesNotThrow(() -> {
             String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
             PublicKey publicKey = PrivateKey.fromWif(wif).toPublicKey();
@@ -16,7 +16,7 @@ public class PrivateKeyTest {
     }
 
     @Test
-    public void seedPrivateKey() {
+    void seedPrivateKey() {
         Assertions.assertDoesNotThrow(() -> {
             String publicKeyStr = "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND";
             String privateKey = "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D";
@@ -29,7 +29,7 @@ public class PrivateKeyTest {
     }
 
     @Test
-    public void isValidPrivateKey() {
+    void isValidPrivateKey() {
         assertTrue(
                 PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"),
                 "Valid private key"

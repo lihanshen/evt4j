@@ -19,6 +19,6 @@ public class HistoryTransactionDetail extends ApiResource {
 
     public TransactionDetail request(RequestParams requestParams) throws EvtSdkException {
         JsonNode res = super.makeRequest(requestParams);
-        return new TransactionDetail(res.getObject());
+        return TransactionDetail.create(res.getObject());
     }
 }

@@ -15,6 +15,6 @@ public class TokenDetail extends ApiResource {
 
     public TokenDetailData request(RequestParams requestParams) throws EvtSdkException {
         JsonNode res = super.makeRequest(requestParams);
-        return new TokenDetailData(res.getObject());
+        return TokenDetailData.create(res.getObject());
     }
 }
