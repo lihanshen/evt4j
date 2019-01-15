@@ -9,7 +9,8 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class DomainDetailData extends NameableResource implements Meta, Addressable {
+public class DomainDetailData implements Meta, Addressable, Namable {
+    private String name;
     private JSONArray metas;
     private PublicKey creator;
     private JSONObject transfer;
@@ -20,7 +21,7 @@ public class DomainDetailData extends NameableResource implements Meta, Addressa
 
     // TODO: protect transfer, issue and manage with interface
     private DomainDetailData(JSONObject raw) throws EvtSdkException, JSONException {
-        super(raw.getString("name"));
+        name = raw.getString("name");
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
         createdTime = new DateTime(raw.getString("create_time"));

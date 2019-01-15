@@ -34,13 +34,13 @@ public class Api {
 //            JSONObject res = api.getInfo();
 //            System.out.println(res);
 
-//            List<DomainName> res1 = api.getCreatedDomains(publicKeysParams);
+//            List<NameableResource> res1 = api.getCreatedDomains(publicKeysParams);
 //            res1.stream().forEach(domain -> System.out.println(domain.toString()));
 
 //            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
 //            res.stream().forEach(token -> System.out.println(token.toString()));
 
-//            List<GroupName> res = api.getManagedGroups(publicKeysParams);
+//            List<NameableResource> res = api.getManagedGroups(publicKeysParams);
 //            res.stream().forEach(group -> System.out.println(group.toString()));
 
 //            JSONObject res = api.getCreatedFungibles(publicKeysParams);
@@ -95,7 +95,7 @@ public class Api {
         return new HeadBlockHeaderState().request(RequestParams.of(netParams));
     }
 
-    public List<DomainName> getCreatedDomains(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public List<NameableResource> getCreatedDomains(PublicKeysParams publicKeysParams) throws EvtSdkException {
         return new HistoryDomain().request(RequestParams.of(netParams, publicKeysParams));
     }
 
@@ -103,7 +103,7 @@ public class Api {
         return new HistoryToken().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<GroupName> getManagedGroups(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public List<NameableResource> getManagedGroups(PublicKeysParams publicKeysParams) throws EvtSdkException {
         return new HistoryGroup().request(RequestParams.of(netParams, publicKeysParams));
     }
 

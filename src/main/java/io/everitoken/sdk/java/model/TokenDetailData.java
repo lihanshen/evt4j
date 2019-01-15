@@ -11,12 +11,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-public class TokenDetailData extends NameableResource implements Meta {
+public class TokenDetailData implements Meta {
+    private String name;
     private List<PublicKey> owner;
     private JSONArray metas;
 
     private TokenDetailData(JSONObject raw) throws JSONException {
-        super(raw.getString("name"));
+        name = raw.getString("name");
         name = raw.getString("domain");
         metas = raw.getJSONArray("metas");
 

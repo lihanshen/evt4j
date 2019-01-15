@@ -8,14 +8,15 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class GroupDetailData extends NameableResource implements Meta {
+public class GroupDetailData implements Meta, Namable {
+    private String name;
     private PublicKey key;
     private JSONObject root;
     private JSONArray metas;
 
     // TODO implement root tree structure, extract to a separate model for node
     private GroupDetailData(JSONObject raw) throws EvtSdkException, JSONException {
-        super(raw.getString("name"));
+        name = raw.getString("name");
         key = new PublicKey(raw.getString("key"));
         metas = raw.getJSONArray("metas");
         root = raw.getJSONObject("root");

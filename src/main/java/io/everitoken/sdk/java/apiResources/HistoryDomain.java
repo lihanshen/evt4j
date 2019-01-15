@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.EvtSdkException;
-import io.everitoken.sdk.java.model.DomainName;
+import io.everitoken.sdk.java.model.NameableResource;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
 
@@ -17,14 +17,14 @@ public class HistoryDomain extends ApiResource {
         super(uri, method);
     }
 
-    public List<DomainName> request(RequestParams requestParams) throws EvtSdkException {
+    public List<NameableResource> request(RequestParams requestParams) throws EvtSdkException {
         JsonNode res = super.makeRequest(requestParams);
 
-        List<DomainName> domainNameList = new ArrayList<>();
+        List<NameableResource> domainNameList = new ArrayList<>();
         JSONArray domains = res.getArray();
 
         for (int i = 0; i < domains.length(); i++) {
-            domainNameList.add(new DomainName(domains.getString(i)));
+            domainNameList.add(NameableResource.create(domains.getString(i)));
         }
 
         return domainNameList;
