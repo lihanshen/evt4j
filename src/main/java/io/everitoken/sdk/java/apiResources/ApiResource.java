@@ -11,8 +11,8 @@ import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
 
 public abstract class ApiResource {
-    private String uri;
-    private String method;
+    private final String uri;
+    private final String method;
 
     protected ApiResource(String uri, String method) {
         this.uri = uri;

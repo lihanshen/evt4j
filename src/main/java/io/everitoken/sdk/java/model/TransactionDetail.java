@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class TransactionDetail {
-    private int blockNum;
-    private String packedTrx;
-    private String id;
-    private String compression;
-    private List<String> signatures;
-    private JSONObject transaction;
-    private String blockId;
+    private final int blockNum;
+    private final String packedTrx;
+    private final String id;
+    private final String compression;
+    private final List<String> signatures;
+    private final JSONObject transaction;
+    private final String blockId;
 
     // TODO put signature into signature object
     private TransactionDetail(JSONObject raw) throws JSONException {

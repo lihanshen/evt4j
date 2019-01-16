@@ -9,14 +9,14 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class DomainDetailData implements Meta, Addressable, Namable {
-    private String name;
-    private JSONArray metas;
-    private PublicKey creator;
-    private JSONObject transfer;
-    private String address;
-    private JSONObject issue;
-    private JSONObject manage;
-    private DateTime createdTime;
+    private final String name;
+    private final JSONArray metas;
+    private final PublicKey creator;
+    private final JSONObject transfer;
+    private final String address;
+    private final JSONObject issue;
+    private final JSONObject manage;
+    private final DateTime createdTime;
 
     // TODO: protect transfer, issue and manage with interface
     private DomainDetailData(JSONObject raw) throws JSONException {
@@ -36,10 +36,12 @@ public class DomainDetailData implements Meta, Addressable, Namable {
         return new DomainDetailData(raw);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public JSONArray getMetas() {
         return metas;
     }
@@ -52,6 +54,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
         return transfer;
     }
 
+    @Override
     public String getAddress() {
         return address.toString();
     }
@@ -68,6 +71,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
         return createdTime;
     }
 
+    @Override
     public String toString() {
         return getName();
     }

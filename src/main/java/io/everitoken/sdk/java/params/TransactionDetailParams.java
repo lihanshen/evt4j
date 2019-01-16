@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import javax.annotation.Nullable;
 
 public class TransactionDetailParams implements ApiParams {
-    private String trxId;
-    private String blockNum;
+    private final String trxId;
+    private final String blockNum;
 
     public TransactionDetailParams(String trxId, @Nullable String blockNum) {
         this.trxId = trxId;
@@ -17,6 +17,7 @@ public class TransactionDetailParams implements ApiParams {
         this(trxId, null);
     }
 
+    @Override
     public JSONObject asJson() {
         JSONObject jsonObject = new JSONObject();
 

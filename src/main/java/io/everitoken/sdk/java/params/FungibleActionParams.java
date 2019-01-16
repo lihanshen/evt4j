@@ -3,10 +3,10 @@ package io.everitoken.sdk.java.params;
 import org.json.JSONObject;
 
 public class FungibleActionParams implements ApiParams, Paginatable {
-    private String address;
-    private String symbolId;
-    private int skip;
-    private int take;
+    private final String address;
+    private final String symbolId;
+    private final int skip;
+    private final int take;
 
     public FungibleActionParams(String address, String symbolId, int skip, int take) {
         this.address = address;
@@ -19,6 +19,7 @@ public class FungibleActionParams implements ApiParams, Paginatable {
         this(address, symbolId, 0, 10);
     }
 
+    @Override
     public JSONObject asJson() {
         JSONObject jsonObject = new JSONObject();
 

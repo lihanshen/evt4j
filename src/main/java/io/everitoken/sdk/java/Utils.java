@@ -29,7 +29,7 @@ class Utils {
 
     public static byte[] base58CheckDecode(String key) throws Base58CheckException {
         byte[] decoded;
-        
+
         try {
             // base58 decode
             decoded = Base58.decode(key);

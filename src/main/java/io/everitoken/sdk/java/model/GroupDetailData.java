@@ -9,10 +9,10 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class GroupDetailData implements Meta, Namable {
-    private String name;
-    private PublicKey key;
-    private JSONObject root;
-    private JSONArray metas;
+    private final String name;
+    private final PublicKey key;
+    private final JSONObject root;
+    private final JSONArray metas;
 
     // TODO implement root tree structure, extract to a separate model for node
     private GroupDetailData(JSONObject raw) throws JSONException {
@@ -27,6 +27,7 @@ public class GroupDetailData implements Meta, Namable {
         return new GroupDetailData(raw);
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -39,10 +40,12 @@ public class GroupDetailData implements Meta, Namable {
         return root;
     }
 
+    @Override
     public JSONArray getMetas() {
         return metas;
     }
 
+    @Override
     public String toString() {
         return name;
     }

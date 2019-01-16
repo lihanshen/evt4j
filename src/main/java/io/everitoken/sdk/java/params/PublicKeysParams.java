@@ -21,6 +21,7 @@ public class PublicKeysParams implements ApiParams {
         this.publicKeys = publicKeys;
     }
 
+    @Override
     public JSONObject asJson() {
         String paramObjectKey = "keys";
         JSONObject jsonObject = new JSONObject();

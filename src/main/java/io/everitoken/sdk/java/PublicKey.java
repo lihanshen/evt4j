@@ -9,7 +9,7 @@ import org.bitcoinj.crypto.LazyECPoint;
 
 public class PublicKey {
     private static final String nullAddress = Constants.NullAddress;
-    private LazyECPoint pub;
+    private final LazyECPoint pub;
 
     public PublicKey(String key) throws InvalidPublicKeyException {
         Pair<Boolean, byte[]> pair = validPublicKey(key);

@@ -12,6 +12,7 @@ public class TokenName extends NameableResource {
         return domain;
     }
 
+    @Override
     public String toString() {
         return String.format("%s, %s -> %s", super.toString(), "Domain", getDomain());
     }

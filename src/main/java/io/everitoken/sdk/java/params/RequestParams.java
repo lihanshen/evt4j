@@ -15,6 +15,14 @@ public class RequestParams {
         this(netParams, null);
     }
 
+    public static RequestParams of(NetParams netParams) {
+        return new RequestParams(netParams);
+    }
+
+    public static RequestParams of(NetParams netParams, ApiParams apiParams) {
+        return new RequestParams(netParams, apiParams);
+    }
+
     public NetParams getNetParams() {
         return netParams;
     }
@@ -29,13 +37,5 @@ public class RequestParams {
 
     public void setApiParams(ApiParams apiParams) {
         this.apiParams = apiParams;
-    }
-
-    public static RequestParams of(NetParams netParams) {
-        return new RequestParams(netParams);
-    }
-
-    public static RequestParams of(NetParams netParams, ApiParams apiParams) {
-        return new RequestParams(netParams, apiParams);
     }
 }

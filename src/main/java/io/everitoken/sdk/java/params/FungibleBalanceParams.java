@@ -6,8 +6,8 @@ import org.json.JSONObject;
 import javax.annotation.Nullable;
 
 public class FungibleBalanceParams implements ApiParams {
-    private PublicKey publicKey;
-    private String symbolId;
+    private final PublicKey publicKey;
+    private final String symbolId;
 
     public FungibleBalanceParams(String publicKey, @Nullable String symbolId) {
         this.publicKey = new PublicKey(publicKey);
@@ -18,6 +18,7 @@ public class FungibleBalanceParams implements ApiParams {
         this(publicKey, null);
     }
 
+    @Override
     public JSONObject asJson() {
         JSONObject jsonObject = new JSONObject();
 

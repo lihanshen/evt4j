@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 public class PrivateKey {
-    private ECKey key;
+    private final ECKey key;
 
     private PrivateKey(String wif) throws WifFormatException {
         NetworkParameters networkParam = MainNetParams.get();

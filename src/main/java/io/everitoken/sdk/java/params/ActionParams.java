@@ -4,11 +4,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ActionParams implements ApiParams, Paginatable {
-    private String domain;
-    private String key;
-    private String[] names;
-    private int skip;
-    private int take;
+    private final String domain;
+    private final String key;
+    private final String[] names;
+    private final int skip;
+    private final int take;
 
     public ActionParams(String domain, String key, String[] names, int skip, int take) {
         this.domain = domain;
@@ -30,6 +30,7 @@ public class ActionParams implements ApiParams, Paginatable {
         this(domain, key, names, 0, 10);
     }
 
+    @Override
     public JSONObject asJson() {
         JSONObject payload = new JSONObject();
         payload.put("domain", domain);

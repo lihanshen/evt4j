@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class TokenDetailData implements Meta {
+    private final List<PublicKey> owner;
+    private final JSONArray metas;
     private String name;
-    private List<PublicKey> owner;
-    private JSONArray metas;
 
     private TokenDetailData(JSONObject raw) throws JSONException {
         name = raw.getString("name");
@@ -44,10 +44,12 @@ public class TokenDetailData implements Meta {
         return owner;
     }
 
+    @Override
     public JSONArray getMetas() {
         return metas;
     }
 
+    @Override
     public String toString() {
         return String.format("%s, %s -> %s, %s -> %s", super.toString(), "Domain", getName(), "owner",
                 owner.stream().map(PublicKey::toString).reduce(String::concat)

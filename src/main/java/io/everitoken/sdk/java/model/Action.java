@@ -8,12 +8,12 @@ import java.util.Objects;
 
 public class Action implements Transactable {
 
-    private String trxId;
-    private JSONObject data;
-    private String domain;
-    private String name;
-    private String key;
-    private DateTime timestamp;
+    private final String trxId;
+    private final JSONObject data;
+    private final String domain;
+    private final String name;
+    private final String key;
+    private final DateTime timestamp;
 
     private Action(JSONObject raw) throws JSONException {
         trxId = raw.getString("trx_id");
@@ -29,6 +29,7 @@ public class Action implements Transactable {
         return new Action(raw);
     }
 
+    @Override
     public String getTrxId() {
         return trxId;
     }

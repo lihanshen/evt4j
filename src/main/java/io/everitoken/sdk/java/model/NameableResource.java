@@ -11,10 +11,12 @@ public class NameableResource implements Namable {
         return new NameableResource(name);
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String toString() {
         return String.format("[%s]: %s -> %s", getClass().getSimpleName(), "name", getName());
     }
