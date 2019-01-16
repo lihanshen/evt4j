@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.keyProvider;
 
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.WifFormatException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class SingleKeyProviderTest {
     @Test
     @DisplayName("Invalid private key throws exception")
     void initWithInvalidPrivateKeyGetException() {
-        Assertions.assertThrows(EvtSdkException.class, () -> {
+        Assertions.assertThrows(WifFormatException.class, () -> {
             new SingleKeyProvider(invalidPrivateKey);
         });
     }

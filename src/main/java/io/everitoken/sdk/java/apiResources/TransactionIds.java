@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.apiResources;
 
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
 
@@ -12,7 +12,7 @@ public class TransactionIds extends ApiResource {
         super(uri, method);
     }
 
-    public JSONArray request(RequestParams requestParams) throws EvtSdkException {
+    public JSONArray request(RequestParams requestParams) throws ApiResponseException {
         return super.makeRequest(requestParams).getArray();
     }
 }

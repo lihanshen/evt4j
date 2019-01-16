@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.model;
 
-import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,13 +25,13 @@ public class TokenDetailData implements Meta {
         this.owner = StreamSupport.stream(owner.spliterator(), true).map(publicKey -> {
             try {
                 return new PublicKey((String) publicKey);
-            } catch (EvtSdkException ex) {
+            } catch (InvalidPublicKeyException ex) {
                 return null;
             }
         }).filter(key -> !Objects.isNull(key)).collect(Collectors.toList());
     }
 
-    public static TokenDetailData create(JSONObject raw) throws NullPointerException, JSONException {
+    public static TokenDetailData create(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new TokenDetailData(raw);
     }

@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.model.TransactionDetail;
 import io.everitoken.sdk.java.params.RequestParams;
 
@@ -17,7 +17,7 @@ public class HistoryTransactionDetail extends ApiResource {
         super(uri, method);
     }
 
-    public TransactionDetail request(RequestParams requestParams) throws EvtSdkException {
+    public TransactionDetail request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
         return TransactionDetail.create(res.getObject());
     }

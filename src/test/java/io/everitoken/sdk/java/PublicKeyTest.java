@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class PublicKeyTest {
     @Test
     @DisplayName("Exception is thrown with invalid public key")
     void testConstructorWithInValidPublicKey() {
-        Assertions.assertThrows(EvtSdkException.class, () -> new PublicKey(inValidPublicKey));
+        Assertions.assertThrows(InvalidPublicKeyException.class, () -> new PublicKey(inValidPublicKey));
     }
 
     @Test

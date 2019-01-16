@@ -1,6 +1,5 @@
 package io.everitoken.sdk.java.model;
 
-import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.PublicKey;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -20,7 +19,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
     private DateTime createdTime;
 
     // TODO: protect transfer, issue and manage with interface
-    private DomainDetailData(JSONObject raw) throws EvtSdkException, JSONException {
+    private DomainDetailData(JSONObject raw) throws JSONException {
         name = raw.getString("name");
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
@@ -32,7 +31,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
 
     }
 
-    public static DomainDetailData create(JSONObject raw) throws NullPointerException, JSONException, EvtSdkException {
+    public static DomainDetailData create(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new DomainDetailData(raw);
     }

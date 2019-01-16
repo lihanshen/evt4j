@@ -1,6 +1,5 @@
 package io.everitoken.sdk.java.params;
 
-import io.everitoken.sdk.java.EvtSdkException;
 import io.everitoken.sdk.java.PublicKey;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 public class PublicKeysParams implements ApiParams {
     private List<PublicKey> publicKeys = new ArrayList<>();
 
-    public PublicKeysParams(String[] publicKeys) throws EvtSdkException {
+    public PublicKeysParams(String[] publicKeys) {
         for (String publicKey : publicKeys) {
             this.publicKeys.add(new PublicKey(publicKey));
         }

@@ -1,7 +1,9 @@
 package io.everitoken.sdk.java;
 
 import com.google.common.io.BaseEncoding;
+import io.everitoken.sdk.java.exceptions.Base58CheckException;
 import org.apache.commons.lang3.ArrayUtils;
+import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
@@ -25,9 +27,15 @@ class Utils {
         return Base58.encode(concat);
     }
 
-    public static byte[] base58CheckDecode(String key) throws EvtSdkException {
-        // base58 decode
-        byte[] decoded = Base58.decode(key);
+    public static byte[] base58CheckDecode(String key) throws Base58CheckException {
+        byte[] decoded;
+        
+        try {
+            // base58 decode
+            decoded = Base58.decode(key);
+        } catch (AddressFormatException ex) {
+            throw new Base58CheckException(ex.getMessage(), ex);
+        }
         // split the byte slice
         byte[] data = ArrayUtils.subarray(decoded, 0, decoded.length - 4);
         byte[] checksum = ArrayUtils.subarray(decoded, decoded.length - 4, decoded.length);
@@ -46,7 +54,7 @@ class Utils {
         }
 
         if (!isEqual) {
-            throw new EvtSdkException(null, ErrorCode.BASE58_CHECK_FAILURE);
+            throw new Base58CheckException();
         }
 
         return data;

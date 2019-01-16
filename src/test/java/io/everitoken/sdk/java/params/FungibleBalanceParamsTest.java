@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.params;
 
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ class FungibleBalanceParamsTest {
     @Test
     @DisplayName("Throws when invalid public key is passed")
     void invalidPublicKeyPassed() {
-        Assertions.assertThrows(EvtSdkException.class, () -> {
+        Assertions.assertThrows(InvalidPublicKeyException.class, () -> {
             new FungibleBalanceParams(inValidPublicKey, null);
         });
     }

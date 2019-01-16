@@ -1,9 +1,8 @@
 package io.everitoken.sdk.java;
 
-import org.bitcoinj.core.DumpedPrivateKey;
-import org.bitcoinj.core.ECKey;
-import org.bitcoinj.core.NetworkParameters;
-import org.bitcoinj.core.Sha256Hash;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
+import io.everitoken.sdk.java.exceptions.WifFormatException;
+import org.bitcoinj.core.*;
 import org.bitcoinj.params.MainNetParams;
 
 import java.math.BigInteger;
@@ -12,33 +11,23 @@ import java.security.SecureRandom;
 public class PrivateKey {
     private ECKey key;
 
-    private PrivateKey(String wif) throws IllegalArgumentException {
+    private PrivateKey(String wif) throws WifFormatException {
         NetworkParameters networkParam = MainNetParams.get();
 
         if (wif.length() != 51 && wif.length() != 52) {
-            throw new IllegalArgumentException("Wif length must be 51 or 52");
+            throw new WifFormatException("Wif length must be 51 or 52");
         }
 
-        DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParam, wif);
-        key = dumpedPrivateKey.getKey();
+        try {
+            DumpedPrivateKey dumpedPrivateKey = DumpedPrivateKey.fromBase58(networkParam, wif);
+            key = dumpedPrivateKey.getKey();
+        } catch (AddressFormatException ex) {
+            throw new WifFormatException(ex.getMessage(), ex);
+        }
     }
 
     private PrivateKey(ECKey key) {
         this.key = key;
-    }
-
-    public BigInteger getD() {
-        return key.getPrivKey();
-    }
-
-    public PublicKey toPublicKey() throws EvtSdkException {
-        return new PublicKey(key.getPubKey());
-    }
-
-    public String toWif() {
-        ECKey decompressedKey = key.decompress();
-        NetworkParameters networkParameters = MainNetParams.get();
-        return decompressedKey.getPrivateKeyAsWiF(networkParameters);
     }
 
     public static PrivateKey randomPrivateKey() {
@@ -53,21 +42,31 @@ public class PrivateKey {
         return new PrivateKey(key);
     }
 
-    public static PrivateKey fromWif(String wif) throws EvtSdkException {
-        try {
-            return new PrivateKey(wif);
-        } catch (IllegalArgumentException ex) {
-            throw new EvtSdkException(ex, ErrorCode.WIF_FORMAT_INVALID);
-        }
+    public static PrivateKey fromWif(String wif) throws WifFormatException {
+        return new PrivateKey(wif);
     }
 
     public static boolean isValidPrivateKey(String key) {
         try {
             fromWif(key);
             return true;
-        } catch (EvtSdkException ex) {
+        } catch (WifFormatException ex) {
             return false;
         }
+    }
+
+    public BigInteger getD() {
+        return key.getPrivKey();
+    }
+
+    public PublicKey toPublicKey() throws InvalidPublicKeyException {
+        return new PublicKey(key.getPubKey());
+    }
+
+    public String toWif() {
+        ECKey decompressedKey = key.decompress();
+        NetworkParameters networkParameters = MainNetParams.get();
+        return decompressedKey.getPrivateKeyAsWiF(networkParameters);
     }
 
 }

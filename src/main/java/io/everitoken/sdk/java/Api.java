@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java;
 
 import io.everitoken.sdk.java.apiResources.*;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.keyProvider.KeyProvider;
 import io.everitoken.sdk.java.model.*;
 import io.everitoken.sdk.java.params.*;
@@ -28,9 +29,9 @@ public class Api {
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
-//            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-//                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
-//            });
+            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
+                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
+            });
 //            JSONObject res = api.getInfo();
 //            System.out.println(res);
 
@@ -41,7 +42,7 @@ public class Api {
 //            res.stream().forEach(token -> System.out.println(token.toString()));
 
 //            List<NameableResource> res = api.getManagedGroups(publicKeysParams);
-//            res.stream().forEach(group -> System.out.println(group.toString()));
+//            res.stream().forEach(group -> System.out.println(group.getName()));
 
 //            JSONObject res = api.getCreatedFungibles(publicKeysParams);
 //            System.out.println(res);
@@ -79,71 +80,72 @@ public class Api {
 //
 //            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
-            JSONObject res = api.getFungibleSymbolDetail(new IdParams(1));
+
+            JSONObject res = api.getFungibleSymbolDetail(new IdParams(2));
             System.out.println(res);
 
-        } catch (EvtSdkException ex) {
-            System.out.println(ex.getMeta());
+        } catch (ApiResponseException ex) {
+            System.out.println(String.format("%s (%s)", ex.getMessage(), ex.getRaw()));
         }
     }
 
-    public JSONObject getInfo() throws EvtSdkException {
+    public JSONObject getInfo() throws ApiResponseException {
         return new Info().request(RequestParams.of(netParams));
     }
 
-    public JSONObject getHeadBlockHeaderState() throws EvtSdkException {
+    public JSONObject getHeadBlockHeaderState() throws ApiResponseException {
         return new HeadBlockHeaderState().request(RequestParams.of(netParams));
     }
 
-    public List<NameableResource> getCreatedDomains(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public List<NameableResource> getCreatedDomains(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryDomain().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<TokenName> getOwnedTokens(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public List<TokenName> getOwnedTokens(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryToken().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<NameableResource> getManagedGroups(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public List<NameableResource> getManagedGroups(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryGroup().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public JSONObject getCreatedFungibles(PublicKeysParams publicKeysParams) throws EvtSdkException {
+    public JSONObject getCreatedFungibles(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryFungible().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<Action> getActions(ActionParams actionParams) throws EvtSdkException {
+    public List<Action> getActions(ActionParams actionParams) throws ApiResponseException {
         return new HistoryAction().request(RequestParams.of(netParams, actionParams));
     }
 
-    public JSONArray getTransactionIdsInBlock(TextIdParams idParams) throws EvtSdkException {
+    public JSONArray getTransactionIdsInBlock(TextIdParams idParams) throws ApiResponseException {
         return new TransactionIds().request(RequestParams.of(netParams, idParams));
     }
 
-    public TokenDetailData getToken(TokenDetailParams tokenDetailParams) throws EvtSdkException {
+    public TokenDetailData getToken(TokenDetailParams tokenDetailParams) throws ApiResponseException {
         return new TokenDetail().request(RequestParams.of(netParams, tokenDetailParams));
     }
 
-    public JSONArray getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) throws EvtSdkException {
+    public JSONArray getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
         return new FungibleBalance().request(RequestParams.of(netParams, fungibleBalanceParams));
     }
 
-    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws EvtSdkException {
+    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws ApiResponseException {
         return new HistoryTransactionDetail().request(RequestParams.of(netParams, transactionDetailParams));
     }
 
-    public DomainDetailData getDomainDetail(NameParams nameParams) throws EvtSdkException {
+    public DomainDetailData getDomainDetail(NameParams nameParams) throws ApiResponseException {
         return new DomainDetail().request(RequestParams.of(netParams, nameParams));
     }
 
-    public List<Action> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws EvtSdkException {
+    public List<Action> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws ApiResponseException {
         return new FungibleAction().request(RequestParams.of(netParams, fungibleActionParams));
     }
 
-    public GroupDetailData getGroupDetail(NameParams nameParams) throws EvtSdkException {
+    public GroupDetailData getGroupDetail(NameParams nameParams) throws ApiResponseException {
         return new GroupDetail().request(RequestParams.of(netParams, nameParams));
     }
 
-    public JSONObject getFungibleSymbolDetail(IdParams idParams) throws EvtSdkException {
+    public JSONObject getFungibleSymbolDetail(IdParams idParams) throws ApiResponseException {
         return new FungibleDetail().request(RequestParams.of(netParams, idParams));
     }
 }

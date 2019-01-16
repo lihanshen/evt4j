@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.Base58CheckException;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bitcoinj.core.ECKey;
@@ -9,21 +11,21 @@ public class PublicKey {
     private static final String nullAddress = Constants.NullAddress;
     private LazyECPoint pub;
 
-    public PublicKey(String key) throws EvtSdkException {
+    public PublicKey(String key) throws InvalidPublicKeyException {
         Pair<Boolean, byte[]> pair = validPublicKey(key);
 
         if (!pair.getLeft()) {
-            throw new EvtSdkException(null, ErrorCode.PUBLIC_KEY_INVALID);
+            throw new InvalidPublicKeyException(key);
         }
 
         pub = new LazyECPoint(ECKey.CURVE.getCurve(), pair.getRight());
     }
 
-    public PublicKey(byte[] key) throws EvtSdkException {
+    public PublicKey(byte[] key) throws InvalidPublicKeyException {
         LazyECPoint point = new LazyECPoint(ECKey.CURVE.getCurve(), key);
 
         if (!point.isValid()) {
-            throw new EvtSdkException(null, ErrorCode.PUBLIC_KEY_INVALID);
+            throw new InvalidPublicKeyException();
         }
 
         pub = point;
@@ -47,11 +49,11 @@ public class PublicKey {
 
     private static Pair<Boolean, byte[]> validPublicKey(String key) {
         if (key.length() < 8) {
-            return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
+            return new ImmutablePair<>(false, new byte[]{});
         }
 
         if (!key.startsWith(Constants.EVT)) {
-            return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
+            return new ImmutablePair<>(false, new byte[]{});
         }
 
         // key is invalid when checksum doesn't match
@@ -59,13 +61,13 @@ public class PublicKey {
         byte[] publicKeyInBytes;
         try {
             publicKeyInBytes = Utils.base58CheckDecode(keyWithoutPrefix);
-        } catch (Exception ex) {
-            return new ImmutablePair<Boolean, byte[]>(false, new byte[]{});
+        } catch (Base58CheckException ex) {
+            return new ImmutablePair<>(false, new byte[]{});
         }
 
         LazyECPoint pub = new LazyECPoint(ECKey.CURVE.getCurve(), publicKeyInBytes);
 
-        return new ImmutablePair<Boolean, byte[]>(pub.isValid(), publicKeyInBytes);
+        return new ImmutablePair<>(pub.isValid(), publicKeyInBytes);
     }
 
     public static String getNullAddress() {

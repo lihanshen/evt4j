@@ -31,7 +31,7 @@ public class TransactionDetail {
         blockId = raw.getString("block_id");
     }
 
-    public static TransactionDetail create(JSONObject raw) throws NullPointerException, JSONException {
+    public static TransactionDetail create(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new TransactionDetail(raw);
     }

@@ -1,12 +1,23 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.WifFormatException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PrivateKeyTest {
     @Test
+    @DisplayName("Invalid wif will throw exception")
+    void newPrivateKeyWithInvalidWif() {
+        Assertions.assertThrows(WifFormatException.class, () -> {
+            PrivateKey.fromWif("");
+        });
+    }
+
+    @Test
+    @DisplayName("Able to create public key from valid wif")
     void toPublicKey() {
         Assertions.assertDoesNotThrow(() -> {
             String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
@@ -16,6 +27,7 @@ class PrivateKeyTest {
     }
 
     @Test
+    @DisplayName("Generate correct private key from seed")
     void seedPrivateKey() {
         Assertions.assertDoesNotThrow(() -> {
             String publicKeyStr = "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND";
@@ -29,6 +41,7 @@ class PrivateKeyTest {
     }
 
     @Test
+    @DisplayName("Check validity of a private key")
     void isValidPrivateKey() {
         assertTrue(
                 PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"),

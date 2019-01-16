@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.model;
 
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +21,7 @@ class GroupDetailDataTest {
     @Test
     @DisplayName("Throw when public key is invalid")
     void throwPublicKeyException() {
-        Assertions.assertThrows(EvtSdkException.class, () -> {
+        Assertions.assertThrows(InvalidPublicKeyException.class, () -> {
             JSONObject json = new JSONObject();
             json.put("name", "testName");
             json.put("key", "wrongkey");

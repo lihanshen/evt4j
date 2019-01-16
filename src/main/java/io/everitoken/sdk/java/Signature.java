@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.PublicKeyRecoverFailureException;
+import io.everitoken.sdk.java.exceptions.RecoverIDNotFoundException;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
 import org.spongycastle.crypto.digests.SHA256Digest;
@@ -18,35 +20,6 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
-    private ECKey.ECDSASignature get() {
-        return signature;
-    }
-
-    public BigInteger getR() {
-        return signature.r;
-    }
-
-    public BigInteger getS() {
-        return signature.s;
-    }
-
-    private void setRecId(int id) {
-        recId = id;
-    }
-
-    public Integer getRecId() {
-        return recId;
-    }
-
-    public boolean isCanonical() {
-        return signature.isCanonical();
-    }
-
-    private Signature toCanonicalised() {
-        signature = signature.toCanonicalised();
-        return this;
-    }
-
     /**
      * Sign 32 bits hash with private key and store the recId into signature
      *
@@ -54,7 +27,7 @@ public class Signature {
      * @param key  PrivateKey
      * @return Signature
      */
-    public static Signature sign(byte[] data, PrivateKey key) throws EvtSdkException {
+    public static Signature sign(byte[] data, PrivateKey key) {
         byte[] hash = Sha256Hash.hashTwice(data);
 
         // init deterministic k calculator
@@ -70,7 +43,7 @@ public class Signature {
         int recId = getRecId(sig, data, publicKey);
 
         if (recId == -1) {
-            throw new EvtSdkException(null, ErrorCode.REC_ID_NOT_FOUND);
+            throw new RecoverIDNotFoundException();
         }
 
         sig.setRecId(recId);
@@ -131,20 +104,44 @@ public class Signature {
      * @param data      original data signed by the private key
      * @param signature signature from sign method
      * @return
-     * @throws EvtSdkException
      */
-    public static PublicKey recoverPublicKey(byte[] data, Signature signature) throws EvtSdkException {
+    public static PublicKey recoverPublicKey(byte[] data, Signature signature) {
         Sha256Hash dataHash = Sha256Hash.twiceOf(data);
 
-        try {
-            ECKey k = ECKey.recoverFromSignature(signature.getRecId(), signature.get(), dataHash, true);
-            if (k != null) {
-                return new PublicKey(k.getPubKey());
-            }
-
-            throw new EvtSdkException(null, ErrorCode.RECOVER_PUB_FROM_SIG_FAILURE);
-        } catch (Exception ex) {
-            throw new EvtSdkException(null, ErrorCode.RECOVER_PUB_FROM_SIG_FAILURE);
+        ECKey k = ECKey.recoverFromSignature(signature.getRecId(), signature.get(), dataHash, true);
+        if (k == null) {
+            throw new PublicKeyRecoverFailureException();
         }
+
+        return new PublicKey(k.getPubKey());
+    }
+
+    private ECKey.ECDSASignature get() {
+        return signature;
+    }
+
+    public BigInteger getR() {
+        return signature.r;
+    }
+
+    public BigInteger getS() {
+        return signature.s;
+    }
+
+    public Integer getRecId() {
+        return recId;
+    }
+
+    private void setRecId(int id) {
+        recId = id;
+    }
+
+    public boolean isCanonical() {
+        return signature.isCanonical();
+    }
+
+    private Signature toCanonicalised() {
+        signature = signature.toCanonicalised();
+        return this;
     }
 }

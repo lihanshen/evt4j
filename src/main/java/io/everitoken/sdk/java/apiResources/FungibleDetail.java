@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
 
@@ -13,7 +13,7 @@ public class FungibleDetail extends ApiResource {
         super(uri, method);
     }
 
-    public JSONObject request(RequestParams requestParams) throws EvtSdkException {
+    public JSONObject request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
         return res.getObject();
     }

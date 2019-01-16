@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.Base58CheckException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ class UtilsTest {
     @Test
     @DisplayName("Base58 Invalid Key")
     void base58CheckDecodeWithInvalidKey() {
-        Assertions.assertThrows(EvtSdkException.class, () -> {
+        Assertions.assertThrows(Base58CheckException.class, () -> {
             String key = "76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
             Utils.base58CheckDecode(key);
         });

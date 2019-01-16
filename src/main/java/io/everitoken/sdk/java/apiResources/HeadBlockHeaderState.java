@@ -3,7 +3,7 @@ package io.everitoken.sdk.java.apiResources;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
-import io.everitoken.sdk.java.EvtSdkException;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONObject;
 
@@ -20,7 +20,7 @@ public class HeadBlockHeaderState extends ApiResource {
         return Unirest.get(getUrl(requestParams.getNetParams()));
     }
 
-    public JSONObject request(RequestParams requestParams) throws EvtSdkException {
+    public JSONObject request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
         return res.getObject();
     }
