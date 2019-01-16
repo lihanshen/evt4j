@@ -4,6 +4,8 @@ import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import io.everitoken.sdk.java.exceptions.WifFormatException;
 import org.bitcoinj.core.*;
 import org.bitcoinj.params.MainNetParams;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -11,7 +13,7 @@ import java.security.SecureRandom;
 public class PrivateKey {
     private final ECKey key;
 
-    private PrivateKey(String wif) throws WifFormatException {
+    private PrivateKey(@NotNull String wif) throws WifFormatException {
         NetworkParameters networkParam = MainNetParams.get();
 
         if (wif.length() != 51 && wif.length() != 52) {
@@ -30,18 +32,22 @@ public class PrivateKey {
         this.key = key;
     }
 
+    @NotNull
     public static PrivateKey randomPrivateKey() {
         SecureRandom sr = new SecureRandom();
         ECKey key = new ECKey(sr);
         return new PrivateKey(key);
     }
 
-    public static PrivateKey seedPrivateKey(String seed) {
+    @NotNull
+    public static PrivateKey seedPrivateKey(@NotNull String seed) {
         byte[] hash = Sha256Hash.hash(seed.getBytes());
         ECKey key = ECKey.fromPrivate(hash);
         return new PrivateKey(key);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static PrivateKey fromWif(String wif) throws WifFormatException {
         return new PrivateKey(wif);
     }

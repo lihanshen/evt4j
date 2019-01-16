@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java.model;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +17,7 @@ public class Action implements Transactable {
     private final String key;
     private final DateTime timestamp;
 
-    private Action(JSONObject raw) throws JSONException {
+    private Action(@NotNull JSONObject raw) throws JSONException {
         trxId = raw.getString("trx_id");
         data = raw.getJSONObject("data");
         domain = raw.getString("domain");
@@ -24,6 +26,8 @@ public class Action implements Transactable {
         timestamp = new DateTime(raw.getString("timestamp"));
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static Action create(JSONObject raw) throws JSONException, NullPointerException {
         Objects.requireNonNull(raw);
         return new Action(raw);

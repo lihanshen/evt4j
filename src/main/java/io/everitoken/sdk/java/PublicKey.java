@@ -6,6 +6,8 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.LazyECPoint;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class PublicKey {
     private static final String nullAddress = Constants.NullAddress;
@@ -31,7 +33,7 @@ public class PublicKey {
         pub = point;
     }
 
-    public static boolean isValidAddress(String key) {
+    public static boolean isValidAddress(@NotNull String key) {
         if (key.equals(Constants.NullAddress)) {
             return true;
         }
@@ -47,7 +49,9 @@ public class PublicKey {
         return validPublicKey(key).getLeft();
     }
 
-    private static Pair<Boolean, byte[]> validPublicKey(String key) {
+    @NotNull
+    @Contract("_ -> new")
+    private static Pair<Boolean, byte[]> validPublicKey(@NotNull String key) {
         if (key.length() < 8) {
             return new ImmutablePair<>(false, new byte[]{});
         }
@@ -70,6 +74,7 @@ public class PublicKey {
         return new ImmutablePair<>(pub.isValid(), publicKeyInBytes);
     }
 
+    @Contract(pure = true)
     public static String getNullAddress() {
         return nullAddress;
     }
@@ -78,6 +83,7 @@ public class PublicKey {
         return pub;
     }
 
+    @Override
     public String toString() {
         return String.format("%s%s", Constants.EVT, Utils.base58Check(pub.getEncoded(true)));
     }

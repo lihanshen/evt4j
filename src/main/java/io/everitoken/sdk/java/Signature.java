@@ -4,6 +4,8 @@ import io.everitoken.sdk.java.exceptions.PublicKeyRecoverFailureException;
 import io.everitoken.sdk.java.exceptions.RecoverIDNotFoundException;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.crypto.params.ECPrivateKeyParameters;
 import org.spongycastle.crypto.params.ECPublicKeyParameters;
@@ -27,7 +29,7 @@ public class Signature {
      * @param key  PrivateKey
      * @return Signature
      */
-    public static Signature sign(byte[] data, PrivateKey key) {
+    public static Signature sign(byte[] data, @NotNull PrivateKey key) {
         byte[] hash = Sha256Hash.hashTwice(data);
 
         // init deterministic k calculator
@@ -54,7 +56,7 @@ public class Signature {
     /**
      * Calculate the recover id from signature with original data bytes and reference public key
      */
-    private static int getRecId(Signature signature, byte[] data, PublicKey publicKey) {
+    private static int getRecId(Signature signature, byte[] data, @NotNull PublicKey publicKey) {
         Sha256Hash dataHash = Sha256Hash.twiceOf(data);
 
         String refPubKey = publicKey.getEncoded(true);
@@ -82,7 +84,7 @@ public class Signature {
      * @param publicKey PublicKey object
      * @return boolean
      */
-    public static boolean verify(byte[] data, Signature signature, PublicKey publicKey) {
+    public static boolean verify(byte[] data, @NotNull Signature signature, @NotNull PublicKey publicKey) {
         byte[] hash = Sha256Hash.hashTwice(data);
 
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
@@ -105,7 +107,9 @@ public class Signature {
      * @param signature signature from sign method
      * @return
      */
-    public static PublicKey recoverPublicKey(byte[] data, Signature signature) {
+    @NotNull
+    @Contract("_, _ -> new")
+    public static PublicKey recoverPublicKey(byte[] data, @NotNull Signature signature) {
         Sha256Hash dataHash = Sha256Hash.twiceOf(data);
 
         ECKey k = ECKey.recoverFromSignature(signature.getRecId(), signature.get(), dataHash, true);
@@ -116,6 +120,7 @@ public class Signature {
         return new PublicKey(k.getPubKey());
     }
 
+    @Contract(pure = true)
     private ECKey.ECDSASignature get() {
         return signature;
     }
@@ -140,6 +145,7 @@ public class Signature {
         return signature.isCanonical();
     }
 
+    @Contract(" -> this")
     private Signature toCanonicalised() {
         signature = signature.toCanonicalised();
         return this;

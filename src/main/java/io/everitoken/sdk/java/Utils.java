@@ -5,6 +5,7 @@ import io.everitoken.sdk.java.exceptions.Base58CheckException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
+import org.jetbrains.annotations.NotNull;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.security.SecureRandom;
@@ -21,6 +22,7 @@ class Utils {
         return out;
     }
 
+    @NotNull
     public static String base58Check(byte[] key) {
         byte[] hash = ripemd160(key);
         byte[] concat = ArrayUtils.addAll(key, ArrayUtils.subarray(hash, 0, 4));
@@ -60,6 +62,7 @@ class Utils {
         return data;
     }
 
+    @NotNull
     public static String randomName128() {
         String candidates = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.-";
         int length = candidates.length();

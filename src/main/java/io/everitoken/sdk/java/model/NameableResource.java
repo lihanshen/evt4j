@@ -1,5 +1,8 @@
 package io.everitoken.sdk.java.model;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 public class NameableResource implements Namable {
     protected String name;
 
@@ -7,6 +10,8 @@ public class NameableResource implements Namable {
         this.name = name;
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static NameableResource create(String name) {
         return new NameableResource(name);
     }

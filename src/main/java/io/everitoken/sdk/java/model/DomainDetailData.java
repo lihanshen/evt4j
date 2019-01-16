@@ -1,6 +1,8 @@
 package io.everitoken.sdk.java.model;
 
 import io.everitoken.sdk.java.PublicKey;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +21,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
     private final DateTime createdTime;
 
     // TODO: protect transfer, issue and manage with interface
-    private DomainDetailData(JSONObject raw) throws JSONException {
+    private DomainDetailData(@NotNull JSONObject raw) throws JSONException {
         name = raw.getString("name");
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
@@ -31,6 +33,8 @@ public class DomainDetailData implements Meta, Addressable, Namable {
 
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static DomainDetailData create(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new DomainDetailData(raw);

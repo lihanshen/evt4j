@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java.params;
 
+import org.jetbrains.annotations.Contract;
+
 public abstract class NetParams {
     private final String protocol;
     private final String host;
@@ -44,6 +46,7 @@ public abstract class NetParams {
             this.url = url;
         }
 
+        @Contract(pure = true)
         public String getUrl() {
             return url;
         }

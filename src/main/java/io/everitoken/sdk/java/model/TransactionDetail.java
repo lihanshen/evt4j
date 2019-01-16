@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java.model;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +21,7 @@ public class TransactionDetail {
     private final String blockId;
 
     // TODO put signature into signature object
-    private TransactionDetail(JSONObject raw) throws JSONException {
+    private TransactionDetail(@NotNull JSONObject raw) throws JSONException {
         blockNum = raw.getInt("block_num");
         packedTrx = raw.getString("packed_trx");
         id = raw.getString("id");
@@ -31,6 +33,8 @@ public class TransactionDetail {
         blockId = raw.getString("block_id");
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static TransactionDetail create(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new TransactionDetail(raw);

@@ -8,6 +8,8 @@ import com.mashape.unirest.request.BaseRequest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.RequestParams;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 public abstract class ApiResource {
@@ -34,17 +36,19 @@ public abstract class ApiResource {
         }
     }
 
-    private void checkResponseError(JsonNode raw) throws ApiResponseException {
+    private void checkResponseError(@NotNull JsonNode raw) throws ApiResponseException {
         JSONObject res = raw.getObject();
         if (!raw.isArray() && res.has("error")) {
             throw new ApiResponseException(String.format("Response Error for '%s'", uri), res);
         }
     }
 
+    @Contract(pure = true)
     private String getUri() {
         return uri;
     }
 
+    @Contract(pure = true)
     private String getMethod() {
         return method;
     }

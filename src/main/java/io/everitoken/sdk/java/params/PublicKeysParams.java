@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.params;
 
 import io.everitoken.sdk.java.PublicKey;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 public class PublicKeysParams implements ApiParams {
     private List<PublicKey> publicKeys = new ArrayList<>();
 
-    public PublicKeysParams(String[] publicKeys) {
+    public PublicKeysParams(@NotNull String[] publicKeys) {
         for (String publicKey : publicKeys) {
             this.publicKeys.add(new PublicKey(publicKey));
         }

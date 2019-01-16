@@ -1,7 +1,9 @@
 package io.everitoken.sdk.java.params;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MainNetNetParams extends NetParams {
-    public MainNetNetParams(NetParams.NET mainNet) {
+    public MainNetNetParams(@NotNull NetParams.NET mainNet) {
         super("https", mainNet.getUrl(), 80, 15000);
     }
 

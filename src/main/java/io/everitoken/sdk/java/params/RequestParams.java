@@ -1,5 +1,8 @@
 package io.everitoken.sdk.java.params;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import javax.annotation.Nullable;
 
 public class RequestParams {
@@ -15,10 +18,14 @@ public class RequestParams {
         this(netParams, null);
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static RequestParams of(NetParams netParams) {
         return new RequestParams(netParams);
     }
 
+    @NotNull
+    @Contract("_, _ -> new")
     public static RequestParams of(NetParams netParams, ApiParams apiParams) {
         return new RequestParams(netParams, apiParams);
     }

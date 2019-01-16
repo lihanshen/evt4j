@@ -2,6 +2,8 @@ package io.everitoken.sdk.java.model;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +18,7 @@ public class TokenDetailData implements Meta {
     private final JSONArray metas;
     private String name;
 
-    private TokenDetailData(JSONObject raw) throws JSONException {
+    private TokenDetailData(@NotNull JSONObject raw) throws JSONException {
         name = raw.getString("name");
         name = raw.getString("domain");
         metas = raw.getJSONArray("metas");
@@ -31,6 +33,8 @@ public class TokenDetailData implements Meta {
         }).filter(key -> !Objects.isNull(key)).collect(Collectors.toList());
     }
 
+    @NotNull
+    @Contract("_ -> new")
     public static TokenDetailData create(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new TokenDetailData(raw);
