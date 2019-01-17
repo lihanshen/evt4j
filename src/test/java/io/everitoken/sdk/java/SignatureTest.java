@@ -25,7 +25,7 @@ class SignatureTest {
     @DisplayName("sign and signHash produces same result")
     void signAndSignHash() {
         Assertions.assertDoesNotThrow(() -> {
-            String message = "helloworld";
+            String message = "helloworldwhatnot";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
             Signature sig1 = Signature.signHash(Utils.hashTwice(message.getBytes()), key);
@@ -57,7 +57,7 @@ class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
-            assertTrue(sig.getRecId() == 0, "recId equals either 0 or 1");
+            assertEquals(sig.getRecId(), 0, "recId equals either 0 or 1");
         });
     }
 

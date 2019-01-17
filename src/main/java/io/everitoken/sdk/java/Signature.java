@@ -137,7 +137,7 @@ public class Signature {
         return signature.s;
     }
 
-    public Integer getRecId() {
+    public int getRecId() {
         return recId;
     }
 
@@ -166,6 +166,16 @@ public class Signature {
         }
         Signature s = (Signature) obj;
 
-        return getR().equals(s.getR()) && getS().equals(s.getS()) && getRecId().equals(s.getRecId());
+        return getR().equals(s.getR()) && getS().equals(s.getS()) && getRecId() == s.getRecId();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+
+        result = 31 * result + getR().hashCode();
+        result = 31 * result + getS().hashCode();
+        result = 31 * result + getRecId();
+        return result;
     }
 }
