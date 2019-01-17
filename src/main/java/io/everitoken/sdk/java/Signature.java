@@ -23,6 +23,8 @@ public class Signature {
     }
 
     public static Signature signHash(byte[] hash, @NotNull PrivateKey key) {
+        checkHashLength(hash);
+
         // init deterministic k calculator
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
         ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(key.getD(), ECKey.CURVE);
@@ -91,6 +93,8 @@ public class Signature {
     }
 
     public static boolean verifyHash(byte[] hash, @NotNull Signature signature, @NotNull PublicKey publicKey) {
+        checkHashLength(hash);
+
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
         ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(
@@ -124,6 +128,12 @@ public class Signature {
         return new PublicKey(k.getPubKey());
     }
 
+    private static void checkHashLength(@NotNull byte[] hash) {
+        if (hash.length != 32) {
+            throw new IllegalArgumentException("Input hash must should be of length 32");
+        }
+    }
+
     @Contract(pure = true)
     private ECKey.ECDSASignature get() {
         return signature;
@@ -155,6 +165,7 @@ public class Signature {
         return this;
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

@@ -35,6 +35,22 @@ class SignatureTest {
     }
 
     @Test
+    @DisplayName("signHash and verifyHash should only work with byte[] of length 32")
+    void invalidHashLength() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            Signature.signHash(new byte[]{}, key);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            String message = "someOtherMessage";
+            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            Signature sig = Signature.sign(message.getBytes(), key);
+            Signature.verifyHash(new byte[]{}, sig, key.toPublicKey());
+        });
+    }
+
+    @Test
     @DisplayName("verify and verifyHash")
     void verifyAndVerifyHash() {
         Assertions.assertDoesNotThrow(() -> {
