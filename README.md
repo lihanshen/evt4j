@@ -51,9 +51,9 @@ Make sure maven is installed
 * [-] getFungibleActionsByAddress // needs testing with real data
 * [ ] getTransactionsDetailOfPublicKeys
 * [-] getFungibleSymbolDetail
-* [ ] getRequiredKeysForSuspendedTransaction
+* [ ] getRequiredKeysForSuspendedTransaction // need suspendedTransaction first
 * [ ] getStatusOfEvtLink
-* [ ] getSuspendedTransactionDetail
+* [ ] getSuspendedTransactionDetail // need suspendedTransaction first
 * [ ] getEstimatedChargeForTransaction
 * [ ] generateUnsignedTransaction
 * [ ] pushTransaction
