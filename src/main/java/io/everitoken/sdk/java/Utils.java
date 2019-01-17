@@ -5,13 +5,14 @@ import io.everitoken.sdk.java.exceptions.Base58CheckException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
+import org.bitcoinj.core.Sha256Hash;
 import org.jetbrains.annotations.NotNull;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.security.SecureRandom;
 
 
-class Utils {
+public class Utils {
     public static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
 
     private static byte[] ripemd160(byte[] data) {
@@ -86,5 +87,9 @@ class Utils {
         byte[] values = new byte[32];
         random.nextBytes(values);
         return values;
+    }
+
+    public static byte[] hashTwice(byte[] data) {
+        return Sha256Hash.hashTwice(data);
     }
 }

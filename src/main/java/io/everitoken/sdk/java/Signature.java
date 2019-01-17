@@ -22,16 +22,7 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
-    /**
-     * Sign 32 bits hash with private key and store the recId into signature
-     *
-     * @param data Data hash with 32 bits
-     * @param key  PrivateKey
-     * @return Signature
-     */
-    public static Signature sign(byte[] data, @NotNull PrivateKey key) {
-        byte[] hash = Sha256Hash.hashTwice(data);
-
+    public static Signature signHash(byte[] hash, @NotNull PrivateKey key) {
         // init deterministic k calculator
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
         ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(key.getD(), ECKey.CURVE);
@@ -42,7 +33,7 @@ public class Signature {
 
         // find the recId and store in signature for public key recover later
         PublicKey publicKey = key.toPublicKey();
-        int recId = getRecId(sig, data, publicKey);
+        int recId = getRecId(sig, hash, publicKey);
 
         if (recId == -1) {
             throw new RecoverIDNotFoundException();
@@ -54,10 +45,21 @@ public class Signature {
     }
 
     /**
+     * Sign 32 bits hash with private key and store the recId into signature
+     *
+     * @param data Data hash with 32 bits
+     * @param key  PrivateKey
+     * @return Signature
+     */
+    public static Signature sign(byte[] data, @NotNull PrivateKey key) {
+        return signHash(Sha256Hash.hashTwice(data), key);
+    }
+
+    /**
      * Calculate the recover id from signature with original data bytes and reference public key
      */
-    private static int getRecId(Signature signature, byte[] data, @NotNull PublicKey publicKey) {
-        Sha256Hash dataHash = Sha256Hash.twiceOf(data);
+    private static int getRecId(Signature signature, byte[] hash, @NotNull PublicKey publicKey) {
+        Sha256Hash dataHash = Sha256Hash.wrap(hash);
 
         String refPubKey = publicKey.getEncoded(true);
 
@@ -85,8 +87,10 @@ public class Signature {
      * @return boolean
      */
     public static boolean verify(byte[] data, @NotNull Signature signature, @NotNull PublicKey publicKey) {
-        byte[] hash = Sha256Hash.hashTwice(data);
+        return verifyHash(Sha256Hash.hashTwice(data), signature, publicKey);
+    }
 
+    public static boolean verifyHash(byte[] hash, @NotNull Signature signature, @NotNull PublicKey publicKey) {
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
         ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(
@@ -110,7 +114,7 @@ public class Signature {
     @NotNull
     @Contract("_, _ -> new")
     public static PublicKey recoverPublicKey(byte[] data, @NotNull Signature signature) {
-        Sha256Hash dataHash = Sha256Hash.twiceOf(data);
+        Sha256Hash dataHash = Sha256Hash.wrap(data);
 
         ECKey k = ECKey.recoverFromSignature(signature.getRecId(), signature.get(), dataHash, true);
         if (k == null) {
@@ -149,5 +153,19 @@ public class Signature {
     private Signature toCanonicalised() {
         signature = signature.toCanonicalised();
         return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof Signature)) {
+            return false;
+        }
+        Signature s = (Signature) obj;
+
+        return getR().equals(s.getR()) && getS().equals(s.getS()) && getRecId().equals(s.getRecId());
     }
 }

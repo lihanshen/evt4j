@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SignatureTest {
 
@@ -15,10 +14,39 @@ class SignatureTest {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
-            Signature sig = Signature.sign((message.getBytes()), key);
+            Signature sig = Signature.sign(message.getBytes(), key);
 
             boolean verifyResult = Signature.verify(message.getBytes(), sig, key.toPublicKey());
             assertTrue(verifyResult, "Able to verify");
+        });
+    }
+
+    @Test
+    @DisplayName("sign and signHash produces same result")
+    void signAndSignHash() {
+        Assertions.assertDoesNotThrow(() -> {
+            String message = "helloworld";
+            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            Signature sig = Signature.sign(message.getBytes(), key);
+            Signature sig1 = Signature.signHash(Utils.hashTwice(message.getBytes()), key);
+
+            assertEquals(sig, sig1);
+        });
+    }
+
+    @Test
+    @DisplayName("verify and verifyHash")
+    void verifyAndVerifyHash() {
+        Assertions.assertDoesNotThrow(() -> {
+            String message = "helloworld";
+            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            Signature sig = Signature.sign(message.getBytes(), key);
+            Signature sig1 = Signature.signHash(Utils.hashTwice(message.getBytes()), key);
+
+            boolean verifyResult = Signature.verify(message.getBytes(), sig1, key.toPublicKey());
+            boolean verifyResult1 = Signature.verifyHash(Utils.hashTwice(message.getBytes()), sig, key.toPublicKey());
+            assertTrue(verifyResult, "Able to verify");
+            assertTrue(verifyResult1, "Able to verify");
         });
     }
 
@@ -41,9 +69,10 @@ class SignatureTest {
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
 
-            PublicKey publicKey = Signature.recoverPublicKey(message.getBytes(), sig);
+            PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(message.getBytes()), sig);
 
             assertTrue(PublicKey.isValidPublicKey(publicKey.toString()));
+            assertEquals(publicKey.toString(), key.toPublicKey().toString());
         });
     }
 
@@ -56,8 +85,8 @@ class SignatureTest {
             Signature sig = Signature.sign((message.getBytes()), key);
 
             String wrongMessage = "foobar";
-            PublicKey publicKey = Signature.recoverPublicKey(wrongMessage.getBytes(), sig);
-            assertFalse(publicKey.toString().equals(key.toPublicKey().toString()));
+            PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(wrongMessage.getBytes()), sig);
+            assertNotEquals(publicKey.toString(), key.toPublicKey().toString());
         });
     }
 }
