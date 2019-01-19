@@ -10,7 +10,7 @@ public class FungibleBalanceParams implements ApiParams {
     private final String symbolId;
 
     public FungibleBalanceParams(String publicKey, @Nullable String symbolId) {
-        this.publicKey = new PublicKey(publicKey);
+        this.publicKey = PublicKey.of(publicKey);
         this.symbolId = symbolId;
     }
 

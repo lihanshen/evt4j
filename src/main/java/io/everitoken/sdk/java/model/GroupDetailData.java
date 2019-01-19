@@ -19,7 +19,7 @@ public class GroupDetailData implements Meta, Namable {
     // TODO implement root tree structure, extract to a separate model for node
     private GroupDetailData(@NotNull JSONObject raw) throws JSONException {
         name = raw.getString("name");
-        key = new PublicKey(raw.getString("key"));
+        key = PublicKey.of(raw.getString("key"));
         metas = raw.getJSONArray("metas");
         root = raw.getJSONObject("root");
     }

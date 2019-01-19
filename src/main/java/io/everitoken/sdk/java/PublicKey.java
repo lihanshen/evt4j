@@ -33,17 +33,6 @@ public class PublicKey {
         pub = point;
     }
 
-    public static boolean isValidAddress(@NotNull String key) {
-        if (key.equals(Constants.NullAddress)) {
-            return true;
-        }
-
-        if (key.length() == 53 && key.charAt(3) == '0') {
-            return true;
-        }
-
-        return isValidPublicKey(key);
-    }
 
     public static boolean isValidPublicKey(String key) {
         return validPublicKey(key).getLeft();
@@ -74,9 +63,10 @@ public class PublicKey {
         return new ImmutablePair<>(pub.isValid(), publicKeyInBytes);
     }
 
-    @Contract(pure = true)
-    public static String getNullAddress() {
-        return nullAddress;
+    @NotNull
+    @Contract("_ -> new")
+    public static PublicKey of(String key) {
+        return new PublicKey(key);
     }
 
     public LazyECPoint getPoint() {

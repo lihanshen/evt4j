@@ -26,7 +26,7 @@ public class TokenDetailData implements Meta {
         JSONArray owner = raw.getJSONArray("owner");
         this.owner = StreamSupport.stream(owner.spliterator(), true).map(publicKey -> {
             try {
-                return new PublicKey((String) publicKey);
+                return PublicKey.of((String) publicKey);
             } catch (InvalidPublicKeyException ex) {
                 return null;
             }

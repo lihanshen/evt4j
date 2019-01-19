@@ -14,7 +14,7 @@ public class PublicKeysParams implements ApiParams {
 
     public PublicKeysParams(@NotNull String[] publicKeys) {
         for (String publicKey : publicKeys) {
-            this.publicKeys.add(new PublicKey(publicKey));
+            this.publicKeys.add(PublicKey.of(publicKey));
         }
     }
 

@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PublicKeyTest {
     private final String validPublicKey = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
@@ -14,13 +15,13 @@ class PublicKeyTest {
     @Test
     @DisplayName("No exception is thrown with valid public key")
     void testConstructorWithValidPublicKey() {
-        Assertions.assertDoesNotThrow(() -> new PublicKey(validPublicKey));
+        Assertions.assertDoesNotThrow(() -> PublicKey.of(validPublicKey));
     }
 
     @Test
     @DisplayName("Exception is thrown with invalid public key")
     void testConstructorWithInValidPublicKey() {
-        Assertions.assertThrows(InvalidPublicKeyException.class, () -> new PublicKey(inValidPublicKey));
+        Assertions.assertThrows(InvalidPublicKeyException.class, () -> PublicKey.of(inValidPublicKey));
     }
 
     @Test
@@ -32,6 +33,10 @@ class PublicKeyTest {
     @Test
     void isValidPublicKeyInvalidKey() {
         assertFalse(PublicKey.isValidPublicKey(inValidPublicKey), "Invalid key");
+        assertFalse(
+                PublicKey.isValidPublicKey("EVT00000000000000000000000000000000000000000000000000"),
+                "Null Address is invalid"
+        );
     }
 
     @Test
@@ -42,23 +47,5 @@ class PublicKeyTest {
     @Test
     void isValidPublicKeyWithInvalidKey() {
         assertFalse(PublicKey.isValidPublicKey(inValidPublicKey), "invalid key");
-    }
-
-    @Test
-    void getNullAddress() {
-        String nullAddress = PublicKey.getNullAddress();
-        assertEquals(nullAddress, "EVT00000000000000000000000000000000000000000000000000");
-    }
-
-    @Test
-    @DisplayName("Valid Public keys and addresses")
-    void isValidAddress() {
-        String nullAddress = PublicKey.getNullAddress();
-        assertTrue(PublicKey.isValidAddress(nullAddress));
-        assertFalse(PublicKey.isValidPublicKey(nullAddress));
-        assertTrue(PublicKey.isValidAddress("EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa"));
-        assertFalse(PublicKey.isValidAddress("EOS6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
-        assertFalse(PublicKey.isValidAddress("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDWFRvsv2FxgND"));
-        assertTrue(PublicKey.isValidAddress("EVT0000005ZbVoKRDdy6N4r22sSn3WDyB4YkTcf5R1dSjAsmRnFEF"));
     }
 }

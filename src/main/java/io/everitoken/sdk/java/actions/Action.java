@@ -2,14 +2,14 @@ package io.everitoken.sdk.java.actions;
 
 public class Action {
     private final ActionNameEnum name;
-    private final String abi;
+    private final Abi abi;
+    private final String domain;
+    private final String key;
 
-    private Action(ActionNameEnum name, String abi) {
+    private Action(ActionNameEnum name, Abi abi, String domain, String key) {
         this.name = name;
         this.abi = abi;
-    }
-
-    public static Action createAction() {
-
+        this.domain = domain;
+        this.key = key;
     }
 }

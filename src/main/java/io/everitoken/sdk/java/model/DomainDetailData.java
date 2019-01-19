@@ -26,7 +26,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
         createdTime = new DateTime(raw.getString("create_time"));
-        creator = new PublicKey(raw.getString("creator"));
+        creator = PublicKey.of(raw.getString("creator"));
         transfer = raw.getJSONObject("transfer");
         issue = raw.getJSONObject("issue");
         manage = raw.getJSONObject("manage");
@@ -60,7 +60,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
 
     @Override
     public String getAddress() {
-        return address.toString();
+        return address;
     }
 
     public JSONObject getIssue() {
