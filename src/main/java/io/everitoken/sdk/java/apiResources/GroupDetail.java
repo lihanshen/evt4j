@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.model.GroupDetailData;
+import io.everitoken.sdk.java.dto.GroupDetailData;
 import io.everitoken.sdk.java.params.RequestParams;
 
 public class GroupDetail extends ApiResource {

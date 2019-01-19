@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.model;
+package io.everitoken.sdk.java.dto;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

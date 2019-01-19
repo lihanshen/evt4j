@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.model;
+package io.everitoken.sdk.java.dto;
 
 import io.everitoken.sdk.java.PublicKey;
 import org.jetbrains.annotations.Contract;

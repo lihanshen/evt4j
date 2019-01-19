@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.model;
+package io.everitoken.sdk.java.dto;
 
 public class TokenName extends NameableResource {
     private final String domain;

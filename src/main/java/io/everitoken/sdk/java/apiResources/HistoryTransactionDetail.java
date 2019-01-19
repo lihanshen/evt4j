@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.model.TransactionDetail;
+import io.everitoken.sdk.java.dto.TransactionDetail;
 import io.everitoken.sdk.java.params.RequestParams;
 
 public class HistoryTransactionDetail extends ApiResource {

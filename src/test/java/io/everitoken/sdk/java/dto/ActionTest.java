@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.model;
+package io.everitoken.sdk.java.dto;
 
 import org.json.JSONException;
 import org.json.JSONObject;

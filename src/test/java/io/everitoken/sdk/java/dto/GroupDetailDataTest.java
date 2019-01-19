@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.model;
+package io.everitoken.sdk.java.dto;
 
 import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.json.JSONArray;

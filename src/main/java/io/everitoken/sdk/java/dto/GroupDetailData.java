@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.model;
+package io.everitoken.sdk.java.dto;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
@@ -16,7 +16,7 @@ public class GroupDetailData implements Meta, Namable {
     private final JSONObject root;
     private final JSONArray metas;
 
-    // TODO implement root tree structure, extract to a separate model for node
+    // TODO implement root tree structure, extract to a separate dto for node
     private GroupDetailData(@NotNull JSONObject raw) throws JSONException {
         name = raw.getString("name");
         key = PublicKey.of(raw.getString("key"));

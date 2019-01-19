@@ -3,7 +3,7 @@ package io.everitoken.sdk.java;
 import io.everitoken.sdk.java.apiResources.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.keyProvider.KeyProvider;
-import io.everitoken.sdk.java.model.*;
+import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.params.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
