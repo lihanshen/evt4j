@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.dto.DomainDetailData;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.RequestParams;
 
 public class DomainDetail extends ApiResource {
@@ -15,6 +15,6 @@ public class DomainDetail extends ApiResource {
 
     public DomainDetailData request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
-        return DomainDetailData.create(res.getObject());
+        return DomainDetailData.of(res.getObject());
     }
 }

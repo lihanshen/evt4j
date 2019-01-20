@@ -14,28 +14,27 @@ public class DomainDetailData implements Meta, Addressable, Namable {
     private final String name;
     private final JSONArray metas;
     private final PublicKey creator;
-    private final JSONObject transfer;
     private final String address;
-    private final JSONObject issue;
-    private final JSONObject manage;
+    private final Permission issue;
+    private final Permission transfer;
+    private final Permission manage;
     private final DateTime createdTime;
 
-    // TODO: protect transfer, issue and manage with interface
-    private DomainDetailData(@NotNull JSONObject raw) throws JSONException {
+    private DomainDetailData(@NotNull JSONObject raw) {
         name = raw.getString("name");
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
         createdTime = new DateTime(raw.getString("create_time"));
         creator = PublicKey.of(raw.getString("creator"));
-        transfer = raw.getJSONObject("transfer");
-        issue = raw.getJSONObject("issue");
-        manage = raw.getJSONObject("manage");
+        issue = Permission.ofRaw(raw.getJSONObject("issue"));
+        transfer = Permission.ofRaw(raw.getJSONObject("transfer"));
+        manage = Permission.ofRaw(raw.getJSONObject("manage"));
 
     }
 
     @NotNull
     @Contract("_ -> new")
-    public static DomainDetailData create(JSONObject raw) throws JSONException {
+    public static DomainDetailData of(JSONObject raw) throws JSONException {
         Objects.requireNonNull(raw);
         return new DomainDetailData(raw);
     }
@@ -54,7 +53,7 @@ public class DomainDetailData implements Meta, Addressable, Namable {
         return creator.toString();
     }
 
-    public JSONObject getTransfer() {
+    public Permission getTransfer() {
         return transfer;
     }
 
@@ -63,11 +62,11 @@ public class DomainDetailData implements Meta, Addressable, Namable {
         return address;
     }
 
-    public JSONObject getIssue() {
+    public Permission getIssue() {
         return issue;
     }
 
-    public JSONObject getManage() {
+    public Permission getManage() {
         return manage;
     }
 
