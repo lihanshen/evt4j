@@ -7,12 +7,13 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class DomainAbi implements Namable {
+public class DomainAbi implements Namable, DomainKeyConfiguration, TransactionalAction, AbiImpl {
     private final String name;
     private final PublicKey creator;
     private final Permission issue;
     private final Permission transfer;
     private final Permission manage;
+    private String domainAction = ".create";
 
     protected DomainAbi(String name, PublicKey creator, Permission issue, Permission transfer, Permission manage) {
         this.name = name;
@@ -53,7 +54,6 @@ public class DomainAbi implements Namable {
         return transfer;
     }
 
-
     public Permission getIssue() {
         return issue;
     }
@@ -61,4 +61,19 @@ public class DomainAbi implements Namable {
     public Permission getManage() {
         return manage;
     }
+
+    public void setDomainAction(String domainAction) {
+        this.domainAction = domainAction;
+    }
+
+    @Override
+    public JSONObject getDomainKeyConfiguration() {
+        return Utils.buildDomainKeyJson(getName(), domainAction);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        return null;
+    }
 }
+

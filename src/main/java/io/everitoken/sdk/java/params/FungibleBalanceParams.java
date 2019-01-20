@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java.params;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.PublicKey;
 import org.json.JSONObject;
 
@@ -18,6 +20,22 @@ public class FungibleBalanceParams implements ApiParams {
         this(publicKey, null);
     }
 
+    // TODO cleanup -> remove
+    public static void main(String[] args) {
+        FungibleBalanceParams params = new FungibleBalanceParams("EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa");
+        System.out.println(JSON.toJSONString(params));
+    }
+
+    @JSONField(name = "sym_id")
+    public String getSymbolId() {
+        return symbolId;
+    }
+
+    @JSONField(name = "address")
+    public String getPublicKey() {
+        return publicKey.toString();
+    }
+
     @Override
     public JSONObject asJson() {
         JSONObject jsonObject = new JSONObject();
@@ -29,5 +47,9 @@ public class FungibleBalanceParams implements ApiParams {
         }
 
         return jsonObject;
+    }
+
+    public String toJSONString() {
+        return JSON.toJSONString(this);
     }
 }

@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java.params;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import org.json.JSONObject;
 
 public class FungibleActionParams implements ApiParams, Paginatable {
@@ -21,14 +23,7 @@ public class FungibleActionParams implements ApiParams, Paginatable {
 
     @Override
     public JSONObject asJson() {
-        JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put("addr", address);
-        jsonObject.put("sym_id", symbolId);
-        jsonObject.put("skip", skip);
-        jsonObject.put("take", take);
-
-        return jsonObject;
+        return new JSONObject(JSON.toJSONString(this));
     }
 
     @Override
@@ -39,5 +34,15 @@ public class FungibleActionParams implements ApiParams, Paginatable {
     @Override
     public int getTake() {
         return take;
+    }
+
+    @JSONField(name = "addr")
+    public String getAddress() {
+        return address;
+    }
+
+    @JSONField(name = "sym_id")
+    public String getSymbolId() {
+        return symbolId;
     }
 }

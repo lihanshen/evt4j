@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FungibleBalanceParamsTest {
 
@@ -36,9 +36,10 @@ class FungibleBalanceParamsTest {
         Assertions.assertDoesNotThrow(() -> {
             String symbolId = "testSymbolId";
             FungibleBalanceParams params = new FungibleBalanceParams(validPublicKey, symbolId);
-            JSONObject json = params.asJson();
-            assertTrue(json.getString("address").equals(validPublicKey), "correct address");
-            assertTrue(json.getString("sym_id").equals(symbolId), "correct symbol id");
+            String jsonString = params.toJSONString();
+            JSONObject json = new JSONObject(jsonString);
+            assertEquals(json.getString("address"), validPublicKey, "correct address");
+            assertEquals(json.getString("sym_id"), symbolId, "correct symbol id");
         });
     }
 
@@ -47,8 +48,9 @@ class FungibleBalanceParamsTest {
     void optionalSymbolId() {
         Assertions.assertDoesNotThrow(() -> {
             FungibleBalanceParams params = new FungibleBalanceParams(validPublicKey);
-            JSONObject json = params.asJson();
-            assertTrue(json.getString("address").equals(validPublicKey), "correct address");
+            String jsonString = params.toJSONString();
+            JSONObject json = new JSONObject(jsonString);
+            assertEquals(json.getString("address"), validPublicKey, "correct address");
             assertFalse(json.has("sym_id"), "correct symbol id");
         });
     }

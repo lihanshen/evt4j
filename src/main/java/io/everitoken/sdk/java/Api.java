@@ -47,9 +47,9 @@ public class Api {
 //            JSONObject res = api.getCreatedFungibles(publicKeysParams);
 //            System.out.println(res);
 
-//            ActionParams actionParams = new ActionParams("testdomainfei1");
-//            List<ActionData> res = api.getActions(actionParams);
-//            res.forEach(action -> System.out.println(action.getTrxId()));
+            ActionParams actionParams = new ActionParams("testdomainfei1", null, new String[]{"issuetoken", "transfer"});
+            List<ActionData> res = api.getActions(actionParams);
+            res.forEach(action -> System.out.println(action.getName()));
 
 //            JSONObject headerState = api.getHeadBlockHeaderState();
 //            System.out.println(headerState.getString("id"));
@@ -61,9 +61,9 @@ public class Api {
 //            System.out.println(res1.getName());
 //            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
-            NameParams nameParams = new NameParams("testdomainfei1");
-            DomainDetailData res = api.getDomainDetail(nameParams);
-            System.out.println(res.getTransfer().getAuthorizers().get(0).getRef());
+//            NameParams nameParams = new NameParams("testdomainfei1");
+//            DomainDetailData res = api.getDomainDetail(nameParams);
+//            System.out.println(res.getTransfer().getAuthorizers().get(0).getRef());
 
 //            NameParams nameParams = new NameParams("testgroupcreationfei");
 //            GroupDetailData res = api.getGroupDetail(nameParams);

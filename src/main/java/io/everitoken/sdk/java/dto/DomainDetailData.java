@@ -25,7 +25,6 @@ public class DomainDetailData extends DomainAbi implements Meta, Addressable {
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
         createdTime = new DateTime(raw.getString("create_time"));
-
     }
 
     @NotNull
