@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class Action implements Transactable {
+public class ActionData implements Transactable {
 
     private final String trxId;
     private final JSONObject data;
@@ -17,7 +17,7 @@ public class Action implements Transactable {
     private final String key;
     private final DateTime timestamp;
 
-    private Action(@NotNull JSONObject raw) throws JSONException {
+    private ActionData(@NotNull JSONObject raw) throws JSONException {
         trxId = raw.getString("trx_id");
         data = raw.getJSONObject("data");
         domain = raw.getString("domain");
@@ -28,9 +28,9 @@ public class Action implements Transactable {
 
     @NotNull
     @Contract("_ -> new")
-    public static Action create(JSONObject raw) throws JSONException, NullPointerException {
+    public static ActionData create(JSONObject raw) throws JSONException, NullPointerException {
         Objects.requireNonNull(raw);
-        return new Action(raw);
+        return new ActionData(raw);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class Api {
 //            System.out.println(res);
 
 //            ActionParams actionParams = new ActionParams("testdomainfei1");
-//            List<Action> res = api.getActions(actionParams);
+//            List<ActionData> res = api.getActions(actionParams);
 //            res.forEach(action -> System.out.println(action.getTrxId()));
 
 //            JSONObject headerState = api.getHeadBlockHeaderState();
@@ -63,7 +63,7 @@ public class Api {
 
             NameParams nameParams = new NameParams("testdomainfei1");
             DomainDetailData res = api.getDomainDetail(nameParams);
-            System.out.println(res.getTransfer().getName());
+            System.out.println(res.getTransfer().getAuthorizers().get(0).getRef());
 
 //            NameParams nameParams = new NameParams("testgroupcreationfei");
 //            GroupDetailData res = api.getGroupDetail(nameParams);
@@ -77,6 +77,9 @@ public class Api {
 //            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
 //                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
 //            );
+//            ActionParams actionParams = new ActionParams("testdomainfei1");
+//            List<ActionData> actionData = api.getActions(actionParams);
+//            actionData.stream().forEach(d -> System.out.println(d.getData()));
 //
 //            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
@@ -112,7 +115,7 @@ public class Api {
         return new HistoryFungible().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<Action> getActions(ActionParams actionParams) throws ApiResponseException {
+    public List<ActionData> getActions(ActionParams actionParams) throws ApiResponseException {
         return new HistoryAction().request(RequestParams.of(netParams, actionParams));
     }
 
@@ -136,7 +139,7 @@ public class Api {
         return new DomainDetail().request(RequestParams.of(netParams, nameParams));
     }
 
-    public List<Action> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws ApiResponseException {
+    public List<ActionData> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws ApiResponseException {
         return new FungibleAction().request(RequestParams.of(netParams, fungibleActionParams));
     }
 
