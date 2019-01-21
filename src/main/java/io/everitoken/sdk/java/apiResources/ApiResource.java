@@ -21,6 +21,11 @@ public abstract class ApiResource {
         this.method = method;
     }
 
+    protected ApiResource(String uri) {
+        this.uri = uri;
+        this.method = "POST";
+    }
+
     protected BaseRequest buildRequest(RequestParams requestParams) {
         return Unirest.post(getUrl(requestParams.getNetParams())).body(new JSONObject(requestParams.getApiParams().asBody()));
     }

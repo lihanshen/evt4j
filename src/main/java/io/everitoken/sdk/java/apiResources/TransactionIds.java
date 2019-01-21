@@ -6,10 +6,9 @@ import org.json.JSONArray;
 
 public class TransactionIds extends ApiResource {
     private static final String uri = "/v1/chain/get_transaction_ids_for_block";
-    private static final String method = "POST";
 
     public TransactionIds() {
-        super(uri, method);
+        super(uri);
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {

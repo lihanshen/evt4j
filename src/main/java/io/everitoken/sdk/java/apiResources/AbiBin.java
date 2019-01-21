@@ -7,10 +7,9 @@ import org.json.JSONObject;
 
 public class AbiBin extends ApiResource {
     private static final String uri = "/v1/chain/abi_json_to_bin";
-    private static final String method = "POST";
 
     public AbiBin() {
-        super(uri, method);
+        super(uri);
     }
 
     public JSONObject request(RequestParams requestParams) throws ApiResponseException {

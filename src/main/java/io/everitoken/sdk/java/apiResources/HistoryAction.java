@@ -13,10 +13,9 @@ import java.util.stream.StreamSupport;
 
 public class HistoryAction extends ApiResource {
     private static final String uri = "/v1/history/get_actions";
-    private static final String method = "POST";
 
     public HistoryAction() {
-        super(uri, method);
+        super(uri);
     }
 
     public List<ActionData> request(RequestParams requestParams) throws ApiResponseException {

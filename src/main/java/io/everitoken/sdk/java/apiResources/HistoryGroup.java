@@ -12,10 +12,9 @@ import java.util.stream.StreamSupport;
 
 public class HistoryGroup extends ApiResource {
     private static final String uri = "/v1/history/get_groups";
-    private static final String method = "POST";
 
     public HistoryGroup() {
-        super(uri, method);
+        super(uri);
     }
 
     public List<NameableResource> request(RequestParams requestParams) throws ApiResponseException {

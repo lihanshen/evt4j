@@ -7,10 +7,9 @@ import io.everitoken.sdk.java.params.RequestParams;
 
 public class TokenDetail extends ApiResource {
     private static final String uri = "/v1/evt/get_token";
-    private static final String method = "POST";
 
     public TokenDetail() {
-        super(uri, method);
+        super(uri);
     }
 
     public TokenDetailData request(RequestParams requestParams) throws ApiResponseException {

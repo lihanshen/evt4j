@@ -7,10 +7,9 @@ import org.json.JSONArray;
 
 public class FungibleBalance extends ApiResource {
     private static final String uri = "/v1/evt/get_fungible_balance";
-    private static final String method = "POST";
 
     public FungibleBalance() {
-        super(uri, method);
+        super(uri);
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {

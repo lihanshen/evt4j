@@ -8,11 +8,10 @@ import org.json.JSONObject;
 
 public class HistoryFungible extends ApiResource {
     private static final String uri = "/v1/history/get_fungibles";
-    private static final String method = "POST";
     private static final String IDS_KEY = "ids";
 
     public HistoryFungible() {
-        super(uri, method);
+        super(uri);
     }
 
     public JSONObject request(RequestParams requestParams) throws ApiResponseException {

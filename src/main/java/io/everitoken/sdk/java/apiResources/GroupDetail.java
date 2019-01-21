@@ -7,10 +7,9 @@ import io.everitoken.sdk.java.params.RequestParams;
 
 public class GroupDetail extends ApiResource {
     private static final String uri = "/v1/evt/get_group";
-    private static final String method = "POST";
 
     public GroupDetail() {
-        super(uri, method);
+        super(uri);
     }
 
     public GroupDetailData request(RequestParams requestParams) throws ApiResponseException {

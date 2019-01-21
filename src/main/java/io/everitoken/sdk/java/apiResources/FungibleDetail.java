@@ -7,10 +7,9 @@ import org.json.JSONObject;
 
 public class FungibleDetail extends ApiResource {
     private static final String uri = "/v1/evt/get_fungible";
-    private static final String method = "POST";
 
     public FungibleDetail() {
-        super(uri, method);
+        super(uri);
     }
 
     public JSONObject request(RequestParams requestParams) throws ApiResponseException {

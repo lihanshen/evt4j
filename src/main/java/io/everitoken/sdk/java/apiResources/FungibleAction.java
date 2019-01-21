@@ -13,10 +13,9 @@ import java.util.stream.StreamSupport;
 
 public class FungibleAction extends ApiResource {
     private static final String uri = "/v1/history/get_fungible_actions";
-    private static final String method = "POST";
 
     public FungibleAction() {
-        super(uri, method);
+        super(uri);
     }
 
     public List<ActionData> request(RequestParams requestParams) throws ApiResponseException {
