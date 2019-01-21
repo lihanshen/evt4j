@@ -7,7 +7,6 @@ import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.exceptions.Base58CheckException;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.RequestParams;
-import io.everitoken.sdk.java.params.TestNetNetParams;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
@@ -100,28 +99,12 @@ public class Utils {
         return Sha256Hash.hashTwice(data);
     }
 
-    // TODO:
     public static JSONObject abiToBin(NetParams netParams, AbiImpl abi, boolean throughApi) throws ApiResponseException {
         if (!throughApi) {
             throw new IllegalStateException("Currently Abi to bin action can only be done through Api");
         }
 
         AbiBin abiBin = new AbiBin();
-        return abiBin.request(RequestParams.of(netParams, abi::toJson));
-    }
-
-    // TODO clean up -> remove
-    public static void main(String[] args) {
-        NetParams testNetParams = new TestNetNetParams();
-
-        try {
-            JSONObject res = abiToBin(
-                    testNetParams,
-                    () -> new JSONObject("{\"action\":\"newgroup\",\"args\":{\"name\":\"testgroupcreationfei\",\"group\":{\"name\":\"testgroupcreationfei\",\"key\":\"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"root\":{\"threshold\":6,\"weight\":0,\"nodes\":[{\"threshold\":1,\"weight\":3,\"nodes\":[{\"key\":\"EVT6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV\",\"weight\":1},{\"key\":\"EVT8MGU4aKiVzqMtWi9zLpu8KuTHZWjQQrX475ycSxEkLd6aBpraX\",\"weight\":1}]},{\"key\":\"EVT8MGU4aKiVzqMtWi9zLpu8KuTHZWjQQrX475ycSxEkLd6aBpraX\",\"weight\":3},{\"threshold\":1,\"weight\":3,\"nodes\":[{\"key\":\"EVT6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV\",\"weight\":1},{\"key\":\"EVT8MGU4aKiVzqMtWi9zLpu8KuTHZWjQQrX475ycSxEkLd6aBpraX\",\"weight\":1}]}]}}}}"),
-                    true
-            );
-        } catch (ApiResponseException ex) {
-            System.out.println(ex.getRaw());
-        }
+        return abiBin.request(RequestParams.of(netParams, abi::serialize));
     }
 }

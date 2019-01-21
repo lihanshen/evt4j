@@ -3,7 +3,6 @@ package io.everitoken.sdk.java.params;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.PublicKey;
-import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 
@@ -37,19 +36,7 @@ public class FungibleBalanceParams implements ApiParams {
     }
 
     @Override
-    public JSONObject asJson() {
-        JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put("address", publicKey.toString());
-
-        if (symbolId != null) {
-            jsonObject.put("sym_id", symbolId);
-        }
-
-        return jsonObject;
-    }
-
-    public String toJSONString() {
+    public String asBody() {
         return JSON.toJSONString(this);
     }
 }

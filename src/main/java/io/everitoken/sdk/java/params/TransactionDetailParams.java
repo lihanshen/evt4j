@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.params;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import javax.annotation.Nullable;
 
@@ -8,25 +9,27 @@ public class TransactionDetailParams implements ApiParams {
     private final String trxId;
     private final String blockNum;
 
-    public TransactionDetailParams(String trxId, @Nullable String blockNum) {
+    TransactionDetailParams(String trxId, @Nullable String blockNum) {
         this.trxId = trxId;
         this.blockNum = blockNum;
     }
 
-    public TransactionDetailParams(String trxId) {
+    TransactionDetailParams(String trxId) {
         this(trxId, null);
     }
 
+    @JSONField(name = "id")
+    public String getTrxId() {
+        return trxId;
+    }
+
+    @JSONField(name = "block_num")
+    public String getBlockNum() {
+        return blockNum;
+    }
+
     @Override
-    public JSONObject asJson() {
-        JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put("id", trxId);
-
-        if (blockNum != null) {
-            jsonObject.put("block_num", blockNum);
-        }
-
-        return jsonObject;
+    public String asBody() {
+        return JSON.toJSONString(this);
     }
 }

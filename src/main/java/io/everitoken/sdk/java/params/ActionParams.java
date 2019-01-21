@@ -1,7 +1,6 @@
 package io.everitoken.sdk.java.params;
 
 import com.alibaba.fastjson.JSON;
-import org.json.JSONObject;
 
 public class ActionParams implements ApiParams, Paginatable {
     private final String domain;
@@ -31,8 +30,8 @@ public class ActionParams implements ApiParams, Paginatable {
     }
 
     @Override
-    public JSONObject asJson() {
-        return new JSONObject(JSON.toJSONString(this));
+    public String asBody() {
+        return JSON.toJSONString(this);
     }
 
     @Override

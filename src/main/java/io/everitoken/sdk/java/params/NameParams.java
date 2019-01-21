@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.params;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 
 public class NameParams implements ApiParams {
     private final String name;
@@ -9,11 +9,12 @@ public class NameParams implements ApiParams {
         this.name = name;
     }
 
-    @Override
-    public JSONObject asJson() {
-        JSONObject payload = new JSONObject();
-        payload.put("name", name);
+    public String getName() {
+        return name;
+    }
 
-        return payload;
+    @Override
+    public String asBody() {
+        return JSON.toJSONString(this);
     }
 }

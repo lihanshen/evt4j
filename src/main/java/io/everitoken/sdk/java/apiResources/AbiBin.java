@@ -17,7 +17,7 @@ public class AbiBin extends ApiResource {
         JsonNode res = super.makeRequest(requestParams);
         JSONObject json = res.getObject();
 
-        if (json.has("binargs")) {
+        if (!json.has("binargs")) {
             throw new ApiResponseException("Abi to bin response should have a 'binargs' field", json);
         }
 

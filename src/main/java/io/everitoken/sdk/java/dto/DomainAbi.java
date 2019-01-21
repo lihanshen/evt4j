@@ -72,7 +72,7 @@ public class DomainAbi implements Namable, DomainKeyConfiguration, Transactional
     }
 
     @Override
-    public JSONObject toJson() {
+    public String serialize() {
         return null;
     }
 }

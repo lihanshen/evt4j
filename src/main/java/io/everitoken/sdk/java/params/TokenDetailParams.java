@@ -1,22 +1,26 @@
 package io.everitoken.sdk.java.params;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSON;
 
 public class TokenDetailParams implements ApiParams {
     private final String domain;
     private final String name;
 
-    public TokenDetailParams(String domain, String name) {
+    TokenDetailParams(String domain, String name) {
         this.domain = domain;
         this.name = name;
     }
 
-    @Override
-    public JSONObject asJson() {
-        JSONObject payload = new JSONObject();
-        payload.put("domain", domain);
-        payload.put("name", name);
+    public String getDomain() {
+        return domain;
+    }
 
-        return payload;
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String asBody() {
+        return JSON.toJSONString(this);
     }
 }

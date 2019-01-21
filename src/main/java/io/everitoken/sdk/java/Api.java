@@ -53,7 +53,7 @@ public class Api {
 
 //            JSONObject headerState = api.getHeadBlockHeaderState();
 //            System.out.println(headerState.getString("id"));
-//            JSONArray res = api.getTransactionIdsInBlock(new TextIdParams(headerState.getString("id")));
+//            JSONArray res = api.getTransactionIdsInBlock(new BlockIdParams(headerState.getString("id")));
 //            System.out.println(res);
 
 //            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
@@ -119,7 +119,7 @@ public class Api {
         return new HistoryAction().request(RequestParams.of(netParams, actionParams));
     }
 
-    public JSONArray getTransactionIdsInBlock(TextIdParams idParams) throws ApiResponseException {
+    public JSONArray getTransactionIdsInBlock(BlockIdParams idParams) throws ApiResponseException {
         return new TransactionIds().request(RequestParams.of(netParams, idParams));
     }
 

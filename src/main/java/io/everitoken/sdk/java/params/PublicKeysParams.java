@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.params;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.PublicKey;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +22,13 @@ public class PublicKeysParams implements ApiParams {
         this.publicKeys = publicKeys;
     }
 
+    @JSONField(name = "keys")
+    public List<String> getPublicKeys() {
+        return publicKeys.stream().map(PublicKey::toString).collect(Collectors.toList());
+    }
+
     @Override
-    public JSONObject asJson() {
-        String paramObjectKey = "keys";
-        JSONObject jsonObject = new JSONObject();
-        JSONArray keys =
-                new JSONArray(publicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
-
-        jsonObject.put(paramObjectKey, keys);
-
-        return jsonObject;
+    public String asBody() {
+        return JSON.toJSONString(this);
     }
 }

@@ -22,7 +22,7 @@ public abstract class ApiResource {
     }
 
     protected BaseRequest buildRequest(RequestParams requestParams) {
-        return Unirest.post(getUrl(requestParams.getNetParams())).body(requestParams.getApiParams().asJson());
+        return Unirest.post(getUrl(requestParams.getNetParams())).body(new JSONObject(requestParams.getApiParams().asBody()));
     }
 
     public JsonNode makeRequest(RequestParams requestParams) throws ApiResponseException {
