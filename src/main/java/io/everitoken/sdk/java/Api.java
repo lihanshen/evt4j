@@ -30,26 +30,27 @@ public class Api {
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
             PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"
+                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
             });
-//            JSONObject res = api.getInfo();
+//            JSONObject res = api.getHeadBlockHeaderState();
 //            System.out.println(res);
 
 //            List<NameableResource> res1 = api.getCreatedDomains(publicKeysParams);
-//            res1.stream().forEach(domain -> System.out.println(domain.toString()));
+//            System.out.println(JSON.toJSONString(res1));
 
-//            List<TokenName> res = api.getOwnedTokens(publicKeysParams);
-//            res.stream().forEach(token -> System.out.println(token.toString()));
+//            List<TokenDomain> res = api.getOwnedTokens(publicKeysParams);
+//            System.out.println(JSON.toJSONString(res));
 
 //            List<NameableResource> res = api.getManagedGroups(publicKeysParams);
-//            res.stream().forEach(group -> System.out.println(group.toString()));
+//            System.out.println(JSON.toJSONString(res));
 
-//            JSONObject res = api.getCreatedFungibles(publicKeysParams);
+//            FungibleCreated res = api.getCreatedFungibles(publicKeysParams);
 //            System.out.println(res);
 
-            ActionParams actionParams = new ActionParams("testdomainfei1", null, new String[]{"issuetoken", "transfer"});
-            List<ActionData> res = api.getActions(actionParams);
-            res.forEach(action -> System.out.println(action.getName()));
+//            ActionParams actionParams = new ActionParams("testdomainfei1", null, new String[]{"issuetoken", "transfer"
+//            });
+//            List<ActionData> res = api.getActions(actionParams);
+//            System.out.println(JSON.toJSONString(res));
 
 //            JSONObject headerState = api.getHeadBlockHeaderState();
 //            System.out.println(headerState.getString("id"));
@@ -74,15 +75,16 @@ public class Api {
 //            JSONArray res = api.getFungibleBalance(fungibleBalanceParams);
 //            System.out.println(res);
 
-//            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
-//                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
-//            );
+
 //            ActionParams actionParams = new ActionParams("testdomainfei1");
 //            List<ActionData> actionData = api.getActions(actionParams);
-//            actionData.stream().forEach(d -> System.out.println(d.getData()));
-//
-//            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
-//            System.out.println(res.getTransaction());
+//            System.out.println(Utils.jsonPrettyPrint(actionData));
+
+            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
+                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
+            );
+            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
+            System.out.println(res.getTransaction());
 //            JSONObject res = api.getFungibleSymbolDetail(new IdParams(1));
 //            System.out.println(res);
 
@@ -91,7 +93,7 @@ public class Api {
         }
     }
 
-    public JSONObject getInfo() throws ApiResponseException {
+    public NodeInfo getInfo() throws ApiResponseException {
         return new Info().request(RequestParams.of(netParams));
     }
 
@@ -103,7 +105,7 @@ public class Api {
         return new HistoryDomain().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<TokenName> getOwnedTokens(PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<TokenDomain> getOwnedTokens(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryToken().request(RequestParams.of(netParams, publicKeysParams));
     }
 
@@ -111,7 +113,7 @@ public class Api {
         return new HistoryGroup().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public JSONObject getCreatedFungibles(PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public FungibleCreated getCreatedFungibles(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryFungible().request(RequestParams.of(netParams, publicKeysParams));
     }
 

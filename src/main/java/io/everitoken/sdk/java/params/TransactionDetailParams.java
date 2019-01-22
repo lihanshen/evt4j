@@ -14,7 +14,7 @@ public class TransactionDetailParams implements ApiParams {
         this.blockNum = blockNum;
     }
 
-    TransactionDetailParams(String trxId) {
+    public TransactionDetailParams(String trxId) {
         this(trxId, null);
     }
 

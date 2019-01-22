@@ -1,15 +1,14 @@
 package io.everitoken.sdk.java.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
 public class ActionData implements Transactable {
-
     private final String trxId;
     private final JSONObject data;
     private final String domain;
@@ -17,7 +16,7 @@ public class ActionData implements Transactable {
     private final String key;
     private final DateTime timestamp;
 
-    private ActionData(@NotNull JSONObject raw) throws JSONException {
+    private ActionData(@NotNull JSONObject raw) {
         trxId = raw.getString("trx_id");
         data = raw.getJSONObject("data");
         domain = raw.getString("domain");
@@ -28,12 +27,13 @@ public class ActionData implements Transactable {
 
     @NotNull
     @Contract("_ -> new")
-    public static ActionData create(JSONObject raw) throws JSONException, NullPointerException {
+    public static ActionData create(JSONObject raw) {
         Objects.requireNonNull(raw);
         return new ActionData(raw);
     }
 
     @Override
+    @JSONField(name = "trx_id")
     public String getTrxId() {
         return trxId;
     }

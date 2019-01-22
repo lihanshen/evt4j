@@ -1,12 +1,13 @@
 package io.everitoken.sdk.java.dto;
 
+import com.alibaba.fastjson.JSON;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public class NameableResource implements Namable {
     protected String name;
 
-    protected NameableResource(String name) {
+    NameableResource(String name) {
         this.name = name;
     }
 
@@ -23,6 +24,6 @@ public class NameableResource implements Namable {
 
     @Override
     public String toString() {
-        return String.format("[%s]: %s -> %s", getClass().getSimpleName(), "name", getName());
+        return JSON.toJSONString(this);
     }
 }

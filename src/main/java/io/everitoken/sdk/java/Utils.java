@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.io.BaseEncoding;
 import io.everitoken.sdk.java.apiResources.AbiBin;
 import io.everitoken.sdk.java.dto.AbiImpl;
@@ -106,5 +108,9 @@ public class Utils {
 
         AbiBin abiBin = new AbiBin();
         return abiBin.request(RequestParams.of(netParams, abi::serialize));
+    }
+
+    public static String jsonPrettyPrint(Object raw) {
+        return JSON.toJSONString(raw, SerializerFeature.PrettyFormat);
     }
 }

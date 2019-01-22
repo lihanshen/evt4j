@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java.dto;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.PublicKey;
 import org.jetbrains.annotations.Contract;
@@ -51,5 +52,10 @@ public class AuthorizerWeight {
     @JSONField(name = "weight_type")
     public int getWeightType() {
         return weightType;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

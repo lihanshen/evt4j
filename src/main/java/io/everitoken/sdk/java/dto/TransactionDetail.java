@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -40,10 +41,12 @@ public class TransactionDetail {
         return new TransactionDetail(raw);
     }
 
+    @JSONField(name = "block_num")
     public int getBlockNum() {
         return blockNum;
     }
 
+    @JSONField(name = "packed_trx")
     public String getPackedTrx() {
         return packedTrx;
     }
@@ -64,6 +67,7 @@ public class TransactionDetail {
         return transaction;
     }
 
+    @JSONField(name = "block_id")
     public String getBlockId() {
         return blockId;
     }

@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.apiResources;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.dto.TokenName;
+import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.RequestParams;
 import org.json.JSONArray;
@@ -24,7 +24,7 @@ public class HistoryToken extends ApiResource {
      * ```
      * { "domain1": ["token1", "token2"] }
      * ```
-     * It needs to be converted to List<TokenName> as shown below:
+     * It needs to be converted to List<TokenDomain> as shown below:
      * ```
      * [
      * { "name": "token1", "domain": "domain1" },
@@ -33,13 +33,13 @@ public class HistoryToken extends ApiResource {
      * ```
      *
      * @param requestParams
-     * @return List<TokenName>
+     * @return List<TokenDomain>
      */
-    public List<TokenName> request(RequestParams requestParams) throws ApiResponseException {
+    public List<TokenDomain> request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
         JSONObject payload = res.getObject();
 
-        List<TokenName> tokens = new ArrayList<>();
+        List<TokenDomain> tokens = new ArrayList<>();
 
         if (payload == null) {
             return tokens;
@@ -50,7 +50,7 @@ public class HistoryToken extends ApiResource {
         while (domains.hasNext()) {
             String domainName = domains.next();
             JSONArray tokensInDomain = payload.getJSONArray(domainName);
-            tokensInDomain.forEach(tokenInDomain -> tokens.add(new TokenName((String) tokenInDomain, domainName)));
+            tokensInDomain.forEach(tokenInDomain -> tokens.add(new TokenDomain((String) tokenInDomain, domainName)));
         }
 
         return tokens;
