@@ -72,19 +72,19 @@ public class Api {
 
 //            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
 //                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
-//            JSONArray res = api.getFungibleBalance(fungibleBalanceParams);
-//            System.out.println(res);
-
+//            List<FungibleBalanceData> res = api.getFungibleBalance(fungibleBalanceParams);
+//            res.forEach(balance -> System.out.println(balance.getRaw()));
+//            System.out.println(JSON.toJSONString(res));
 
 //            ActionParams actionParams = new ActionParams("testdomainfei1");
 //            List<ActionData> actionData = api.getActions(actionParams);
 //            System.out.println(Utils.jsonPrettyPrint(actionData));
 
-            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
-                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
-            );
-            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
-            System.out.println(res.getTransaction());
+//            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
+//                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
+//            );
+//            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
+//            System.out.println(res.getTransaction());
 //            JSONObject res = api.getFungibleSymbolDetail(new IdParams(1));
 //            System.out.println(res);
 
@@ -129,7 +129,7 @@ public class Api {
         return new TokenDetail().request(RequestParams.of(netParams, tokenDetailParams));
     }
 
-    public JSONArray getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
+    public List<FungibleBalanceData> getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
         return new FungibleBalance().request(RequestParams.of(netParams, fungibleBalanceParams));
     }
 
@@ -152,5 +152,4 @@ public class Api {
     public JSONObject getFungibleSymbolDetail(IdParams idParams) throws ApiResponseException {
         return new FungibleDetail().request(RequestParams.of(netParams, idParams));
     }
-
 }
