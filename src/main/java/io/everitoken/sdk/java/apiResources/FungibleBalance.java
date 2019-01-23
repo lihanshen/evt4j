@@ -18,7 +18,6 @@ public class FungibleBalance extends ApiResource {
 
     public List<FungibleBalanceData> request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
-        System.out.println(res);
         return StreamSupport.stream(res.getArray().spliterator(), true)
                 .map(balance -> new FungibleBalanceData((String) balance))
                 .collect(Collectors.toList());

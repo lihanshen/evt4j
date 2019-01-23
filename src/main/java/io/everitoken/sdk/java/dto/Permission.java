@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ public class Permission implements Namable {
     }
 
     @NotNull
-    public static Permission ofRaw(@NotNull JSONObject raw) {
+    static Permission ofRaw(@NotNull JSONObject raw) {
         Objects.requireNonNull(raw);
         String name = raw.getString("name");
         int threshold = raw.getInt("threshold");
@@ -31,10 +32,12 @@ public class Permission implements Namable {
         return new Permission(name, threshold, authorizers);
     }
 
+    @JSONField(ordinal = 1)
     public int getThreshold() {
         return threshold;
     }
 
+    @JSONField(ordinal = 2)
     public List<AuthorizerWeight> getAuthorizers() {
         return authorizers;
     }

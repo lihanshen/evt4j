@@ -4,7 +4,6 @@ import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.dto.ActionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.RequestParams;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -20,9 +19,8 @@ public class FungibleAction extends ApiResource {
 
     public List<ActionData> request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
-        JSONArray payload = res.getArray();
 
-        return StreamSupport.stream(payload.spliterator(), true)
+        return StreamSupport.stream(res.getArray().spliterator(), true)
                 .map(raw -> ActionData.create((JSONObject) raw))
                 .collect(Collectors.toList());
     }

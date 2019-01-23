@@ -49,7 +49,7 @@ public class AuthorizerWeight {
         return ref;
     }
 
-    @JSONField(name = "weight_type")
+    @JSONField(name = "weight")
     public int getWeightType() {
         return weightType;
     }

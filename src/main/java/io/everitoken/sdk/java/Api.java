@@ -85,8 +85,8 @@ public class Api {
 //            );
 //            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
-//            JSONObject res = api.getFungibleSymbolDetail(new IdParams(1));
-//            System.out.println(res);
+//            FungibleDetailData res = api.getFungibleSymbolDetail(new IdParams(1));
+//            System.out.println(Utils.jsonPrettyPrint(res));
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -149,7 +149,7 @@ public class Api {
         return new GroupDetail().request(RequestParams.of(netParams, nameParams));
     }
 
-    public JSONObject getFungibleSymbolDetail(IdParams idParams) throws ApiResponseException {
+    public FungibleDetailData getFungibleSymbolDetail(IdParams idParams) throws ApiResponseException {
         return new FungibleDetail().request(RequestParams.of(netParams, idParams));
     }
 }
