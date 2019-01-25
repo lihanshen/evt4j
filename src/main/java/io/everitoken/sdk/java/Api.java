@@ -47,7 +47,8 @@ public class Api {
 //            FungibleCreated res = api.getCreatedFungibles(publicKeysParams);
 //            System.out.println(res);
 
-//            ActionParams actionParams = new ActionParams("testdomainfei1", null, new String[]{"issuetoken", "transfer"
+//            ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1", null, new
+//            String[]{"issuetoken", "transfer"
 //            });
 //            List<ActionData> res = api.getActions(actionParams);
 //            System.out.println(JSON.toJSONString(res));
@@ -76,7 +77,7 @@ public class Api {
 //            res.forEach(balance -> System.out.println(balance.getRaw()));
 //            System.out.println(JSON.toJSONString(res));
 
-//            ActionParams actionParams = new ActionParams("testdomainfei1");
+//            ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1");
 //            List<ActionData> actionData = api.getActions(actionParams);
 //            System.out.println(Utils.jsonPrettyPrint(actionData));
 
@@ -117,8 +118,8 @@ public class Api {
         return new HistoryFungible().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<ActionData> getActions(ActionParams actionParams) throws ApiResponseException {
-        return new HistoryAction().request(RequestParams.of(netParams, actionParams));
+    public List<ActionData> getActions(ActionQueryParams actionQueryParams) throws ApiResponseException {
+        return new HistoryAction().request(RequestParams.of(netParams, actionQueryParams));
     }
 
     public JSONArray getTransactionIdsInBlock(BlockIdParams idParams) throws ApiResponseException {

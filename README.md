@@ -70,6 +70,7 @@ Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"
 
 ## TODO
 * [ ] implement meta dto
+* [ ] extract test functions from Api::main to integration test
 
 
 ## Resources

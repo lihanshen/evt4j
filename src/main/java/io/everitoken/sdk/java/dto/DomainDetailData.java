@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import io.everitoken.sdk.java.abi.Domain;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class DomainDetailData extends DomainAbi implements Meta, Addressable {
+public class DomainDetailData extends Domain implements Meta, Addressable {
     private final JSONArray metas;
     private final String address;
     private final DateTime createdTime;

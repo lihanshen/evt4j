@@ -1,13 +1,14 @@
-package io.everitoken.sdk.java.dto;
+package io.everitoken.sdk.java.abi;
 
 import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.dto.*;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class DomainAbi implements Namable, DomainKeyConfiguration, TransactionalAction, AbiImpl {
+public class Domain implements Namable, DomainKeyConfiguration, TransactionalAction, AbiImpl {
     private final String name;
     private final PublicKey creator;
     private final Permission issue;
@@ -15,7 +16,7 @@ public class DomainAbi implements Namable, DomainKeyConfiguration, Transactional
     private final Permission manage;
     private String domainAction = ".create";
 
-    protected DomainAbi(String name, PublicKey creator, Permission issue, Permission transfer, Permission manage) {
+    protected Domain(String name, PublicKey creator, Permission issue, Permission transfer, Permission manage) {
         this.name = name;
         this.creator = creator;
         this.issue = issue;
@@ -23,7 +24,7 @@ public class DomainAbi implements Namable, DomainKeyConfiguration, Transactional
         this.manage = manage;
     }
 
-    protected DomainAbi(String name, String creator, JSONObject issue, JSONObject transfer, JSONObject manage) {
+    protected Domain(String name, String creator, JSONObject issue, JSONObject transfer, JSONObject manage) {
         this.name = name;
         this.creator = PublicKey.of(creator);
         this.issue = Permission.ofRaw(issue);
@@ -33,12 +34,13 @@ public class DomainAbi implements Namable, DomainKeyConfiguration, Transactional
 
     @NotNull
     @Contract("_, _, _, _, _ -> new")
-    public static DomainAbi ofRaw(String name, String creator, JSONObject issue, JSONObject transfer, JSONObject manage) {
+    public static Domain ofRaw(String name, String creator, JSONObject issue, JSONObject transfer,
+                               JSONObject manage) {
         Objects.requireNonNull(issue);
         Objects.requireNonNull(transfer);
         Objects.requireNonNull(manage);
 
-        return new DomainAbi(name, creator, issue, transfer, manage);
+        return new Domain(name, creator, issue, transfer, manage);
     }
 
     @Override

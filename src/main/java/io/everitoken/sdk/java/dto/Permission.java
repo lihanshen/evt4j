@@ -21,7 +21,7 @@ public class Permission implements Namable {
     }
 
     @NotNull
-    static Permission ofRaw(@NotNull JSONObject raw) {
+    public static Permission ofRaw(@NotNull JSONObject raw) {
         Objects.requireNonNull(raw);
         String name = raw.getString("name");
         int threshold = raw.getInt("threshold");

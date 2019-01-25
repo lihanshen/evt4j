@@ -2,14 +2,14 @@ package io.everitoken.sdk.java.params;
 
 import com.alibaba.fastjson.JSON;
 
-public class ActionParams implements ApiParams, Paginatable {
+public class ActionQueryParams implements ApiParams, Paginatable {
     private final String domain;
     private final String key;
     private final String[] names;
     private final int skip;
     private final int take;
 
-    public ActionParams(String domain, String key, String[] names, int skip, int take) {
+    public ActionQueryParams(String domain, String key, String[] names, int skip, int take) {
         this.domain = domain;
         this.key = key;
         this.names = names;
@@ -17,15 +17,15 @@ public class ActionParams implements ApiParams, Paginatable {
         this.take = take;
     }
 
-    public ActionParams(String domain) {
+    public ActionQueryParams(String domain) {
         this(domain, null, new String[]{}, 0, 10);
     }
 
-    public ActionParams(String domain, String key) {
+    public ActionQueryParams(String domain, String key) {
         this(domain, key, new String[]{}, 0, 10);
     }
 
-    public ActionParams(String domain, String key, String[] names) {
+    public ActionQueryParams(String domain, String key, String[] names) {
         this(domain, key, names, 0, 10);
     }
 
