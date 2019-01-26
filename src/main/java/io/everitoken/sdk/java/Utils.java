@@ -3,18 +3,12 @@ package io.everitoken.sdk.java;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.io.BaseEncoding;
-import io.everitoken.sdk.java.apiResources.AbiBin;
-import io.everitoken.sdk.java.dto.AbiImpl;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.exceptions.Base58CheckException;
-import io.everitoken.sdk.java.params.NetParams;
-import io.everitoken.sdk.java.params.RequestParams;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.Sha256Hash;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.security.SecureRandom;
@@ -101,14 +95,15 @@ public class Utils {
         return Sha256Hash.hashTwice(data);
     }
 
-    public static JSONObject abiToBin(NetParams netParams, AbiImpl abi, boolean throughApi) throws ApiResponseException {
-        if (!throughApi) {
-            throw new IllegalStateException("Currently Abi to bin action can only be done through Api");
-        }
-
-        AbiBin abiBin = new AbiBin();
-        return abiBin.request(RequestParams.of(netParams, abi::serialize));
-    }
+//    public static JSONObject abiToBin(NetParams netParams, AbiImpl abi, boolean throughApi) throws
+//    ApiResponseException {
+//        if (!throughApi) {
+//            throw new IllegalStateException("Currently Abi to bin action can only be done through Api");
+//        }
+//
+//        AbiBin abiBin = new AbiBin();
+//        return abiBin.request(RequestParams.of(netParams, abi::serialize));
+//    }
 
     public static String jsonPrettyPrint(Object raw) {
         return JSON.toJSONString(raw, SerializerFeature.PrettyFormat);

@@ -55,8 +55,8 @@ public class TokenDetailData implements Meta {
 
     @Override
     public String toString() {
-        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "Domain", getName(), "owner",
-                owner.stream().map(PublicKey::toString).reduce(String::concat)
+        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "NewDomainAction", getName(), "owner",
+                             owner.stream().map(PublicKey::toString).reduce(String::concat)
         );
     }
 }
