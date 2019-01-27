@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
+import io.everitoken.sdk.java.params.MainNetNetParams;
 import io.everitoken.sdk.java.params.NetParams;
-import io.everitoken.sdk.java.params.TestNetNetParams;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,7 @@ class NewDomainActionTest {
                     json.getJSONObject("manage")
             );
 
-            NetParams netParams = new TestNetNetParams();
+            NetParams netParams = new MainNetNetParams(NetParams.NET.MAINNET1);
             RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
             JSONObject res = new JSONObject(newDomainAction.serialize(provider));
             JSONObject data = new JSONObject(res.getString("data"));
