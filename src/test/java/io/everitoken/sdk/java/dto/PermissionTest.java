@@ -19,7 +19,7 @@ class PermissionTest {
             Assertions.assertEquals(JSON.toJSONString(permission), raw);
             Assertions.assertEquals(permission.getName(), "issue");
             Assertions.assertEquals(permission.getThreshold(), 1);
-            Assertions.assertEquals(permission.getAuthorizers().get(0).getWeightType(), 1);
+            Assertions.assertEquals(permission.getAuthorizers().get(0).getWeight(), 1);
         });
     }
 }

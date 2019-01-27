@@ -1,22 +1,20 @@
 package io.everitoken.sdk.java.abi;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.TransactionalAction;
+import io.everitoken.sdk.java.dto.PushableAction;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.Objects;
 
-public class NewDomainAction implements TransactionalAction, AbiImpl {
+public class NewDomainAction extends Abi implements PushableAction {
     @JSONField(deserialize = false, serialize = false)
     private static final String key = ".create";
     @JSONField(deserialize = false, serialize = false)
     private static final String name = "newdomain";
-    private final String domain;
     private final PublicKey creator;
     private final Permission issue;
     private final Permission transfer;
@@ -24,7 +22,7 @@ public class NewDomainAction implements TransactionalAction, AbiImpl {
 
     protected NewDomainAction(String domain, PublicKey creator, Permission issue, Permission transfer,
                               Permission manage) {
-        this.domain = domain;
+        super(name, key, domain);
         this.creator = creator;
         this.issue = issue;
         this.transfer = transfer;
@@ -32,11 +30,9 @@ public class NewDomainAction implements TransactionalAction, AbiImpl {
     }
 
     protected NewDomainAction(String domain, String creator, JSONObject issue, JSONObject transfer, JSONObject manage) {
-        this.domain = domain;
-        this.creator = PublicKey.of(creator);
-        this.issue = Permission.ofRaw(issue);
-        this.transfer = Permission.ofRaw(transfer);
-        this.manage = Permission.ofRaw(manage);
+        this(domain, PublicKey.of(creator), Permission.ofRaw(issue), Permission.ofRaw(transfer),
+             Permission.ofRaw(manage)
+        );
     }
 
     @NotNull
@@ -68,55 +64,5 @@ public class NewDomainAction implements TransactionalAction, AbiImpl {
     @JSONField(ordinal = 4)
     public Permission getManage() {
         return manage;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getKey() {
-        return key;
-    }
-
-    @Override
-    @JSONField(name = "name")
-    public String getDomain() {
-        return domain;
-    }
-
-    @Override
-    public String getData(AbiSerialisationProvider provider) {
-        return provider.serialize(JSON.toJSONString(new AbiToBin(getName(), this)));
-    }
-
-    @Override
-    public String serialize(AbiSerialisationProvider provider) {
-        JSONObject payload = new JSONObject();
-        payload.put("name", getName());
-        payload.put("key", getKey());
-        payload.put("domain", getDomain());
-        payload.put("data", getData(provider));
-        return payload.toString();
-    }
-}
-
-class AbiToBin {
-    private final String action;
-    private final NewDomainAction args;
-
-    AbiToBin(String action, NewDomainAction args) {
-        this.action = action;
-        this.args = args;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    @JSONField(ordinal = 1)
-    public NewDomainAction getArgs() {
-        return args;
     }
 }

@@ -1,5 +1,6 @@
 package io.everitoken.sdk.java.abi;
 
+import io.everitoken.sdk.java.exceptions.AbiSerialisationFailureException;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.TestNetNetParams;
 import org.json.JSONObject;
@@ -7,15 +8,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 class RemoteAbiSerialisationProviderTest {
 
     @Test
     @Tag("Integration")
-//    @EnabledIfEnvironmentVariable(named = "ENV", matches = "INTEGRATION")
+    @EnabledIfEnvironmentVariable(named = "ENV", matches = "INTEGRATION")
     @DisplayName("Serialize Abi via node")
     void serializeViaAbi() {
-        NetParams netParams = new TestNetNetParams();
         String data = "{\"action\":\"newgroup\",\"args\":{\"name\":\"testgroupcreationfei\",\"group\":{\"name\":" +
                 "\"testgroupcreationfei\",\"key\":\"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\"," +
                 "\"root\":{\"threshold\":6,\"weight\":0,\"nodes\":[{\"threshold\":1,\"weight\":3,\"nodes\":" +
@@ -36,8 +37,30 @@ class RemoteAbiSerialisationProviderTest {
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgNDy\",\"weight\":1}]}}\"," +
                 "\"action\":\"newdomain\"}";
 
+        NetParams netParams = new TestNetNetParams();
         RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
         JSONObject res = new JSONObject(provider.serialize(data));
         Assertions.assertTrue(res.has("binargs"));
+    }
+
+    @Test
+    @DisplayName("Throw if input are not valid json")
+    void throwEx() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            NetParams netParams = new TestNetNetParams();
+            RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
+            new JSONObject(provider.serialize(""));
+        });
+    }
+
+    @Test
+    @DisplayName("Throw if input can't be serialised by Api")
+    void throwExAgain() {
+        Throwable throwable = Assertions.assertThrows(AbiSerialisationFailureException.class, () -> {
+            NetParams netParams = new TestNetNetParams();
+            RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
+            new JSONObject(provider.serialize("{\"action\":\"newgroup\", \"args\": {}}\""));
+        });
+        Assertions.assertTrue(throwable.getMessage().contains("Failed to serialize Abi"));
     }
 }

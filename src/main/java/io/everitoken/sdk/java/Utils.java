@@ -95,7 +95,7 @@ public class Utils {
         return Sha256Hash.hashTwice(data);
     }
 
-//    public static JSONObject abiToBin(NetParams netParams, AbiImpl abi, boolean throughApi) throws
+//    public static JSONObject abiToBin(NetParams netParams, Abi abi, boolean throughApi) throws
 //    ApiResponseException {
 //        if (!throughApi) {
 //            throw new IllegalStateException("Currently Abi to bin action can only be done through Api");

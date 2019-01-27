@@ -1,7 +1,6 @@
 package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.PublicKey;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +12,11 @@ public class AuthorizerWeight {
     private static final String ACCOUNT_IDENTIFIER = "[A]";
     private static final String GROUP_IDENTIFIER = "[G]";
     private final String ref;
-    private final int weightType;
+    private final int weight;
 
-    public AuthorizerWeight(String ref, int weightType) {
+    public AuthorizerWeight(String ref, int weight) {
         this.ref = ref;
-        this.weightType = weightType;
+        this.weight = weight;
     }
 
     @NotNull
@@ -49,9 +48,8 @@ public class AuthorizerWeight {
         return ref;
     }
 
-    @JSONField(name = "weight")
-    public int getWeightType() {
-        return weightType;
+    public int getWeight() {
+        return weight;
     }
 
     @Override

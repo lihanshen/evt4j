@@ -1,9 +1,11 @@
 package io.everitoken.sdk.java.abi;
 
 import io.everitoken.sdk.java.apiResources.AbiBin;
+import io.everitoken.sdk.java.exceptions.AbiSerialisationFailureException;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.RequestParams;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RemoteAbiSerialisationProvider implements AbiSerialisationProvider {
@@ -15,15 +17,14 @@ public class RemoteAbiSerialisationProvider implements AbiSerialisationProvider 
 
     @Override
     public String serialize(String data) {
-        System.out.println(data);
         try {
             AbiBin abiBin = new AbiBin();
             JSONObject res = abiBin.request(RequestParams.of(netParams, () -> data));
-            System.out.println(res.toString());
             return res.toString();
+        } catch (JSONException ex) {
+            throw new IllegalArgumentException(String.format("Invalid json \"%s\" passed in.", data), ex);
         } catch (ApiResponseException ex) {
-            System.out.println(ex.getRaw());
-            return "";
+            throw new AbiSerialisationFailureException(ex.getRaw().toString(), ex);
         }
     }
 }
