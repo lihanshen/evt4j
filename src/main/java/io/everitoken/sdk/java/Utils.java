@@ -11,6 +11,8 @@ import org.bitcoinj.core.Sha256Hash;
 import org.jetbrains.annotations.NotNull;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.security.SecureRandom;
 
 
@@ -95,17 +97,19 @@ public class Utils {
         return Sha256Hash.hashTwice(data);
     }
 
-//    public static JSONObject abiToBin(NetParams netParams, Abi abi, boolean throughApi) throws
-//    ApiResponseException {
-//        if (!throughApi) {
-//            throw new IllegalStateException("Currently Abi to bin action can only be done through Api");
-//        }
-//
-//        AbiBin abiBin = new AbiBin();
-//        return abiBin.request(RequestParams.of(netParams, abi::serialize));
-//    }
-
     public static String jsonPrettyPrint(Object raw) {
         return JSON.toJSONString(raw, SerializerFeature.PrettyFormat);
+    }
+
+    public static short getNumHash(String hash) {
+        byte[] input = Utils.HEX.decode(hash);
+        return ByteBuffer.wrap(input, 2, input.length - 2).getShort();
+    }
+
+    public static long getLastIrreversibleBlockPrefix(String hash) {
+        byte[] input = Utils.HEX.decode(hash);
+        return Integer.toUnsignedLong(
+                ByteBuffer.wrap(input, 8, input.length - 8).order(ByteOrder.LITTLE_ENDIAN).getInt()
+        );
     }
 }

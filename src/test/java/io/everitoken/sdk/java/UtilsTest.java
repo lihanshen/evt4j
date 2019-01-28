@@ -37,4 +37,20 @@ class UtilsTest {
         byte[] bytes32 = Utils.random32Bytes();
         assertEquals(32, bytes32.length, "Message should be 32 bytes long");
     }
+
+    @Test
+    void getNumHash() {
+        Assertions.assertDoesNotThrow(() -> {
+            String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
+            assertEquals(Utils.getNumHash(input), 9486);
+        });
+    }
+
+    @Test
+    void getLastIrreversibleBlockPrefix() {
+        Assertions.assertDoesNotThrow(() -> {
+            String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
+            assertEquals(Utils.getLastIrreversibleBlockPrefix(input), 4165007754L);
+        });
+    }
 }
