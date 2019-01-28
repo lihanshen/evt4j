@@ -1,15 +1,18 @@
 package io.everitoken.sdk.java.apiResources;
 
+import com.alibaba.fastjson.JSON;
+import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.RequestParams;
 import io.everitoken.sdk.java.params.TestNetNetParams;
-import org.json.JSONObject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class TransactionCommitTest {
 
     @Test
+    @Disabled
     void placeholder() {
         String sampleRes = "{\"transaction_id\":\"39fa265d41bd3b2ba1c0295fcdb95431b6ddfaa241c4a90970beaf66b4f0716b\"," +
                 "\"processed\":{\"elapsed\":290,\"charge\":125,\"receipt\":{\"type\":\"input\"," +
@@ -30,8 +33,8 @@ class TransactionCommitTest {
         RequestParams requestParams = RequestParams.of(netParams, () -> data);
 
         try {
-            JSONObject res = transactionCommit.request(requestParams);
-            System.out.println(res);
+            TransactionData res = transactionCommit.request(requestParams);
+            System.out.println(JSON.toJSONString(res));
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());
         }

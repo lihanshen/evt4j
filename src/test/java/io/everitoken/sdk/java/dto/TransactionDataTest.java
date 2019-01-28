@@ -25,6 +25,7 @@ class TransactionDataTest {
                     transactionData.getTrxId(),
                     transactionData.getProcessed().getString("id")
             );
+            Assertions.assertTrue(transactionData.isExecuted(), "should return true");
         });
     }
 }

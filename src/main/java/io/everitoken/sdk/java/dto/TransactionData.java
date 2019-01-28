@@ -32,4 +32,18 @@ public class TransactionData implements Transactable {
     public JSONObject getProcessed() {
         return processed;
     }
+
+    public boolean isExecuted() {
+        if (processed == null) {
+            return false;
+        }
+
+        try {
+            JSONObject receipt = processed.getJSONObject("receipt");
+            return receipt.getString("status").equals("executed");
+        } catch (Exception ex) {
+            // invalid structure -> false
+            return false;
+        }
+    }
 }
