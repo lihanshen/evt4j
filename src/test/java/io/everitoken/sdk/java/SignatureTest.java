@@ -42,8 +42,8 @@ class SignatureTest {
             Signature sig = Signature.signHash(Utils.HEX.decode(
                     "08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"), key);
             Assertions.assertEquals(
-                    sig.toString(),
-                    "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD"
+                    "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD",
+                    sig.toString()
             );
         });
     }
@@ -87,7 +87,7 @@ class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
-            assertEquals(sig.getRecId(), 0, "recId equals either 0 or 1");
+            assertEquals(0, sig.getRecId(), "recId equals either 0 or 1");
         });
     }
 
@@ -129,14 +129,14 @@ class SignatureTest {
             Signature signature = Signature.of(sig);
 
             assertEquals(
-                    Utils.HEX.encode(signature.getR().toByteArray()),
-                    "5334a049e9bd38c8f6d9a92dac39bf07e6e5a5e0c04a668f788f7c514ef9fea6"
+                    "5334a049e9bd38c8f6d9a92dac39bf07e6e5a5e0c04a668f788f7c514ef9fea6",
+                    Utils.HEX.encode(signature.getR().toByteArray())
             );
             assertEquals(
-                    Utils.HEX.encode(signature.getS().toByteArray()),
-                    "14b0de5c1d94c8e7e4bc1786fbfdcd1d0307d8194d770303dddd7e38df9a2fcf"
+                    "14b0de5c1d94c8e7e4bc1786fbfdcd1d0307d8194d770303dddd7e38df9a2fcf",
+                    Utils.HEX.encode(signature.getS().toByteArray())
             );
-            assertEquals(signature.getRecId(), 1);
+            assertEquals(1, signature.getRecId());
         });
     }
 }

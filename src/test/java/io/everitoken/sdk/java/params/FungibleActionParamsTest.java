@@ -12,9 +12,9 @@ class FungibleActionParamsTest {
         FungibleActionParams params = new FungibleActionParams("address", "testSymbol");
         JSONObject json = new JSONObject(params.asBody());
 
-        Assertions.assertEquals(json.getString("addr"), "address");
-        Assertions.assertEquals(json.getString("sym_id"), "testSymbol");
-        Assertions.assertEquals(json.getInt("skip"), 0);
-        Assertions.assertEquals(json.getInt("take"), 10);
+        Assertions.assertEquals("address", json.getString("addr"));
+        Assertions.assertEquals("testSymbol", json.getString("sym_id"));
+        Assertions.assertEquals(0, json.getInt("skip"));
+        Assertions.assertEquals(10, json.getInt("take"));
     }
 }

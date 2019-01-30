@@ -21,7 +21,7 @@ class SignableDigestTest {
             NetParams netParams = new TestNetNetParams();
             SignableDigest signableDigest = new SignableDigest();
             byte[] res = signableDigest.request(RequestParams.of(netParams, () -> data));
-            Assertions.assertEquals(Utils.HEX.encode(res), refDigest);
+            Assertions.assertEquals(refDigest, Utils.HEX.encode(res));
         });
     }
 }

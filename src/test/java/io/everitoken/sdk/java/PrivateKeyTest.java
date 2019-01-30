@@ -22,7 +22,7 @@ class PrivateKeyTest {
         Assertions.assertDoesNotThrow(() -> {
             String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
             PublicKey publicKey = PrivateKey.fromWif(wif).toPublicKey();
-            assertEquals(publicKey.toString(), "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
+            assertEquals("EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U", publicKey.toString());
         });
     }
 
@@ -35,8 +35,8 @@ class PrivateKeyTest {
             PrivateKey key = PrivateKey.seedPrivateKey("seed");
 
             PublicKey publicKey = key.toPublicKey();
-            assertEquals(publicKey.toString(), publicKeyStr);
-            assertEquals(key.toWif(), privateKey);
+            assertEquals(publicKeyStr, publicKey.toString());
+            assertEquals(privateKey, key.toWif());
         });
     }
 

@@ -54,7 +54,7 @@ class UtilsTest {
     void getNumHash() {
         Assertions.assertDoesNotThrow(() -> {
             String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
-            assertEquals(Utils.getNumHash(input), 9486);
+            assertEquals(9486, Utils.getNumHash(input));
         });
     }
 
@@ -62,7 +62,7 @@ class UtilsTest {
     void getLastIrreversibleBlockPrefix() {
         Assertions.assertDoesNotThrow(() -> {
             String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
-            assertEquals(Utils.getLastIrreversibleBlockPrefix(input), 4165007754L);
+            assertEquals(4165007754L, Utils.getLastIrreversibleBlockPrefix(input));
         });
     }
 }

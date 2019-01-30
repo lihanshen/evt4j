@@ -16,10 +16,10 @@ class PermissionTest {
     void deserialize() {
         Assertions.assertDoesNotThrow(() -> {
             Permission permission = Permission.ofRaw(new JSONObject(raw));
-            Assertions.assertEquals(JSON.toJSONString(permission), raw);
-            Assertions.assertEquals(permission.getName(), "issue");
-            Assertions.assertEquals(permission.getThreshold(), 1);
-            Assertions.assertEquals(permission.getAuthorizers().get(0).getWeight(), 1);
+            Assertions.assertEquals(raw, JSON.toJSONString(permission));
+            Assertions.assertEquals("issue", permission.getName());
+            Assertions.assertEquals(1, permission.getThreshold());
+            Assertions.assertEquals(1, permission.getAuthorizers().get(0).getWeight());
         });
     }
 }

@@ -13,8 +13,8 @@ class AuthorizerWeightTest {
     void toJSONString() {
         AuthorizerWeight authorizerWeight = AuthorizerWeight.createOwner(2);
         JSONObject json = new JSONObject(JSON.toJSONString(authorizerWeight));
-        Assertions.assertEquals(json.getString("ref"), "[G] .OWNER");
-        Assertions.assertEquals(json.getInt("weight"), 2);
+        Assertions.assertEquals("[G] .OWNER", json.getString("ref"));
+        Assertions.assertEquals(2, json.getInt("weight"));
 
         PublicKey key = PublicKey.of("EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa");
         AuthorizerWeight authorizerWeight1 = AuthorizerWeight.createAccount(key, 1);
@@ -23,7 +23,7 @@ class AuthorizerWeightTest {
                 json1.getString("ref"),
                 String.format("%s %s", "[A]", "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa")
         );
-        Assertions.assertEquals(json1.getInt("weight"), 1);
+        Assertions.assertEquals(1, json1.getInt("weight"));
     }
 
     @Test
@@ -33,7 +33,7 @@ class AuthorizerWeightTest {
                 "{\"ref\":\"[G] .OWNER\",\"weight\":2}",
                 AuthorizerWeight.class
         );
-        Assertions.assertEquals(authorizerWeight.getRef(), "[G] .OWNER");
-        Assertions.assertEquals(authorizerWeight.getWeight(), 2);
+        Assertions.assertEquals("[G] .OWNER", authorizerWeight.getRef());
+        Assertions.assertEquals(2, authorizerWeight.getWeight());
     }
 }

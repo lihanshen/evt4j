@@ -37,8 +37,8 @@ class FungibleBalanceParamsTest {
             String symbolId = "testSymbolId";
             FungibleBalanceParams params = new FungibleBalanceParams(validPublicKey, symbolId);
             JSONObject json = new JSONObject(params.asBody());
-            assertEquals(json.getString("address"), validPublicKey, "correct address");
-            assertEquals(json.getString("sym_id"), symbolId, "correct symbol id");
+            assertEquals(validPublicKey, json.getString("address"), "correct address");
+            assertEquals(symbolId, json.getString("sym_id"), "correct symbol id");
         });
     }
 
@@ -48,7 +48,7 @@ class FungibleBalanceParamsTest {
         Assertions.assertDoesNotThrow(() -> {
             FungibleBalanceParams params = new FungibleBalanceParams(validPublicKey);
             JSONObject json = new JSONObject(params.asBody());
-            assertEquals(json.getString("address"), validPublicKey, "correct address");
+            assertEquals(validPublicKey, json.getString("address"), "correct address");
             assertFalse(json.has("sym_id"), "correct symbol id");
         });
     }
