@@ -12,7 +12,6 @@ public class SignableDigest extends ApiResource {
         super(uri);
     }
 
-
     public byte[] request(RequestParams requestParams) throws ApiResponseException {
         JsonNode res = super.makeRequest(requestParams);
         return Utils.HEX.decode(res.getObject().getString("digest"));

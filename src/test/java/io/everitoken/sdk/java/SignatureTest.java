@@ -35,6 +35,20 @@ class SignatureTest {
     }
 
     @Test
+    @DisplayName("signHash")
+    void signHash() {
+        Assertions.assertDoesNotThrow(() -> {
+            PrivateKey key = PrivateKey.fromWif("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
+            Signature sig = Signature.signHash(Utils.HEX.decode(
+                    "08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"), key);
+            Assertions.assertEquals(
+                    sig.toString(),
+                    "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD"
+            );
+        });
+    }
+
+    @Test
     @DisplayName("signHash and verifyHash should only work with byte[] of length 32")
     void invalidHashLength() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
@@ -103,6 +117,26 @@ class SignatureTest {
             String wrongMessage = "foobar";
             PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(wrongMessage.getBytes()), sig);
             assertNotEquals(publicKey.toString(), key.toPublicKey().toString());
+        });
+    }
+
+    @Test
+    @DisplayName("Init signature object from string")
+    void newSignature() {
+        Assertions.assertDoesNotThrow(() -> {
+            String sig =
+                    "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD";
+            Signature signature = Signature.of(sig);
+
+            assertEquals(
+                    Utils.HEX.encode(signature.getR().toByteArray()),
+                    "5334a049e9bd38c8f6d9a92dac39bf07e6e5a5e0c04a668f788f7c514ef9fea6"
+            );
+            assertEquals(
+                    Utils.HEX.encode(signature.getS().toByteArray()),
+                    "14b0de5c1d94c8e7e4bc1786fbfdcd1d0307d8194d770303dddd7e38df9a2fcf"
+            );
+            assertEquals(signature.getRecId(), 1);
         });
     }
 }

@@ -1,7 +1,9 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.InvalidSignatureException;
 import io.everitoken.sdk.java.exceptions.PublicKeyRecoverFailureException;
 import io.everitoken.sdk.java.exceptions.RecoverIDNotFoundException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
 import org.jetbrains.annotations.Contract;
@@ -13,13 +15,40 @@ import org.spongycastle.crypto.signers.ECDSASigner;
 import org.spongycastle.crypto.signers.HMacDSAKCalculator;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 public class Signature {
+    private static final String K1_PREFIX = "SIG_K1_";
     private ECKey.ECDSASignature signature;
     private Integer recId;
 
     public Signature(BigInteger r, BigInteger s) {
         signature = new ECKey.ECDSASignature(r, s);
+    }
+
+    public static Signature of(String signature) {
+        if (!signature.startsWith(K1_PREFIX)) {
+            throw new InvalidSignatureException(String.format(
+                    "Only support signature prefixed with \"%s\"",
+                    K1_PREFIX
+            ));
+        }
+
+        String signatureWithoutPrefix = signature.substring(K1_PREFIX.length());
+
+        byte[] signatureBytes = Utils.base58CheckDecode(signatureWithoutPrefix, "K1");
+
+        if (signatureBytes.length != 65) {
+            throw new InvalidSignatureException("Content of signature must be 65");
+        }
+
+        int recId = (int) signatureBytes[0] - 4 - 27;
+        BigInteger r = new BigInteger(ArrayUtils.subarray(signatureBytes, 1, 33));
+        BigInteger s = new BigInteger(ArrayUtils.subarray(signatureBytes, 33, signatureBytes.length));
+        Signature sig = new Signature(r, s);
+        sig.setRecId(recId);
+
+        return sig;
     }
 
     public static Signature signHash(byte[] hash, @NotNull PrivateKey key) {
@@ -132,6 +161,22 @@ public class Signature {
         if (hash.length != 32) {
             throw new IllegalArgumentException("Input hash must should be of length 32");
         }
+    }
+
+    public byte[] getBytes() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(65);
+        byteBuffer.put(0, (byte) (getRecId() + 4 + 27));
+        byteBuffer.position(1);
+        byteBuffer.put(getR().toByteArray(), 0, 32);
+        byteBuffer.position(33);
+        byteBuffer.put(getS().toByteArray(), 0, 32);
+
+        return byteBuffer.array();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s%s", K1_PREFIX, Utils.base58Check(getBytes(), "K1"));
     }
 
     @Contract(pure = true)

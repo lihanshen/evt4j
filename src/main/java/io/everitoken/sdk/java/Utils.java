@@ -9,6 +9,7 @@ import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.Sha256Hash;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.nio.ByteBuffer;
@@ -27,14 +28,28 @@ public class Utils {
         return out;
     }
 
-    @NotNull
     public static String base58Check(byte[] key) {
-        byte[] hash = ripemd160(key);
+        return base58Check(key, null);
+    }
+
+    @NotNull
+    public static String base58Check(byte[] key, @Nullable String keyType) {
+        byte[] check = key;
+
+        if (keyType != null) {
+            check = ArrayUtils.addAll(key, keyType.getBytes());
+        }
+
+        byte[] hash = ripemd160(check);
         byte[] concat = ArrayUtils.addAll(key, ArrayUtils.subarray(hash, 0, 4));
         return Base58.encode(concat);
     }
 
     public static byte[] base58CheckDecode(String key) throws Base58CheckException {
+        return base58CheckDecode(key, null);
+    }
+
+    public static byte[] base58CheckDecode(String key, @Nullable String keyType) throws Base58CheckException {
         byte[] decoded;
 
         try {
@@ -46,6 +61,10 @@ public class Utils {
         // split the byte slice
         byte[] data = ArrayUtils.subarray(decoded, 0, decoded.length - 4);
         byte[] checksum = ArrayUtils.subarray(decoded, decoded.length - 4, decoded.length);
+
+        if (keyType != null) {
+            data = ArrayUtils.addAll(data, keyType.getBytes());
+        }
 
         // ripemd160 input, get 4 bytes to compare
         byte[] hash = ripemd160(data);
@@ -62,6 +81,10 @@ public class Utils {
 
         if (!isEqual) {
             throw new Base58CheckException();
+        }
+
+        if (keyType != null) {
+            return ArrayUtils.subarray(data, 0, data.length - keyType.getBytes().length);
         }
 
         return data;

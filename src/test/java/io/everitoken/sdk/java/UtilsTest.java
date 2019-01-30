@@ -27,6 +27,18 @@ class UtilsTest {
     }
 
     @Test
+    @DisplayName("Base58 decode signature")
+    void base58OnSignature() {
+        Assertions.assertDoesNotThrow(() -> {
+            Utils.base58CheckDecode(
+                    "KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD",
+                    "K1"
+            );
+        });
+    }
+
+
+    @Test
     void random32BytesAsHex() {
         String str32BytesInHex = Utils.random32BytesAsHex();
         assertEquals(64, str32BytesInHex.length(), "Message should be 64 characters");
