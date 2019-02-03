@@ -36,8 +36,7 @@ class NewDomainActionTest {
             NetParams netParams = new MainNetNetParams(NetParams.NET.MAINNET1);
             RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
             JSONObject res = new JSONObject(newDomainAction.serialize(provider));
-            JSONObject data = new JSONObject(res.getString("data"));
-            Assertions.assertEquals(dataSerialisedByAdi, data.get("binargs"));
+            Assertions.assertEquals(dataSerialisedByAdi, res.get("data"));
         });
     }
 }

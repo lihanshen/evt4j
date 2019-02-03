@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import org.json.JSONObject;
 
-abstract class Abi {
+public abstract class Abi {
     private final String name;
     private final String key;
     private final String domain;
@@ -15,7 +15,7 @@ abstract class Abi {
         this.domain = domain;
     }
 
-    String serialize(AbiSerialisationProvider provider) {
+    public String serialize(AbiSerialisationProvider provider) {
         JSONObject payload = new JSONObject();
         payload.put("name", getName());
         payload.put("key", getKey());

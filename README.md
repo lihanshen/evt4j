@@ -54,7 +54,7 @@ Make sure maven is installed
 * [ ] getRequiredKeysForSuspendedTransaction // need suspendedTransaction first
 * [ ] getStatusOfEvtLink
 * [ ] getSuspendedTransactionDetail // need suspendedTransaction first
-* [ ] getEstimatedChargeForTransaction
+* [x] getEstimatedChargeForTransaction
 * [ ] generateUnsignedTransaction
 * [ ] pushTransaction
 
@@ -71,6 +71,7 @@ Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"
 ## TODO
 * [ ] implement meta dto
 * [ ] extract test functions from Api::main to integration test
+* [ ] request timeout
 
 
 ## Resources

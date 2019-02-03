@@ -12,8 +12,8 @@ class FungibleBalanceDataTest {
     @DisplayName("Using constructor")
     void usingConstructor() {
         FungibleBalanceData balance = new FungibleBalanceData(1, 20.1);
-        System.out.println(balance.toString());
-        System.out.println(balance.getRaw());
+        assertEquals(20.1, balance.getBalance());
+        assertEquals("20.10000 S#1", balance.getRaw());
     }
 
     @Test

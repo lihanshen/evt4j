@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SignatureTest {
@@ -95,14 +97,24 @@ class SignatureTest {
     @DisplayName("Can recover public key from signature")
     void RecoverPublicKeyFromSignatureSuccessful() {
         Assertions.assertDoesNotThrow(() -> {
-            String message = "helloworld";
+            String[] messages = new String[]{
+                    "helloworld",
+                    "foo",
+                    "bar",
+                    "baz",
+                    "evt",
+                    "evtjs",
+                    "everitoken.io"
+            };
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
-            Signature sig = Signature.sign((message.getBytes()), key);
 
-            PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(message.getBytes()), sig);
+            Arrays.asList(messages).forEach(message -> {
+                Signature sig = Signature.sign((message.getBytes()), key);
+                PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(message.getBytes()), sig);
 
-            assertTrue(PublicKey.isValidPublicKey(publicKey.toString()));
-            assertEquals(publicKey.toString(), key.toPublicKey().toString());
+                assertTrue(PublicKey.isValidPublicKey(publicKey.toString()));
+                assertEquals(publicKey.toString(), key.toPublicKey().toString());
+            });
         });
     }
 

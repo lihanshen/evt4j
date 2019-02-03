@@ -20,7 +20,7 @@ public class RemoteAbiSerialisationProvider implements AbiSerialisationProvider 
         try {
             AbiBin abiBin = new AbiBin();
             JSONObject res = abiBin.request(RequestParams.of(netParams, () -> data));
-            return res.toString();
+            return res.getString("binargs");
         } catch (JSONException ex) {
             throw new IllegalArgumentException(String.format("Invalid json \"%s\" passed in.", data), ex);
         } catch (ApiResponseException ex) {

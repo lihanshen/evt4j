@@ -8,22 +8,28 @@ import com.mashape.unirest.request.BaseRequest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.params.NetParams;
 import io.everitoken.sdk.java.params.RequestParams;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 public abstract class ApiResource {
+
     private final String uri;
     private final String method;
 
     protected ApiResource(String uri, String method) {
         this.uri = uri;
         this.method = method;
+        HttpClientBuilder clientBuilder = HttpClients.custom();
+        clientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(3, false));
+        Unirest.setHttpClient(clientBuilder.build());
     }
 
     protected ApiResource(String uri) {
-        this.uri = uri;
-        this.method = "POST";
+        this(uri, "POST");
     }
 
     protected BaseRequest buildRequest(RequestParams requestParams) {
