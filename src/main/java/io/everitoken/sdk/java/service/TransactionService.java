@@ -7,6 +7,7 @@ import io.everitoken.sdk.java.abi.AbiSerialisationProvider;
 import io.everitoken.sdk.java.abi.NewDomainAction;
 import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
 import io.everitoken.sdk.java.apiResources.Info;
+import io.everitoken.sdk.java.apiResources.SignableDigest;
 import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.dto.Transaction;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
@@ -97,9 +98,10 @@ public class TransactionService {
                     txConfig,
                     Arrays.asList(newDomainAction.serialize(abiSerialisationProvider))
             );
-            System.out.println(JSON.toJSONString(tx));
+            byte[] digest = TransactionService.getSignableDigestViaApi(netParam, tx);
+            System.out.println(Utils.HEX.encode(digest));
         } catch (ApiResponseException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getRaw());
         }
     }
 
@@ -130,6 +132,11 @@ public class TransactionService {
         Duration timeDiffDuration = Duration.millis(dateTime.getMillis() + 70 - newLocal.getMillis());
         DateTime expiration = dateTime.plus(expireDuration).minus(timeDiffDuration);
         return expiration.toString().substring(0, TIMESTAMP_LENGTH);
+    }
+
+    public static byte[] getSignableDigestViaApi(NetParams netParams, Transaction tx) throws ApiResponseException {
+        SignableDigest signableDigest = new SignableDigest();
+        return signableDigest.request(RequestParams.of(netParams, () -> JSON.toJSONString(tx)));
     }
 
     public Transaction buildRawTransaction(TransactionConfiguration txConfig, List<String> actions) throws ApiResponseException {

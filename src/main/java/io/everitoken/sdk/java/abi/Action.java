@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
-// TODO write test
+import org.json.JSONObject;
+
 public class Action {
     private final String name;
     private final String key;
@@ -14,13 +15,28 @@ public class Action {
         this.data = data;
     }
 
-    private Action(String name, String key, String domain) {
-        this.name = name;
-        this.key = key;
-        this.domain = domain;
-        data = null;
+    public static Action ofRaw(JSONObject raw) {
+        return new Action(
+                raw.getString("name"),
+                raw.getString("key"),
+                raw.getString("domain"),
+                raw.getString("data")
+        );
     }
 
+    public String getName() {
+        return name;
+    }
 
-    // setters needs to support async actions
+    public String getKey() {
+        return key;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public String getData() {
+        return data;
+    }
 }
