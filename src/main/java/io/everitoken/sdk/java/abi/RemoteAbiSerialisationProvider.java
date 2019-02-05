@@ -1,10 +1,10 @@
 package io.everitoken.sdk.java.abi;
 
-import io.everitoken.sdk.java.apiResources.AbiBin;
+import io.everitoken.sdk.java.apiResource.AbiBin;
 import io.everitoken.sdk.java.exceptions.AbiSerialisationFailureException;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.params.NetParams;
-import io.everitoken.sdk.java.params.RequestParams;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 

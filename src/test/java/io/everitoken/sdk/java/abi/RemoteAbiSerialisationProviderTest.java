@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.abi;
 
 import io.everitoken.sdk.java.exceptions.AbiSerialisationFailureException;
-import io.everitoken.sdk.java.params.NetParams;
-import io.everitoken.sdk.java.params.TestNetNetParams;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.TestNetNetParams;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

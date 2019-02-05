@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
-import io.everitoken.sdk.java.params.MainNetNetParams;
-import io.everitoken.sdk.java.params.NetParams;
+import io.everitoken.sdk.java.param.MainNetNetParams;
+import io.everitoken.sdk.java.param.NetParams;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
