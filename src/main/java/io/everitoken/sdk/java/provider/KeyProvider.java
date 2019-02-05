@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.keyProvider;
+package io.everitoken.sdk.java.provider;
 
 import io.everitoken.sdk.java.PrivateKey;
 import org.jetbrains.annotations.NotNull;

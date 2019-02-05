@@ -1,4 +1,4 @@
-package io.everitoken.sdk.java.keyProvider;
+package io.everitoken.sdk.java.provider;
 
 import java.util.Arrays;
 
