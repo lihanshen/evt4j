@@ -13,7 +13,7 @@ class UtilsTest {
     @DisplayName("Base58 Invalid Key")
     void base58CheckDecodeWithInvalidKey() {
         Assertions.assertThrows(Base58CheckException.class, () -> {
-            String key = "76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
+            final String key = "76uLwUD5t6fkob9Rbc11UxHgdTVshNceyv2hmppw4d82j2zYRpa";
             Utils.base58CheckDecode(key);
         });
     }
@@ -40,28 +40,28 @@ class UtilsTest {
 
     @Test
     void random32BytesAsHex() {
-        String str32BytesInHex = Utils.random32BytesAsHex();
+        final String str32BytesInHex = Utils.random32BytesAsHex();
         assertEquals(64, str32BytesInHex.length(), "Message should be 64 characters");
     }
 
     @Test
     void random32Bytes() {
-        byte[] bytes32 = Utils.random32Bytes();
+        final byte[] bytes32 = Utils.random32Bytes();
         assertEquals(32, bytes32.length, "Message should be 32 bytes long");
     }
 
     @Test
     void getNumHash() {
-        Assertions.assertDoesNotThrow(() -> {
-            String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
-            assertEquals(9486, Utils.getNumHash(input));
-        });
+        final String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
+        assertEquals(9486, Utils.getNumHash(input));
+        final String input1 = "0081f0f59789f1442c18736da34a36979768a6233f60452e41e8e601ab5314db";
+        assertEquals(61685, Utils.getNumHash(input1));
     }
 
     @Test
     void getLastIrreversibleBlockPrefix() {
         Assertions.assertDoesNotThrow(() -> {
-            String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
+            final String input = "0065250e63fa600c8af940f8bfc154286ddcbb55fc9161629a5953a77ca28292";
             assertEquals(4165007754L, Utils.getLastIrreversibleBlockPrefix(input));
         });
     }

@@ -3,8 +3,8 @@ package io.everitoken.sdk.java;
 import io.everitoken.sdk.java.apiResource.*;
 import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.param.*;
+import io.everitoken.sdk.java.provider.KeyProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,7 +15,7 @@ public class Api {
     private final NetParams netParams;
     private final KeyProvider keyProvider;
 
-    public Api(NetParams netParams, @Nullable KeyProvider keyProvider) {
+    public Api(final NetParams netParams, @Nullable final KeyProvider keyProvider) {
         this.netParams = netParams;
         this.keyProvider = keyProvider;
     }
@@ -24,12 +24,12 @@ public class Api {
         this(new TestNetNetParams(), null);
     }
 
-    public static void main(String[] args) {
-        Api api = new Api();
+    public static void main(final String[] args) {
+        final Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
-            PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
+            final PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
                     "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
             });
 //            JSONObject res = api.getHeadBlockHeaderState();
@@ -81,15 +81,15 @@ public class Api {
 //            List<ActionData> actionData = api.getActions(actionParams);
 //            System.out.println(Utils.jsonPrettyPrint(actionData));
 
-//            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
-//                    "ebee92f7ea4e29020f6ae9cf002d66d6ac4bd1f777a87a8f66746988bc68ac40"
+//            final TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
+//                    "e5d4aa65c32a341061f873d06ee7f78d9d07f4f420537e8817d8afc6056490c2"
 //            );
-//            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
+//            final TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
 //            FungibleDetailData res = api.getFungibleSymbolDetail(new IdParams(1));
 //            System.out.println(Utils.jsonPrettyPrint(res));
 
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -102,55 +102,55 @@ public class Api {
         return new HeadBlockHeaderState().request(RequestParams.of(netParams));
     }
 
-    public List<NameableResource> getCreatedDomains(PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<NameableResource> getCreatedDomains(final PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryDomain().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<TokenDomain> getOwnedTokens(PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<TokenDomain> getOwnedTokens(final PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryToken().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<NameableResource> getManagedGroups(PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<NameableResource> getManagedGroups(final PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryGroup().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public FungibleCreated getCreatedFungibles(PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public FungibleCreated getCreatedFungibles(final PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryFungible().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<ActionData> getActions(ActionQueryParams actionQueryParams) throws ApiResponseException {
+    public List<ActionData> getActions(final ActionQueryParams actionQueryParams) throws ApiResponseException {
         return new HistoryAction().request(RequestParams.of(netParams, actionQueryParams));
     }
 
-    public JSONArray getTransactionIdsInBlock(BlockIdParams idParams) throws ApiResponseException {
+    public JSONArray getTransactionIdsInBlock(final BlockIdParams idParams) throws ApiResponseException {
         return new TransactionIds().request(RequestParams.of(netParams, idParams));
     }
 
-    public TokenDetailData getToken(TokenDetailParams tokenDetailParams) throws ApiResponseException {
+    public TokenDetailData getToken(final TokenDetailParams tokenDetailParams) throws ApiResponseException {
         return new TokenDetail().request(RequestParams.of(netParams, tokenDetailParams));
     }
 
-    public List<FungibleBalanceData> getFungibleBalance(FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
+    public List<FungibleBalanceData> getFungibleBalance(final FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
         return new FungibleBalance().request(RequestParams.of(netParams, fungibleBalanceParams));
     }
 
-    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws ApiResponseException {
+    public TransactionDetail getTransactionDetailById(final TransactionDetailParams transactionDetailParams) throws ApiResponseException {
         return new HistoryTransactionDetail().request(RequestParams.of(netParams, transactionDetailParams));
     }
 
-    public DomainDetailData getDomainDetail(NameParams nameParams) throws ApiResponseException {
+    public DomainDetailData getDomainDetail(final NameParams nameParams) throws ApiResponseException {
         return new DomainDetail().request(RequestParams.of(netParams, nameParams));
     }
 
-    public List<ActionData> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws ApiResponseException {
+    public List<ActionData> getFungibleActionsByAddress(final FungibleActionParams fungibleActionParams) throws ApiResponseException {
         return new FungibleAction().request(RequestParams.of(netParams, fungibleActionParams));
     }
 
-    public GroupDetailData getGroupDetail(NameParams nameParams) throws ApiResponseException {
+    public GroupDetailData getGroupDetail(final NameParams nameParams) throws ApiResponseException {
         return new GroupDetail().request(RequestParams.of(netParams, nameParams));
     }
 
-    public FungibleDetailData getFungibleSymbolDetail(IdParams idParams) throws ApiResponseException {
+    public FungibleDetailData getFungibleSymbolDetail(final IdParams idParams) throws ApiResponseException {
         return new FungibleDetail().request(RequestParams.of(netParams, idParams));
     }
 }

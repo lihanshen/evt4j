@@ -24,14 +24,14 @@ import java.util.stream.Collectors;
 public class Transaction {
     private final List<Action> actions;
     private final String expiration;
-    private final short refBlockNumber;
+    private final int refBlockNumber;
     private final long refBlockPrefix;
     private final int maxCharge;
     private final String payer;
 
-    public Transaction(List<String> actions, String expiration, short refBlockNumber, long refBlockPrefix,
-                       int maxCharge
-            , String payer) {
+    public Transaction(final List<String> actions, final String expiration, final int refBlockNumber, final long refBlockPrefix,
+                       final int maxCharge
+            , final String payer) {
         this.actions = actions.stream().map(JSONObject::new).map(Action::ofRaw).collect(Collectors.toList());
         this.expiration = expiration;
         this.refBlockNumber = refBlockNumber;
@@ -50,7 +50,7 @@ public class Transaction {
     }
 
     @JSONField(name = "ref_block_num")
-    public short getRefBlockNumber() {
+    public int getRefBlockNumber() {
         return refBlockNumber;
     }
 
