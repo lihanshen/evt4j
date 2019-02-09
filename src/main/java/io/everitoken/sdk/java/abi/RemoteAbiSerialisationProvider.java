@@ -8,7 +8,7 @@ import io.everitoken.sdk.java.param.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class RemoteAbiSerialisationProvider implements AbiSerialisationProvider {
+public class RemoteAbiSerialisationProvider implements AbiSerialisationProviderInterface {
     private final NetParams netParams;
 
     public RemoteAbiSerialisationProvider(NetParams netParams) {

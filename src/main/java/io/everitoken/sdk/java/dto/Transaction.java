@@ -1,19 +1,5 @@
 package io.everitoken.sdk.java.dto;
 
-// {
-//     body: {
-//         transaction: {
-//             actions: [action],
-//             expiration: "",
-//             ref_block_num: "",
-//             ref_block_prefix: "",
-//             max_charge: "",
-//             payer: "",
-//         },
-//         compression: "none",
-//     }
-// }
-
 import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.abi.Action;
 import org.json.JSONObject;

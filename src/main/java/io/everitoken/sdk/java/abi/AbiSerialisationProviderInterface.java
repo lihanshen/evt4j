@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.abi;
 
 @FunctionalInterface
-public interface AbiSerialisationProvider {
+public interface AbiSerialisationProviderInterface {
     String serialize(String data);
 }

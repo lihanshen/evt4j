@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-class RemoteAbiSerialisationProviderTest {
+class RemoteAbiSerialisationProviderInterfaceTest {
 
     @Test
     @Tag("Integration")

@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.dto;
 
-import io.everitoken.sdk.java.abi.AbiSerialisationProvider;
+import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
 
 public interface PushableAction {
     String getKey();
@@ -9,5 +9,5 @@ public interface PushableAction {
 
     String getDomain();
 
-    String getData(AbiSerialisationProvider provider);
+    String getData(AbiSerialisationProviderInterface provider);
 }

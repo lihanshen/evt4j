@@ -15,7 +15,7 @@ public abstract class Abi {
         this.domain = domain;
     }
 
-    public String serialize(AbiSerialisationProvider provider) {
+    public String serialize(AbiSerialisationProviderInterface provider) {
         JSONObject payload = new JSONObject();
         payload.put("name", getName());
         payload.put("key", getKey());
@@ -37,7 +37,7 @@ public abstract class Abi {
         return domain;
     }
 
-    public String getData(AbiSerialisationProvider provider) {
+    public String getData(AbiSerialisationProviderInterface provider) {
         return provider.serialize(JSON.toJSONString(new AbiToBin<>(getName(), this)));
     }
 }
