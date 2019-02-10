@@ -29,9 +29,9 @@ public class Api {
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
-            final PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
-                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
-            });
+//            final PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
+//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
+//            });
 //            JSONObject res = api.getHeadBlockHeaderState();
 //            System.out.println(res);
 
@@ -55,20 +55,17 @@ public class Api {
 
 //            JSONObject headerState = api.getHeadBlockHeaderState();
 //            System.out.println(headerState.getString("id"));
-//            JSONArray res = api.getTransactionIdsInBlock(new BlockIdParams(headerState.getString("id")));
+//            JSONArray res = api.getTransactionIdsInBlock(headerState.getString("id"));
 //            System.out.println(res);
 
-//            TokenDetailParams tokenDetailParams = new TokenDetailParams("nd1545706101478", "tk3091412207.0522");
-//            TokenDetailData res1 = api.getToken(tokenDetailParams);
+//            TokenDetailData res1 = api.getToken("nd1545706101478", "tk3091412207.0522");
 //            System.out.println(res1.getName());
 //            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
-//            NameParams nameParams = new NameParams("testdomainfei1");
-//            DomainDetailData res = api.getDomainDetail(nameParams);
+//            DomainDetailData res = api.getDomainDetail("testdomainfei1");
 //            System.out.println(res.getTransfer().getAuthorizers().get(0).getRef());
 
-//            NameParams nameParams = new NameParams("testgroupcreationfei");
-//            GroupDetailData res = api.getGroupDetail(nameParams);
+//            GroupDetailData res = api.getGroupDetail("testgroupcreationfei");
 //            System.out.println(res.getRoot());
 
 //            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
@@ -86,7 +83,7 @@ public class Api {
 //            );
 //            final TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
-//            FungibleDetailData res = api.getFungibleSymbolDetail(new IdParams(1));
+//            FungibleDetailData res = api.getFungibleSymbolDetail(1);
 //            System.out.println(Utils.jsonPrettyPrint(res));
 
         } catch (final Exception ex) {
@@ -122,12 +119,21 @@ public class Api {
         return new HistoryAction().request(RequestParams.of(netParams, actionQueryParams));
     }
 
-    public JSONArray getTransactionIdsInBlock(final BlockIdParams idParams) throws ApiResponseException {
-        return new TransactionIds().request(RequestParams.of(netParams, idParams));
+    public JSONArray getTransactionIdsInBlock(String blockId) throws ApiResponseException {
+        return new TransactionIds().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("block_id", blockId);
+            return body.toString();
+        }));
     }
 
-    public TokenDetailData getToken(final TokenDetailParams tokenDetailParams) throws ApiResponseException {
-        return new TokenDetail().request(RequestParams.of(netParams, tokenDetailParams));
+    public TokenDetailData getToken(String domain, String name) throws ApiResponseException {
+        return new TokenDetail().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("domain", domain);
+            body.put("name", name);
+            return body.toString();
+        }));
     }
 
     public List<FungibleBalanceData> getFungibleBalance(final FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
@@ -138,19 +144,31 @@ public class Api {
         return new HistoryTransactionDetail().request(RequestParams.of(netParams, transactionDetailParams));
     }
 
-    public DomainDetailData getDomainDetail(final NameParams nameParams) throws ApiResponseException {
-        return new DomainDetail().request(RequestParams.of(netParams, nameParams));
+    public DomainDetailData getDomainDetail(String name) throws ApiResponseException {
+        return new DomainDetail().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("name", name);
+            return body.toString();
+        }));
     }
 
     public List<ActionData> getFungibleActionsByAddress(final FungibleActionParams fungibleActionParams) throws ApiResponseException {
         return new FungibleAction().request(RequestParams.of(netParams, fungibleActionParams));
     }
 
-    public GroupDetailData getGroupDetail(final NameParams nameParams) throws ApiResponseException {
-        return new GroupDetail().request(RequestParams.of(netParams, nameParams));
+    public GroupDetailData getGroupDetail(String name) throws ApiResponseException {
+        return new GroupDetail().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("name", name);
+            return body.toString();
+        }));
     }
 
-    public FungibleDetailData getFungibleSymbolDetail(final IdParams idParams) throws ApiResponseException {
-        return new FungibleDetail().request(RequestParams.of(netParams, idParams));
+    public FungibleDetailData getFungibleSymbolDetail(int id) throws ApiResponseException {
+        return new FungibleDetail().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("id", id);
+            return body.toString();
+        }));
     }
 }

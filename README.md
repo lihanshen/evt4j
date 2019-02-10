@@ -55,7 +55,7 @@ Make sure maven is installed
 * [ ] getStatusOfEvtLink
 * [ ] getSuspendedTransactionDetail // need suspendedTransaction first
 * [x] getEstimatedChargeForTransaction
-* [ ] generateUnsignedTransaction
+* [x] generateUnsignedTransaction
 * [ ] pushTransaction
 
 
