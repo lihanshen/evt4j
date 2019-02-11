@@ -18,7 +18,7 @@ class SignProviderTest {
     @DisplayName("Empty keys yield empty signatures")
     void assertEmptyKeyProvider() {
         final SignProvider signProvider = SignProvider.of(ArrayList::new);
-        Assertions.assertEquals(new ArrayList<Signature>(), signProvider.get(new byte[]{}));
+        Assertions.assertEquals(new ArrayList<Signature>(), signProvider.sign(new byte[]{}));
     }
 
     @Test
@@ -28,7 +28,7 @@ class SignProviderTest {
         final SignProvider signProvider = SignProvider.of(
                 () -> Collections.singletonList(PrivateKey.fromWif(validPrivateKey))
         );
-        final List<Signature> signatures = signProvider.get(Utils.HEX.decode("08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"));
+        final List<Signature> signatures = signProvider.sign(Utils.HEX.decode("08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"));
         Assertions.assertEquals(
                 "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD",
                 signatures.get(0).toString()
@@ -43,7 +43,7 @@ class SignProviderTest {
         final SignProvider signProvider = SignProvider.of(
                 () -> Arrays.asList(PrivateKey.fromWif(privateKey1), PrivateKey.fromWif(privateKey2))
         );
-        final List<Signature> signatures = signProvider.get(Sha256Hash.hashTwice("helloworld".getBytes()));
+        final List<Signature> signatures = signProvider.sign(Sha256Hash.hashTwice("helloworld".getBytes()));
         Assertions.assertEquals(2, signatures.size());
     }
 }

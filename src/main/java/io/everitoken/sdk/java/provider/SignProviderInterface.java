@@ -6,5 +6,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface SignProviderInterface {
-    List<Signature> get(byte[] bufToSign);
+    List<Signature> sign(byte[] bufToSign);
 }

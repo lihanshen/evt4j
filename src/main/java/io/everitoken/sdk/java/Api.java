@@ -63,7 +63,7 @@ public class Api {
 //            res1.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
 
 //            DomainDetailData res = api.getDomainDetail("testdomainfei1");
-//            System.out.println(res.getTransfer().getAuthorizers().get(0).getRef());
+//            System.out.println(res.getTransfer().getAuthorizers().sign(0).getRef());
 
 //            GroupDetailData res = api.getGroupDetail("testgroupcreationfei");
 //            System.out.println(res.getRoot());

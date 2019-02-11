@@ -66,7 +66,7 @@ public class Utils {
             data = ArrayUtils.addAll(data, keyType.getBytes());
         }
 
-        // ripemd160 input, get 4 bytes to compare
+        // ripemd160 input, sign 4 bytes to compare
         final byte[] hash = ripemd160(data);
 
         // if pass, return data, otherwise throw ex

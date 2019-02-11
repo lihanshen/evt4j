@@ -56,8 +56,32 @@ Make sure maven is installed
 * [ ] getSuspendedTransactionDetail // need suspendedTransaction first
 * [x] getEstimatedChargeForTransaction
 * [x] generateUnsignedTransaction
-* [ ] pushTransaction
-
+* [x] pushTransaction
+    * [x] newdomain
+    * [ ] "updatedomain"
+    * [x] "issuetoken"
+    * [ ] "newgroup"
+    * [ ] "updategroup"
+    * [ ] "newfungible"
+    * [ ] "issuefungible"
+    * [ ] "updfungible"
+    * [ ] "transferft"
+    * [ ] "transfer"
+    * [ ] "destroytoken"
+    * [ ] "evt2pevt"
+    * [ ] "newsuspend"
+    * [ ] "aprvsuspend"
+    * [ ] "cancelsuspend"
+    * [ ] "execsuspend"
+    * [ ] "newlock"
+    * [ ] "aprvlock"
+    * [ ] "tryunlock"
+    * [ ] "everipass"
+    * [ ] "everipay"
+    * [ ] "recycleft"
+    * [ ] "newlock"
+    * [ ] "aprvlock"
+    * [ ] "tryunlock"
 
 ## Misc
 
@@ -70,8 +94,8 @@ Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"
 
 ## TODO
 * [ ] implement meta dto
-* [ ] extract test functions from Api::main to integration test
 * [ ] request timeout
+* [ ] create builder in abi package, implement build() functionalInterface
 
 
 ## Resources

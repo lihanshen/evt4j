@@ -29,7 +29,7 @@ public class SignProvider implements SignProviderInterface {
         return new SignProvider(keyProvider);
     }
 
-    public List<Signature> get(final byte[] bufToSign) {
+    public List<Signature> sign(final byte[] bufToSign) {
         Objects.requireNonNull(keyProvider);
         final List<PrivateKey> keys = keyProvider.get();
         return keys.stream()

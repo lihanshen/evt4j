@@ -38,6 +38,7 @@ public abstract class Abi {
     }
 
     public String getData(AbiSerialisationProviderInterface provider) {
+        System.out.println(JSON.toJSONString(new AbiToBin<>(getName(), this)));
         return provider.serialize(JSON.toJSONString(new AbiToBin<>(getName(), this)));
     }
 }

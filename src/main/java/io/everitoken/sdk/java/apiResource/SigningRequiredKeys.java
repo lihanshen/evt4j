@@ -12,7 +12,7 @@ import java.util.stream.StreamSupport;
 public class SigningRequiredKeys extends ApiResource {
     private static final String uri = "/v1/chain/get_required_keys";
 
-    SigningRequiredKeys() {
+    public SigningRequiredKeys() {
         super(uri);
     }
 

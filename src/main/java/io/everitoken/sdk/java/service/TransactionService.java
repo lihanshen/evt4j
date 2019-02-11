@@ -5,18 +5,18 @@ import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.abi.Abi;
 import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
-import io.everitoken.sdk.java.abi.NewDomainAction;
 import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
 import io.everitoken.sdk.java.apiResource.Info;
+import io.everitoken.sdk.java.apiResource.SigningRequiredKeys;
 import io.everitoken.sdk.java.apiResource.TransactionCommit;
+import io.everitoken.sdk.java.apiResource.TransactionEstimatedCharge;
+import io.everitoken.sdk.java.dto.Charge;
 import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.dto.Transaction;
 import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
-import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.provider.SignProvider;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -28,53 +28,17 @@ import org.joda.time.LocalDateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-class TransactionConfiguration {
-    private final int maxCharge;
-    private final PublicKey payer;
-    private final boolean estimateCharge;
-    private final List<PublicKey> availablePublicKeys;
-
-    public TransactionConfiguration(final int maxCharge, final PublicKey payer, final boolean estimateCharge,
-                                    @Nullable final List<PublicKey> availablePublicKeys) {
-        this.maxCharge = maxCharge;
-        this.payer = payer;
-        this.estimateCharge = estimateCharge;
-        this.availablePublicKeys = availablePublicKeys;
-    }
-
-    public TransactionConfiguration(final int maxCharge, final PublicKey payer) {
-        this(maxCharge, payer, false, null);
-    }
-
-    public int getMaxCharge() {
-        return maxCharge;
-    }
-
-    public String getPayer() {
-        return payer.toString();
-    }
-
-    public boolean isEstimateCharge() {
-        return estimateCharge;
-    }
-
-    public List<PublicKey> getAvailablePublicKeys() {
-        return availablePublicKeys;
-    }
-}
-
 public class TransactionService {
     private final NetParams netParams;
-    private final AbiSerialisationProviderInterface provider;
+    private final AbiSerialisationProviderInterface actionSerializeProvider;
 
     private TransactionService(final NetParams netParams, final AbiSerialisationProviderInterface provider) {
         this.netParams = netParams;
-        this.provider = provider;
+        this.actionSerializeProvider = provider;
     }
 
     @NotNull
@@ -89,55 +53,38 @@ public class TransactionService {
         return new TransactionService(netParams, provider);
     }
 
-    public static void main(final String[] args) {
-        final NetParams netParam = new TestNetNetParams();
-        final String data = "{\"name\":\"test1119\"," +
-                "\"creator\":\"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"issue\":{\"name\":\"issue\"," +
-                "\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] " +
-                "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\"," +
-                "\"weight\":1}]},\"transfer\":{\"name\":\"transfer\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[G] " +
-                ".OWNER\",\"weight\":1}]},\"manage\":{\"name\":\"manage\",\"threshold\":1," +
-                "\"authorizers\":[{\"ref\":\"[A]" +
-                " EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":1}]}}";
+    public TransactionData push(TransactionConfiguration txConfig, List<Abi> actions) throws ApiResponseException {
+        final Transaction rawTx = this.buildRawTransaction(txConfig, actions);
+        // get signable digest from node
+        final byte[] digest = SignProvider.getSignableDigest(this.netParams, rawTx);
 
-        final JSONObject json = new JSONObject(data);
-        final NewDomainAction newDomainAction = NewDomainAction.ofRaw(
-                json.getString("name"),
-                json.getString("creator"),
-                json.getJSONObject("issue"),
-                json.getJSONObject("transfer"),
-                json.getJSONObject("manage")
-        );
-        try {
-            TransactionService transactionService = TransactionService.of(netParam);
-            final TransactionConfiguration txConfig = new TransactionConfiguration(1000000, PublicKey.of(
-                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
-            TransactionData txData = transactionService.push(txConfig, Collections.singletonList(newDomainAction));
-            System.out.println(txData.getTrxId());
-        } catch (final ApiResponseException ex) {
-            System.out.println(ex.getRaw());
-        }
+        return new TransactionCommit().request(RequestParams.of(this.netParams, () -> {
+            // build transaction body
+            final JSONObject payload = new JSONObject();
+            payload.put("compression", "none");
+            payload.put("transaction", new JSONObject(JSON.toJSONString(rawTx)));
+            payload.put("signatures", new JSONArray(txConfig.getSignProvider().sign(digest).toString()));
+            return payload.toString();
+        }));
     }
 
-    public TransactionData push(TransactionConfiguration txConfig, List<Abi> actions) throws ApiResponseException {
-        List<String> serializedActions =
-                actions.stream().map(action -> action.serialize(this.provider)).collect(Collectors.toList());
-        final Transaction rawTx = this.buildRawTransaction(
-                txConfig,
-                serializedActions
-        );
+    public Charge estimateCharge(TransactionConfiguration txConfig, List<Abi> actions, List<PublicKey> availablePublicKeys) throws ApiResponseException {
+        final Transaction rawTx = this.buildRawTransaction(txConfig, actions);
 
-        final byte[] digest = SignProvider.getSignableDigest(this.netParams, rawTx);
-        final KeyProvider keyProvider = KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
-        final SignProvider signProvider = SignProvider.of(keyProvider);
+        JSONObject txObj = new JSONObject(JSON.toJSONString(rawTx));
+        List<String> requiredKeys = new SigningRequiredKeys().request(RequestParams.of(netParams, () -> {
+            JSONObject json = new JSONObject();
+            json.put("transaction", txObj);
+            json.put("available_keys", availablePublicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
+            return json.toString();
+        }));
 
-        final JSONObject payload = new JSONObject();
-        payload.put("compression", "none");
-        payload.put("transaction", new JSONObject(JSON.toJSONString(rawTx)));
-        payload.put("signatures", new JSONArray(signProvider.get(digest).toString()));
-        System.out.println(payload);
-        final TransactionData txData = new TransactionCommit().request(RequestParams.of(this.netParams, payload::toString));
-        return txData;
+        return new TransactionEstimatedCharge().request(RequestParams.of(netParams, () -> {
+            JSONObject json = new JSONObject();
+            json.put("transaction", txObj);
+            json.put("sign_num", requiredKeys.size());
+            return json.toString();
+        }));
     }
 
     @NotNull
@@ -158,7 +105,7 @@ public class TransactionService {
 
         final DateTime dateTime = new DateTime(referenceTime);
 
-        // TODO: Dirty hack to get local time
+        // TODO: Dirty hack to sign local time
         final DateTime local = new DateTime();
         final LocalDateTime utc = local.withZone(DateTimeZone.UTC).toLocalDateTime();
         final DateTime newLocal = new DateTime(utc.toString());
@@ -169,14 +116,18 @@ public class TransactionService {
         return expiration.toString().substring(0, TIMESTAMP_LENGTH);
     }
 
-    public Transaction buildRawTransaction(final TransactionConfiguration txConfig, final List<String> actions) throws ApiResponseException {
+    public Transaction buildRawTransaction(final TransactionConfiguration txConfig, final List<Abi> actions) throws ApiResponseException {
+        List<String> serializedActions =
+                actions.stream()
+                        .map(action -> action.serialize(this.actionSerializeProvider))
+                        .collect(Collectors.toList());
         final NodeInfo res = (new Info()).request(RequestParams.of(netParams));
 
         final int refBlockNumber = Utils.getNumHash(res.getLastIrreversibleBlockId());
         final long refBlockPrefix = Utils.getLastIrreversibleBlockPrefix(res.getLastIrreversibleBlockId());
         final String expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime());
 
-        return new Transaction(actions, expirationDateTime, refBlockNumber, refBlockPrefix,
+        return new Transaction(serializedActions, expirationDateTime, refBlockNumber, refBlockPrefix,
                 txConfig.getMaxCharge(),
                 txConfig.getPayer()
         );
