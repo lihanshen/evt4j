@@ -15,7 +15,7 @@ public class Api {
     private final NetParams netParams;
     private final KeyProvider keyProvider;
 
-    public Api(final NetParams netParams, @Nullable final KeyProvider keyProvider) {
+    public Api(NetParams netParams, @Nullable KeyProvider keyProvider) {
         this.netParams = netParams;
         this.keyProvider = keyProvider;
     }
@@ -24,8 +24,8 @@ public class Api {
         this(new TestNetNetParams(), null);
     }
 
-    public static void main(final String[] args) {
-        final Api api = new Api();
+    public static void main(String[] args) {
+        Api api = new Api();
         // evtjava -> EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H
         //evtjs -> EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND
         try {
@@ -68,11 +68,9 @@ public class Api {
 //            GroupDetailData res = api.getGroupDetail("testgroupcreationfei");
 //            System.out.println(res.getRoot());
 
-//            FungibleBalanceParams fungibleBalanceParams = new FungibleBalanceParams(
-//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "1");
-//            List<FungibleBalanceData> res = api.getFungibleBalance(fungibleBalanceParams);
-//            res.forEach(balance -> System.out.println(balance.getRaw()));
-//            System.out.println(JSON.toJSONString(res));
+//            List<Asset> res = api.getFungibleBalance(Address.of(
+//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+//            res.forEach(balance -> System.out.println(balance.toString()));
 
 //            ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1");
 //            List<ActionData> actionData = api.getActions(actionParams);
@@ -86,7 +84,7 @@ public class Api {
 //            FungibleDetailData res = api.getFungibleSymbolDetail(1);
 //            System.out.println(Utils.jsonPrettyPrint(res));
 
-        } catch (final Exception ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -99,23 +97,23 @@ public class Api {
         return new HeadBlockHeaderState().request(RequestParams.of(netParams));
     }
 
-    public List<NameableResource> getCreatedDomains(final PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<NameableResource> getCreatedDomains(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryDomain().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<TokenDomain> getOwnedTokens(final PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<TokenDomain> getOwnedTokens(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryToken().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<NameableResource> getManagedGroups(final PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public List<NameableResource> getManagedGroups(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryGroup().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public FungibleCreated getCreatedFungibles(final PublicKeysParams publicKeysParams) throws ApiResponseException {
+    public FungibleCreated getCreatedFungibles(PublicKeysParams publicKeysParams) throws ApiResponseException {
         return new HistoryFungible().request(RequestParams.of(netParams, publicKeysParams));
     }
 
-    public List<ActionData> getActions(final ActionQueryParams actionQueryParams) throws ApiResponseException {
+    public List<ActionData> getActions(ActionQueryParams actionQueryParams) throws ApiResponseException {
         return new HistoryAction().request(RequestParams.of(netParams, actionQueryParams));
     }
 
@@ -136,11 +134,15 @@ public class Api {
         }));
     }
 
-    public List<FungibleBalanceData> getFungibleBalance(final FungibleBalanceParams fungibleBalanceParams) throws ApiResponseException {
-        return new FungibleBalance().request(RequestParams.of(netParams, fungibleBalanceParams));
+    public List<Asset> getFungibleBalance(Address address) throws ApiResponseException {
+        return new FungibleBalance().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("addr", address.getAddress());
+            return body.toString();
+        }));
     }
 
-    public TransactionDetail getTransactionDetailById(final TransactionDetailParams transactionDetailParams) throws ApiResponseException {
+    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws ApiResponseException {
         return new HistoryTransactionDetail().request(RequestParams.of(netParams, transactionDetailParams));
     }
 
@@ -152,7 +154,7 @@ public class Api {
         }));
     }
 
-    public List<ActionData> getFungibleActionsByAddress(final FungibleActionParams fungibleActionParams) throws ApiResponseException {
+    public List<ActionData> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws ApiResponseException {
         return new FungibleAction().request(RequestParams.of(netParams, fungibleActionParams));
     }
 

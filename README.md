@@ -63,7 +63,7 @@ Make sure maven is installed
     * [ ] "newgroup"
     * [ ] "updategroup"
     * [ ] "newfungible"
-    * [ ] "issuefungible"
+    * [x] "issuefungible"
     * [ ] "updfungible"
     * [ ] "transferft"
     * [ ] "transfer"

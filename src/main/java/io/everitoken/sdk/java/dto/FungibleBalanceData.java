@@ -39,8 +39,12 @@ public class FungibleBalanceData {
         return String.format("%.5f S#%d", balance, id);
     }
 
-    static FungibleBalanceData ofRaw(String raw) {
+    public static FungibleBalanceData ofRaw(String raw) {
         return new FungibleBalanceData(raw);
+    }
+
+    public static FungibleBalanceData of(int id, double balance) {
+        return new FungibleBalanceData(id, balance);
     }
 
     public String getRaw() {
