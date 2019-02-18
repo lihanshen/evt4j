@@ -69,7 +69,7 @@ public class Api {
 //            System.out.println(res.getRoot());
 
 //            List<Asset> res = api.getFungibleBalance(Address.of(
-//                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+//                    "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"));
 //            res.forEach(balance -> System.out.println(balance.toString()));
 
 //            ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1");

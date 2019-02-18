@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.example;
 
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.abi.IssueFungibleAction;
+import io.everitoken.sdk.java.abi.TransferFungibleAction;
 import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
@@ -12,14 +12,16 @@ import io.everitoken.sdk.java.service.TransactionService;
 
 import java.util.Arrays;
 
-public class IssueFungibleExample {
+public class TransferFungibleExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
 
-        IssueFungibleAction issueFungibleAction = IssueFungibleAction.of(
-                "200.00000 S#20",
+
+        TransferFungibleAction transferFungibleAction = TransferFungibleAction.of(
+                "2.00002 S#20",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
-                "test from java"
+                "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H",
+                "test java"
         );
 
         try {
@@ -30,7 +32,7 @@ public class IssueFungibleExample {
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
             );
 
-            TransactionData txData = transactionService.push(txConfig, Arrays.asList(issueFungibleAction));
+            TransactionData txData = transactionService.push(txConfig, Arrays.asList(transferFungibleAction));
             System.out.println(txData.getTrxId());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());

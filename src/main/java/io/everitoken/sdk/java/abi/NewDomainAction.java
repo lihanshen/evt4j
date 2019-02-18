@@ -46,22 +46,18 @@ public class NewDomainAction extends Abi implements PushableAction {
         return new NewDomainAction(domain, creator, issue, transfer, manage);
     }
 
-    @JSONField(ordinal = 1)
     public String getCreator() {
         return creator.toString();
     }
 
-    @JSONField(ordinal = 2)
     public Permission getIssue() {
         return issue;
     }
 
-    @JSONField(ordinal = 3)
     public Permission getTransfer() {
         return transfer;
     }
 
-    @JSONField(ordinal = 4)
     public Permission getManage() {
         return manage;
     }
