@@ -65,4 +65,10 @@ public class NewDomainAction extends Abi implements PushableAction {
     public Permission getManage() {
         return manage;
     }
+
+    @Override
+    @JSONField(name = "name")
+    public String getDomain() {
+        return super.getDomain();
+    }
 }

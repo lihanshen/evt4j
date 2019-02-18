@@ -32,7 +32,7 @@ public abstract class Abi {
         return key;
     }
 
-    @JSONField(name = "name")
+    @JSONField(name = "domain")
     public String getDomain() {
         return domain;
     }

@@ -19,7 +19,7 @@ public class IssueFungibleAction extends Abi implements PushableAction {
     private final String memo;
     private final Address address;
 
-    private IssueFungibleAction(Asset asset, Address address, String memo) {
+    private IssueFungibleAction(@NotNull Asset asset, Address address, String memo) {
         super(name, Integer.toString(asset.getSymbol().getId()), domain);
         this.memo = memo;
         this.asset = asset;
@@ -30,12 +30,6 @@ public class IssueFungibleAction extends Abi implements PushableAction {
     @Contract("_, _, _ -> new")
     public static IssueFungibleAction of(String balance, String address, String memo) {
         return new IssueFungibleAction(Asset.parseFromRawBalance(balance), Address.of(address), memo);
-    }
-
-    @Override
-    @JSONField(name = "domain")
-    public String getDomain() {
-        return super.getDomain();
     }
 
     @JSONField(name = "number")
