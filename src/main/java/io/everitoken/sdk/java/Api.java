@@ -81,7 +81,7 @@ public class Api {
 //            );
 //            final TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
-//            FungibleDetailData res = api.getFungibleSymbolDetail(1);
+//            FungibleDetailData res = api.getFungibleSymbolDetail(20);
 //            System.out.println(Utils.jsonPrettyPrint(res));
 
         } catch (Exception ex) {
