@@ -67,7 +67,7 @@ Make sure maven is installed
     * [x] "updfungible"
     * [x] "transferft"
     * [x] "transfer"
-    * [ ] "destroytoken"
+    * [x] "destroytoken"
     * [ ] "evt2pevt"
     * [ ] "newsuspend"
     * [ ] "aprvsuspend"

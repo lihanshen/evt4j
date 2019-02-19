@@ -77,7 +77,7 @@ public class Api {
 //            System.out.println(Utils.jsonPrettyPrint(actionData));
 
 //            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
-//                    "8edfbdbd4e000635f477cc4f918313ceb31bc92f9ac52fff43387a856e7a1940"
+//                    "d7032971c96637ae3f541a16b3c7cfd4fef4859082eb7ecc925644854bda5c6b"
 //            );
 //            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
