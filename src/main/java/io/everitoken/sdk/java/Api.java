@@ -76,10 +76,10 @@ public class Api {
 //            List<ActionData> actionData = api.getActions(actionParams);
 //            System.out.println(Utils.jsonPrettyPrint(actionData));
 
-//            final TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
-//                    "e5d4aa65c32a341061f873d06ee7f78d9d07f4f420537e8817d8afc6056490c2"
+//            TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
+//                    "8edfbdbd4e000635f477cc4f918313ceb31bc92f9ac52fff43387a856e7a1940"
 //            );
-//            final TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
+//            TransactionDetail res = api.getTransactionDetailById(transactionDetailParams);
 //            System.out.println(res.getTransaction());
 //            FungibleDetailData res = api.getFungibleSymbolDetail(20);
 //            System.out.println(Utils.jsonPrettyPrint(res));

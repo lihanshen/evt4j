@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.dto.PushableAction;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -18,9 +18,9 @@ public class IssueTokenAction extends Abi implements PushableAction {
     private static final String name = "issuetoken";
 
     private final List<String> names;
-    private final List<PublicKey> owner;
+    private final List<Address> owner;
 
-    private IssueTokenAction(String domain, List<String> names, List<PublicKey> owner) {
+    private IssueTokenAction(String domain, List<String> names, List<Address> owner) {
         super(name, key, domain);
         this.names = names;
         this.owner = owner;
@@ -28,7 +28,7 @@ public class IssueTokenAction extends Abi implements PushableAction {
 
     @NotNull
     @Contract("_, _, _ -> new")
-    public static IssueTokenAction of(String domain, List<String> names, List<PublicKey> owner) {
+    public static IssueTokenAction of(String domain, List<String> names, List<Address> owner) {
         return new IssueTokenAction(domain, names, owner);
     }
 
@@ -43,6 +43,6 @@ public class IssueTokenAction extends Abi implements PushableAction {
     }
 
     public List<String> getOwner() {
-        return owner.stream().map(PublicKey::toString).collect(Collectors.toList());
+        return owner.stream().map(Address::toString).collect(Collectors.toList());
     }
 }
