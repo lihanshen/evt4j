@@ -68,7 +68,7 @@ Make sure maven is installed
     * [x] "transferft"
     * [x] "transfer"
     * [x] "destroytoken"
-    * [ ] "evt2pevt"
+    * [x] "evt2pevt"
     * [ ] "newsuspend"
     * [ ] "aprvsuspend"
     * [ ] "cancelsuspend"
