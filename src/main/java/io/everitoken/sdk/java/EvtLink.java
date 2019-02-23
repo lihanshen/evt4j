@@ -3,13 +3,57 @@ package io.everitoken.sdk.java;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 public class EvtLink {
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$+-/:*";
     private static final int BASE = 42;
 
-    public static String encode(byte[] input) {
+    public static byte[] createSegment(int type, byte[] content) {
+        if (type < 0 || type > 255) {
+            throw new IllegalArgumentException("Invalid type value, it must be within 0 to 255");
+        }
 
+        if (type <= 20) {
+            ByteBuffer b = ByteBuffer.wrap(new byte[2]);
+            b.put((byte) type);
+            b.put(content, 0, 1);
+            return b.array();
+        } else if (type <= 40) {
+            ByteBuffer b = ByteBuffer.wrap(new byte[3]);
+            b.put((byte) type);
+            b.put(content, 0, 2);
+            return b.array();
+        } else if (type <= 90) {
+            ByteBuffer b = ByteBuffer.wrap(new byte[5]);
+            b.put((byte) type);
+            b.put(content, 0, 4);
+            return b.array();
+        } else if (type <= 155) {
+            ByteBuffer b = ByteBuffer.wrap(new byte[2]);
+            b.put((byte) type);
+            b.put((byte) content.length);
+            return ArrayUtils.addAll(b.array(), content);
+        } else if (type <= 165) {
+            ByteBuffer b = ByteBuffer.wrap(new byte[1]);
+            b.put((byte) type);
+            return ArrayUtils.addAll(b.array(), content);
+        } else if (type <= 180) {
+            ByteBuffer b = ByteBuffer.wrap(new byte[2]);
+            b.put((byte) type);
+            b.put((byte) content.length);
+            return ArrayUtils.addAll(b.array(), content);
+        } else {
+            throw new IllegalArgumentException(String.format("Segment type %d is not supported", type));
+        }
+    }
+
+    public static String encode(byte[] input) {
+        if (input.length == 0) {
+            return "";
+        }
+
+        // build prefix string buffer
         StringBuilder prefix = new StringBuilder();
 
         for (byte i : input) {
@@ -23,10 +67,8 @@ public class EvtLink {
         BigInteger baseBn = BigInteger.valueOf(BASE);
         StringBuilder sb = new StringBuilder();
 
-        // loop
         while (bigInteger.compareTo(BigInteger.ZERO) > 0) {
             BigInteger mod = bigInteger.mod(baseBn);
-            System.out.println(mod.intValue());
             bigInteger = bigInteger.subtract(mod).divide(baseBn);
             sb.append(ALPHABET.charAt(mod.intValue()));
         }
@@ -57,7 +99,9 @@ public class EvtLink {
             int index = ALPHABET.indexOf(c);
 
             if (ALPHABET.indexOf(c) == -1) {
-                throw new IllegalArgumentException(String.format("Illegal character found \"%s\" at index %d", c, i));
+                throw new IllegalArgumentException(String.format("Illegal character found \"%s\" at index %d", c,
+                                                                 i
+                ));
             }
 
             resultBn = resultBn.multiply(baseBn).add(BigInteger.valueOf(index));
@@ -65,5 +109,4 @@ public class EvtLink {
 
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
     }
-
 }
