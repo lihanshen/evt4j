@@ -9,6 +9,40 @@ public class EvtLink {
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$+-/:*";
     private static final int BASE = 42;
 
+    public static void main(String[] args) {
+        byte[] bs = Utils.HEX.decode("2a000186a0");
+        parseSegment(bs, 0);
+    }
+
+    public static Segment parseSegment(byte[] content, int offset) {
+        int type = content[offset] & 0xff;
+
+        if (type <= 20) {
+            return new Segment(type, ByteBuffer.allocate(1).put(content[offset + 1]).array(), 2);
+        } else if (type <= 40) {
+            return new Segment(type, ByteBuffer.allocate(2).put(content, 1, 2).array(), 3);
+        } else if (type <= 90) {
+            return new Segment(type, ByteBuffer.allocate(4).put(content, 1, 4).array(), 5);
+        } else if (type <= 155) {
+            int contentLength = content[offset + 1] & 0xff;
+            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2, contentLength).array(),
+                               contentLength + 2
+            );
+        } else if (type <= 165) {
+            int contentLength = 16;
+            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 1, contentLength).array(),
+                               contentLength + 1
+            );
+        } else if (type <= 180) {
+            int contentLength = content[offset + 1] & 0xff;
+            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2, contentLength).array(),
+                               contentLength + 2
+            );
+        }
+
+        return new Segment(0, new byte[]{}, 1);
+    }
+
     public static byte[] createSegment(int type, byte[] content) {
         if (type < 0 || type > 255) {
             throw new IllegalArgumentException("Invalid type value, it must be within 0 to 255");
@@ -34,7 +68,7 @@ public class EvtLink {
             b.put((byte) type);
             b.put((byte) content.length);
             return ArrayUtils.addAll(b.array(), content);
-        } else if (type <= 165) {
+        } else if (type <= 165) { // TODO double check
             ByteBuffer b = ByteBuffer.wrap(new byte[1]);
             b.put((byte) type);
             return ArrayUtils.addAll(b.array(), content);
@@ -108,5 +142,29 @@ public class EvtLink {
         }
 
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
+    }
+
+    static class Segment {
+        private final int typeKey;
+        private final byte[] content;
+        private final int length;
+
+        private Segment(int typeKey, byte[] content, int length) {
+            this.typeKey = typeKey;
+            this.content = content;
+            this.length = length;
+        }
+
+        public int getTypeKey() {
+            return typeKey;
+        }
+
+        public byte[] getContent() {
+            return content;
+        }
+
+        public int getLength() {
+            return length;
+        }
     }
 }
