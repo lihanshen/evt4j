@@ -26,6 +26,17 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
+    public static Signature of(byte[] signatureBytes) {
+
+        int recId = (int) signatureBytes[0] - 4 - 27;
+        BigInteger r = new BigInteger(ArrayUtils.subarray(signatureBytes, 1, 33));
+        BigInteger s = new BigInteger(ArrayUtils.subarray(signatureBytes, 33, signatureBytes.length));
+        Signature sig = new Signature(r, s);
+        sig.setRecId(recId);
+
+        return sig;
+    }
+
     public static Signature of(String signature) {
         if (!signature.startsWith(K1_PREFIX)) {
             throw new InvalidSignatureException(String.format(
@@ -42,13 +53,7 @@ public class Signature {
             throw new InvalidSignatureException("Content of signature must be 65");
         }
 
-        int recId = (int) signatureBytes[0] - 4 - 27;
-        BigInteger r = new BigInteger(ArrayUtils.subarray(signatureBytes, 1, 33));
-        BigInteger s = new BigInteger(ArrayUtils.subarray(signatureBytes, 33, signatureBytes.length));
-        Signature sig = new Signature(r, s);
-        sig.setRecId(recId);
-
-        return sig;
+        return Signature.of(signatureBytes);
     }
 
     public static Signature signHash(byte[] hash, @NotNull PrivateKey key) {
@@ -83,7 +88,7 @@ public class Signature {
      * @return Signature
      */
     public static Signature sign(byte[] data, @NotNull PrivateKey key) {
-        return signHash(Sha256Hash.hashTwice(data), key);
+        return signHash(Sha256Hash.hash(data), key);
     }
 
     /**
@@ -118,7 +123,7 @@ public class Signature {
      * @return boolean
      */
     public static boolean verify(byte[] data, @NotNull Signature signature, @NotNull PublicKey publicKey) {
-        return verifyHash(Sha256Hash.hashTwice(data), signature, publicKey);
+        return verifyHash(Sha256Hash.hash(data), signature, publicKey);
     }
 
     public static boolean verifyHash(byte[] hash, @NotNull Signature signature, @NotNull PublicKey publicKey) {

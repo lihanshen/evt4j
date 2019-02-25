@@ -1,17 +1,47 @@
 package io.everitoken.sdk.java;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.bitcoinj.core.Sha256Hash;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EvtLink {
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$+-/:*";
-    private static final int BASE = 42;
+    private static final int BASE = ALPHABET.length();
+    private static final String QR_PREFIX = "https://evt.li/";
 
-    public static void main(String[] args) {
-        byte[] bs = Utils.HEX.decode("2a000186a0");
-        parseSegment(bs, 0);
+    public static SignatureWithRecoveredPublicKey parseSignatures(String rawContent, boolean recoverPublicKey) {
+        String[] parts = rawContent.split("_");
+        byte[] contentBytes = EvtLink.decode(parts[0]);
+        byte[] sigBytes = EvtLink.decode(parts[1]);
+
+        List<Signature> signatures = new ArrayList<>();
+        List<PublicKey> publicKeys = new ArrayList<>();
+
+        for (int i = 0; i < sigBytes.length; i = i + 65) {
+            byte[] singleSigBytes = ByteBuffer.allocate(65).put(sigBytes, i, 65).array();
+            Signature sig = Signature.of(singleSigBytes);
+            signatures.add(sig);
+
+            if (recoverPublicKey) {
+                PublicKey publicKey = Signature.recoverPublicKey(Sha256Hash.hash(contentBytes), sig);
+                publicKeys.add(publicKey);
+            }
+        }
+
+        return new SignatureWithRecoveredPublicKey(signatures, publicKeys);
+    }
+
+    public static String getUniqueLinkId() {
+        SecureRandom random = new SecureRandom();
+        byte[] values = new byte[16];
+        random.nextBytes(values);
+
+        return Utils.HEX.encode(values);
     }
 
     public static Segment parseSegment(byte[] content, int offset) {
@@ -38,9 +68,9 @@ public class EvtLink {
             return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2, contentLength).array(),
                                contentLength + 2
             );
+        } else {
+            throw new IllegalArgumentException(String.format("Segment type %d is not supported", type));
         }
-
-        return new Segment(0, new byte[]{}, 1);
     }
 
     public static byte[] createSegment(int type, byte[] content) {
@@ -167,4 +197,23 @@ public class EvtLink {
             return length;
         }
     }
+
+    static class SignatureWithRecoveredPublicKey {
+        private final List<Signature> signatures;
+        private final List<PublicKey> publicKeys;
+
+        private SignatureWithRecoveredPublicKey(List<Signature> signatures, List<PublicKey> publicKeys) {
+            this.signatures = signatures;
+            this.publicKeys = publicKeys;
+        }
+
+        public List<Signature> getSignatures() {
+            return signatures;
+        }
+
+        public List<PublicKey> getPublicKeys() {
+            return publicKeys;
+        }
+    }
+
 }

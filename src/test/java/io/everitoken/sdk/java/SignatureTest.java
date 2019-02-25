@@ -30,7 +30,7 @@ class SignatureTest {
             String message = "helloworldwhatnot";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
-            Signature sig1 = Signature.signHash(Utils.hashTwice(message.getBytes()), key);
+            Signature sig1 = Signature.signHash(Utils.hash(message.getBytes()), key);
 
             assertEquals(sig, sig1);
         });
@@ -73,10 +73,10 @@ class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
-            Signature sig1 = Signature.signHash(Utils.hashTwice(message.getBytes()), key);
+            Signature sig1 = Signature.signHash(Utils.hash(message.getBytes()), key);
 
             boolean verifyResult = Signature.verify(message.getBytes(), sig1, key.toPublicKey());
-            boolean verifyResult1 = Signature.verifyHash(Utils.hashTwice(message.getBytes()), sig, key.toPublicKey());
+            boolean verifyResult1 = Signature.verifyHash(Utils.hash(message.getBytes()), sig, key.toPublicKey());
             assertTrue(verifyResult, "Able to verify");
             assertTrue(verifyResult1, "Able to verify");
         });
@@ -89,7 +89,8 @@ class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
-            assertEquals(0, sig.getRecId(), "recId equals either 0 or 1");
+            System.out.println(sig.getRecId());
+            assertEquals(1, sig.getRecId());
         });
     }
 
@@ -110,7 +111,7 @@ class SignatureTest {
 
             Arrays.asList(messages).forEach(message -> {
                 Signature sig = Signature.sign((message.getBytes()), key);
-                PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(message.getBytes()), sig);
+                PublicKey publicKey = Signature.recoverPublicKey(Utils.hash(message.getBytes()), sig);
 
                 assertTrue(PublicKey.isValidPublicKey(publicKey.toString()));
                 assertEquals(publicKey.toString(), key.toPublicKey().toString());
@@ -127,7 +128,7 @@ class SignatureTest {
             Signature sig = Signature.sign((message.getBytes()), key);
 
             String wrongMessage = "foobar";
-            PublicKey publicKey = Signature.recoverPublicKey(Utils.hashTwice(wrongMessage.getBytes()), sig);
+            PublicKey publicKey = Signature.recoverPublicKey(Utils.hash(wrongMessage.getBytes()), sig);
             assertNotEquals(publicKey.toString(), key.toPublicKey().toString());
         });
     }
