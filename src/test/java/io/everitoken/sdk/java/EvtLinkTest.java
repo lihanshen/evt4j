@@ -86,9 +86,30 @@ class EvtLinkTest {
                 "+N-7L/ZSDCWO1I7M*3Q6*SMAYOWWTF5RJAJ:NG**8U5J6WC2VM5Z:OLZPVJXX*12I*6V9FL1HX095$5:$" +
                 "*C3KGCM3FIS-WWRE14E:7VYNFA-3QCH5ULZJ*CRH91BTXIK-N+J1";
 
-        EvtLink.SignatureWithRecoveredPublicKey parsed = EvtLink.parseSignatures(link, true);
+        EvtLink.ParsedLink parsed = EvtLink.parseLink(link, true);
         List<Signature> signatures = parsed.getSignatures();
         List<PublicKey> publicKeys = parsed.getPublicKeys();
+        List<EvtLink.Segment> segments = parsed.getSegments();
+
+        // segment 1
+        EvtLink.Segment segment1 = segments.get(0);
+        Assertions.assertEquals(42, segment1.getTypeKey());
+        Assertions.assertEquals(1532709368, ByteBuffer.wrap(segment1.getContent()).getInt());
+
+        // segment 2
+        EvtLink.Segment segment2 = segments.get(1);
+        Assertions.assertEquals(91, segment2.getTypeKey());
+        Assertions.assertEquals("nd1532709365718", new String(segment2.getContent(), StandardCharsets.UTF_8));
+
+        // segment 3
+        EvtLink.Segment segment3 = segments.get(2);
+        Assertions.assertEquals(92, segment3.getTypeKey());
+        Assertions.assertEquals("tk3065418732.2981", new String(segment3.getContent(), StandardCharsets.UTF_8));
+
+        // segment 3
+        EvtLink.Segment segment4 = segments.get(3);
+        Assertions.assertEquals(156, segment4.getTypeKey());
+        Assertions.assertEquals("8b5a5a5bf96abebf3f8f7184f522a1b9", Utils.HEX.encode(segment4.getContent()));
 
         Assertions.assertEquals(
                 "SIG_K1_K6UKhSMgMdZkm1M6JUNaK6XBGgvpVWuexhUzrg9ARgJCsWiN2A5PeH9K9YUpuE8ZArYXvSWMwBSEVh8dFhHPriQh6raEVc", signatures.get(0).toString());

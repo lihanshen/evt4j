@@ -19,6 +19,7 @@ import java.nio.ByteBuffer;
 
 public class Signature {
     private static final String K1_PREFIX = "SIG_K1_";
+    public static int BUFFER_LENGTH = 65;
     private ECKey.ECDSASignature signature;
     private Integer recId;
 
@@ -49,8 +50,8 @@ public class Signature {
 
         byte[] signatureBytes = Utils.base58CheckDecode(signatureWithoutPrefix, "K1");
 
-        if (signatureBytes.length != 65) {
-            throw new InvalidSignatureException("Content of signature must be 65");
+        if (signatureBytes.length != BUFFER_LENGTH) {
+            throw new InvalidSignatureException(String.format("Content of signature must be %s", BUFFER_LENGTH));
         }
 
         return Signature.of(signatureBytes);
@@ -169,7 +170,7 @@ public class Signature {
     }
 
     public byte[] getBytes() {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(65);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(BUFFER_LENGTH);
         byteBuffer.put(0, (byte) (getRecId() + 4 + 27));
         byteBuffer.position(1);
         byteBuffer.put(getR().toByteArray(), 0, 32);

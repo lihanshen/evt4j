@@ -14,16 +14,32 @@ public class EvtLink {
     private static final int BASE = ALPHABET.length();
     private static final String QR_PREFIX = "https://evt.li/";
 
-    public static SignatureWithRecoveredPublicKey parseSignatures(String rawContent, boolean recoverPublicKey) {
+    private static List<Segment> parseSegments(byte[] segmentBytes) {
+        List<Segment> segments = new ArrayList<>();
+        int offset = 0;
+
+        while (offset < segmentBytes.length) {
+            Segment segment = parseSegment(segmentBytes, offset);
+            offset += segment.getLength();
+            segments.add(segment);
+        }
+
+        return segments;
+    }
+
+    public static ParsedLink parseLink(String rawContent, boolean recoverPublicKey) {
         String[] parts = rawContent.split("_");
         byte[] contentBytes = EvtLink.decode(parts[0]);
         byte[] sigBytes = EvtLink.decode(parts[1]);
 
+        int flag = contentBytes[1] | contentBytes[0] << 8;
+
         List<Signature> signatures = new ArrayList<>();
         List<PublicKey> publicKeys = new ArrayList<>();
 
-        for (int i = 0; i < sigBytes.length; i = i + 65) {
-            byte[] singleSigBytes = ByteBuffer.allocate(65).put(sigBytes, i, 65).array();
+        for (int i = 0; i < sigBytes.length; i = i + Signature.BUFFER_LENGTH) {
+            byte[] singleSigBytes = ByteBuffer.allocate(Signature.BUFFER_LENGTH)
+                    .put(sigBytes, i, Signature.BUFFER_LENGTH).array();
             Signature sig = Signature.of(singleSigBytes);
             signatures.add(sig);
 
@@ -33,7 +49,10 @@ public class EvtLink {
             }
         }
 
-        return new SignatureWithRecoveredPublicKey(signatures, publicKeys);
+        return new ParsedLink(flag, parseSegments(ArrayUtils.subarray(contentBytes, 2, contentBytes.length)),
+                              signatures,
+                              publicKeys
+        );
     }
 
     public static String getUniqueLinkId() {
@@ -55,17 +74,17 @@ public class EvtLink {
             return new Segment(type, ByteBuffer.allocate(4).put(content, 1, 4).array(), 5);
         } else if (type <= 155) {
             int contentLength = content[offset + 1] & 0xff;
-            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2, contentLength).array(),
+            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2 + offset, contentLength).array(),
                                contentLength + 2
             );
         } else if (type <= 165) {
             int contentLength = 16;
-            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 1, contentLength).array(),
+            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 1 + offset, contentLength).array(),
                                contentLength + 1
             );
         } else if (type <= 180) {
             int contentLength = content[offset + 1] & 0xff;
-            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2, contentLength).array(),
+            return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2 + offset, contentLength).array(),
                                contentLength + 2
             );
         } else {
@@ -198,11 +217,15 @@ public class EvtLink {
         }
     }
 
-    static class SignatureWithRecoveredPublicKey {
+    static class ParsedLink {
         private final List<Signature> signatures;
         private final List<PublicKey> publicKeys;
+        private final List<Segment> segments;
+        private final int flag;
 
-        private SignatureWithRecoveredPublicKey(List<Signature> signatures, List<PublicKey> publicKeys) {
+        private ParsedLink(int flag, List<Segment> segments, List<Signature> signatures, List<PublicKey> publicKeys) {
+            this.flag = flag;
+            this.segments = segments;
             this.signatures = signatures;
             this.publicKeys = publicKeys;
         }
@@ -213,6 +236,14 @@ public class EvtLink {
 
         public List<PublicKey> getPublicKeys() {
             return publicKeys;
+        }
+
+        public List<Segment> getSegments() {
+            return segments;
+        }
+
+        public int getFlag() {
+            return flag;
         }
     }
 

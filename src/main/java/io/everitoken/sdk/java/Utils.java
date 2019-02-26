@@ -133,7 +133,7 @@ public class Utils {
             return (int) v;
         }
 
-        return 65536 + v;
+        return v & 0xffff;
     }
 
     public static long getLastIrreversibleBlockPrefix(String hash) {
