@@ -50,12 +50,8 @@ class EvtLinkTest {
     void parseString() {
         byte[] bs = Utils.HEX.decode("5b0a68656c6c6f776f726c64");
         EvtLink.Segment segment = EvtLink.parseSegment(bs, 0);
-        System.out.println(Utils.HEX.encode(EvtLink.createSegment(
-                91,
-                "helloworld".getBytes()
-        )));
         Assertions.assertEquals(
-                "helloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworld", new String(segment.getContent(), StandardCharsets.UTF_8));
+                "helloworld", new String(segment.getContent(), StandardCharsets.UTF_8));
     }
 
     @Test
@@ -80,7 +76,8 @@ class EvtLinkTest {
 
     @Test
     void parseLink() {
-        String link = "0DFYZXZO9-:Y:JLF*3/4JCPG7V1346OZ:R/G2M93-2L*BBT9S0YQ0+JNRIW95*HF*94J0OVUN$KS01-GZ" +
+        String link = "https://evt.li/" + "0DFYZXZO9-:Y:JLF*3/4JCPG7V1346OZ:R/G2M93-2L*BBT9S0YQ0+JNRIW95*HF" +
+                "*94J0OVUN$KS01-GZ" +
                 "-N7FWK9_FXXJORONB7B58VU9Z2MZKZ5*:NP3::K7UYKD:Y9I1V508HBQZK2AE*ZS85PJZ2N47/41LQ-MZ" +
                 "/4Q6THOX**YN0VMQ*3/CG9-KX2:E7C-OCM*KJJT:Z7640Q6B*FWIQBYMDPIXB4CM:-8*TW-QNY$$AY5$UA3" +
                 "+N-7L/ZSDCWO1I7M*3Q6*SMAYOWWTF5RJAJ:NG**8U5J6WC2VM5Z:OLZPVJXX*12I*6V9FL1HX095$5:$" +
@@ -124,6 +121,5 @@ class EvtLinkTest {
                 "EVT6MYSkiBHNDLxE6JfTmSA1FxwZCgBnBYvCo7snSQEQ2ySBtpC6s", publicKeys.get(1).toString());
         Assertions.assertEquals(
                 "EVT7bUYEdpHiKcKT9Yi794MiwKzx5tGY3cHSh4DoCrL4B2LRjRgnt", publicKeys.get(2).toString());
-
     }
 }

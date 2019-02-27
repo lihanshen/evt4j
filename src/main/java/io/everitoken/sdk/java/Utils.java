@@ -10,6 +10,10 @@ import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.Sha256Hash;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import java.nio.ByteBuffer;
@@ -141,6 +145,22 @@ public class Utils {
         return Integer.toUnsignedLong(
                 ByteBuffer.wrap(input, 8, input.length - 8).order(ByteOrder.LITTLE_ENDIAN).getInt()
         );
+    }
+
+    public static DateTime getCorrectedTime(String referenceTime) {
+
+        DateTime dateTime = new DateTime(referenceTime);
+
+        // TODO: Dirty hack to sync local time
+        DateTime local = new DateTime();
+        LocalDateTime utc = local.withZone(DateTimeZone.UTC).toLocalDateTime();
+        System.out.println(utc.toString());
+        System.out.println(referenceTime);
+        DateTime newLocal = new DateTime(utc.toString());
+        // Dirty hack
+
+        Duration diff = Duration.millis(dateTime.getMillis() + 70 - newLocal.getMillis());
+        return dateTime.minus(diff);
     }
 
 }

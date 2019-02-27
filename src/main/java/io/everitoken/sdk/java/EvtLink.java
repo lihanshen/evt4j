@@ -1,18 +1,32 @@
 package io.everitoken.sdk.java;
 
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.exceptions.EvtLinkSyncTimeException;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.TestNetNetParams;
+import io.everitoken.sdk.java.provider.KeyProvider;
+import io.everitoken.sdk.java.provider.SignProvider;
+import io.everitoken.sdk.java.provider.SignProviderInterface;
 import org.apache.commons.lang3.ArrayUtils;
-import org.bitcoinj.core.Sha256Hash;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class EvtLink {
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$+-/:*";
     private static final int BASE = ALPHABET.length();
     private static final String QR_PREFIX = "https://evt.li/";
+    private final NetParams netParams;
+    private DateTime correctedTime;
+
+    public EvtLink(NetParams netParams) {
+        this.netParams = netParams;
+    }
 
     private static List<Segment> parseSegments(byte[] segmentBytes) {
         List<Segment> segments = new ArrayList<>();
@@ -27,12 +41,49 @@ public class EvtLink {
         return segments;
     }
 
+    private static String generateQRCode(int flag, List<byte[]> segments,
+                                         @Nullable SignProviderInterface signProvider) {
+        segments.sort(Comparator.comparingInt(a -> a[0]));
+
+        // put flag in first
+        byte[] contentBytes = ByteBuffer.allocate(2).putShort((short) flag).array();
+
+        for (byte[] segment : segments) {
+            contentBytes = ArrayUtils.addAll(contentBytes, segment);
+        }
+
+        String content = encode(contentBytes);
+
+        if ((flag & 16) == 16) {
+            content = QR_PREFIX + content;
+        }
+
+        if (signProvider != null) {
+            byte[] signaturesBytes = new byte[]{};
+            List<Signature> signatures = signProvider.sign(Utils.hash(contentBytes));
+
+            for (Signature signature : signatures) {
+                signaturesBytes = ArrayUtils.addAll(signaturesBytes, signature.getBytes());
+            }
+
+            content = String.format("%s_%s", content, encode(signaturesBytes));
+        }
+
+        return content;
+    }
+
     public static ParsedLink parseLink(String rawContent, boolean recoverPublicKey) {
         String[] parts = rawContent.split("_");
+
+        // check prefix
+        if (parts[0].startsWith(QR_PREFIX)) {
+            parts[0] = parts[0].substring(QR_PREFIX.length());
+        }
+
         byte[] contentBytes = EvtLink.decode(parts[0]);
         byte[] sigBytes = EvtLink.decode(parts[1]);
 
-        int flag = contentBytes[1] | contentBytes[0] << 8;
+        int flag = ByteBuffer.allocate(2).put(contentBytes, 0, 2).getShort(0) & 0xffff;
 
         List<Signature> signatures = new ArrayList<>();
         List<PublicKey> publicKeys = new ArrayList<>();
@@ -44,7 +95,7 @@ public class EvtLink {
             signatures.add(sig);
 
             if (recoverPublicKey) {
-                PublicKey publicKey = Signature.recoverPublicKey(Sha256Hash.hash(contentBytes), sig);
+                PublicKey publicKey = Signature.recoverPublicKey(Utils.hash(contentBytes), sig);
                 publicKeys.add(publicKey);
             }
         }
@@ -193,6 +244,54 @@ public class EvtLink {
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
     }
 
+    public static String getEveriPayText(@NotNull EveriPayParam param) {
+
+        return "getEveriPayText";
+    }
+
+    public static String getEvtLinkForPayeeCode(@NotNull EveriLinkPayeeCodeParam param) {
+        // TODO
+        return "getEvtLinkForPayeeCode";
+    }
+
+    public static void main(String[] args) {
+        EveriPassParam everiPassParam = new EveriPassParam(true, "testDomain", "testToken");
+
+        TestNetNetParams testNetNetParams = new TestNetNetParams();
+        EvtLink evtLink = new EvtLink(testNetNetParams);
+        String passText = evtLink.getEveriPassText(everiPassParam, SignProvider.of(KeyProvider.of(
+                "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
+        ParsedLink parsedLink = parseLink(passText, true);
+        System.out.println(parsedLink.getPublicKeys());
+    }
+
+    public String getEveriPassText(@NotNull EveriPassParam param, @Nullable SignProviderInterface signProvider) {
+
+        int flag = 1 + 2 + (param.isAutoDestroy() ? 8 : 0);
+        byte[] timeBytes = createSegment(
+                42,
+                ByteBuffer.allocate(4).putInt((int) getCorrectedTime().getMillis() / 1000).array()
+        );
+
+        byte[] domainBytes = createSegment(91, param.getDomain().getBytes());
+        byte[] tokenBytes = createSegment(92, param.getToken().getBytes());
+
+        return generateQRCode(flag, Arrays.asList(timeBytes, domainBytes, tokenBytes), signProvider);
+    }
+
+    private DateTime getCorrectedTime() {
+        if (correctedTime == null) {
+            try {
+                Api api = new Api(netParams);
+                correctedTime = Utils.getCorrectedTime(api.getInfo().getHeadBlockTime());
+            } catch (ApiResponseException ex) {
+                throw new EvtLinkSyncTimeException("Unable sync time with node", ex);
+            }
+        }
+
+        return correctedTime;
+    }
+
     static class Segment {
         private final int typeKey;
         private final byte[] content;
@@ -245,6 +344,41 @@ public class EvtLink {
         public int getFlag() {
             return flag;
         }
+    }
+
+    static class EveriPayParam {
+
+    }
+
+    static class EveriPassParam {
+        private final boolean autoDestroy;
+        private final String domain;
+        private final String token;
+
+        public EveriPassParam(boolean autoDestroy, String domain, String token) {
+            Objects.requireNonNull(domain);
+            Objects.requireNonNull(token);
+
+            this.autoDestroy = autoDestroy;
+            this.domain = domain;
+            this.token = token;
+        }
+
+        public boolean isAutoDestroy() {
+            return autoDestroy;
+        }
+
+        public String getDomain() {
+            return domain;
+        }
+
+        public String getToken() {
+            return token;
+        }
+    }
+
+    static class EveriLinkPayeeCodeParam {
+
     }
 
 }

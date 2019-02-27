@@ -20,6 +20,10 @@ public class Api {
         this.keyProvider = keyProvider;
     }
 
+    public Api(NetParams netParams) {
+        this(netParams, null);
+    }
+
     public Api() {
         this(new TestNetNetParams(), null);
     }
