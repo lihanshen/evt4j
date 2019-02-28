@@ -154,8 +154,6 @@ public class Utils {
         // TODO: Dirty hack to sync local time
         DateTime local = new DateTime();
         LocalDateTime utc = local.withZone(DateTimeZone.UTC).toLocalDateTime();
-        System.out.println(utc.toString());
-        System.out.println(referenceTime);
         DateTime newLocal = new DateTime(utc.toString());
         // Dirty hack
 

@@ -45,7 +45,6 @@ public class FungibleDetailData implements Meta {
     @Contract("_ -> new")
     public static FungibleDetailData ofRaw(JSONObject raw) {
         Objects.requireNonNull(raw);
-        System.out.println(raw.getString("current_supply"));
         return new FungibleDetailData(
                 PublicKey.of(raw.getString("creator")),
                 Permission.ofRaw(raw.getJSONObject("issue")),

@@ -2,8 +2,6 @@ package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.dto.PushableAction;
-import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,17 +12,6 @@ public class DestroyTokenAction extends Abi implements PushableAction {
 
     private DestroyTokenAction(String domain, String tokenName) {
         super(name, tokenName, domain);
-    }
-
-    public static void main(String[] args) {
-        NetParams netParams = new TestNetNetParams();
-        RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
-
-        DestroyTokenAction destroyTokenAction = DestroyTokenAction.of(
-                "test1119",
-                "t3"
-        );
-        System.out.println(destroyTokenAction.serialize(provider));
     }
 
     @NotNull

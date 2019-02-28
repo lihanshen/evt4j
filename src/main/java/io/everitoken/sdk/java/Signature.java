@@ -27,16 +27,6 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
-    public static void main(String[] args) {
-        byte[] hash = Utils.HEX.decode("07a66477b8e64adb17c52495053698c1d5d2b865233c3db5677f529e65ae4794");
-        PrivateKey privateKey = PrivateKey.fromWif("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
-        Signature signature = Signature.signHash(hash, privateKey);
-        System.out.println(signature.toString());
-
-        PublicKey publicKey = Signature.recoverPublicKey(hash, signature);
-        System.out.println(publicKey.toString());
-    }
-
     public static Signature of(byte[] signatureBytes) {
 
         int recId = (int) signatureBytes[0] - 4 - 27;
@@ -69,31 +59,19 @@ public class Signature {
 
     public static Signature signHash(byte[] hash, @NotNull PrivateKey key) {
         checkHashLength(hash);
-        ECKey.CURVE.
 
-                // init deterministic k calculator
-                ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
+        // init deterministic k calculator
+        Signer signer = new Signer(new HMacDSAKCalculator(new SHA256Digest()));
         ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(key.getD(), ECKey.CURVE);
 
-        int rLen = 0;
-        int sLen = 0;
-        BigInteger[] components = new BigInteger[]{};
-        int count = 0;
-
-        while (rLen != 32 && sLen != 32) {
-            System.out.println(count++);
-            signer.init(true, privKey);
-            components = signer.generateSignature(Utils.hash(ArrayUtils.addAll(hash, new byte[count])));
-            rLen = components[0].toByteArray().length;
-            sLen = components[1].toByteArray().length;
-            count++;
-        }
+        signer.init(true, privKey);
+        BigInteger[] components = signer.generateSignature(hash);
 
         Signature sig = new Signature(components[0], components[1]).toCanonicalised();
 
         // find the recId and store in signature for public key recover later
         PublicKey publicKey = key.toPublicKey();
-        int recId = getRecId(sig, Utils.hash(ArrayUtils.addAll(hash, new byte[count])), publicKey);
+        int recId = getRecId(sig, hash, publicKey);
 
         if (recId == -1) {
             throw new RecoverIDNotFoundException();
@@ -199,9 +177,6 @@ public class Signature {
         byteBuffer.put(getR().toByteArray(), 0, 32);
         byteBuffer.position(33);
         byteBuffer.put(getS().toByteArray(), 0, 32);
-        System.out.println(String.format("%s/%s/%s", "getBytes", getR().toByteArray().length,
-                                         getS().toByteArray().length
-        ));
 
         return byteBuffer.array();
     }

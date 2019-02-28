@@ -89,7 +89,6 @@ class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
-            System.out.println(sig.getRecId());
             assertEquals(1, sig.getRecId());
         });
     }
