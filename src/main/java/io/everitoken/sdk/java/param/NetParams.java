@@ -13,6 +13,7 @@ public abstract class NetParams {
         this.host = host;
         this.port = port;
         this.networkTimeout = networkTimeout;
+
     }
 
     public String getEndpointUrl() {

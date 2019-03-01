@@ -36,6 +36,8 @@ public class Api {
 //            final PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
 //                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
 //            });
+            NodeInfo info = api.getInfo();
+            System.out.println(info.getEvtApiVersion());
 //            JSONObject res = api.getHeadBlockHeaderState();
 //            System.out.println(res);
 

@@ -3,11 +3,11 @@ package io.everitoken.sdk.java.apiResource;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -23,8 +23,14 @@ public abstract class ApiResource {
     protected ApiResource(String uri, String method) {
         this.uri = uri;
         this.method = method;
-        HttpClientBuilder clientBuilder = HttpClients.custom();
-        clientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(3, false));
+        int timeout = 15;
+        RequestConfig.Builder configBuilder = RequestConfig.custom()
+                .setConnectTimeout(timeout * 1000)
+                .setConnectionRequestTimeout(timeout * 1000)
+                .setSocketTimeout(timeout * 1000);
+
+        HttpClientBuilder clientBuilder = HttpClients.custom().setDefaultRequestConfig(configBuilder.build());
+        clientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(5, false));
         Unirest.setHttpClient(clientBuilder.build());
     }
 
@@ -42,7 +48,7 @@ public abstract class ApiResource {
             JsonNode body = json.getBody();
             checkResponseError(body);
             return body;
-        } catch (UnirestException ex) {
+        } catch (Exception ex) {
             throw new ApiResponseException(ex.getMessage(), ex);
         }
     }

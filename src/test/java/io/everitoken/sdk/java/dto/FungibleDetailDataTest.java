@@ -19,8 +19,6 @@ class FungibleDetailDataTest {
     void deserialize() {
         Assertions.assertDoesNotThrow(() -> {
             FungibleDetailData.ofRaw(new JSONObject(raw));
-//            System.out.println(JSON.toJSONString(fungibleDetailData));
-//            System.out.println(raw);
         });
     }
 }

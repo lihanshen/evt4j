@@ -3,9 +3,6 @@ package io.everitoken.sdk.java;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.exceptions.EvtLinkSyncTimeException;
 import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
-import io.everitoken.sdk.java.provider.KeyProvider;
-import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
@@ -24,16 +21,16 @@ public class EvtLink {
     private final NetParams netParams;
     private DateTime correctedTime;
 
-    public EvtLink(NetParams netParams) {
+    public EvtLink(final NetParams netParams) {
         this.netParams = netParams;
     }
 
-    private static List<Segment> parseSegments(byte[] segmentBytes) {
-        List<Segment> segments = new ArrayList<>();
+    private static List<Segment> parseSegments(final byte[] segmentBytes) {
+        final List<Segment> segments = new ArrayList<>();
         int offset = 0;
 
         while (offset < segmentBytes.length) {
-            Segment segment = parseSegment(segmentBytes, offset);
+            final Segment segment = parseSegment(segmentBytes, offset);
             offset += segment.getLength();
             segments.add(segment);
         }
@@ -41,14 +38,14 @@ public class EvtLink {
         return segments;
     }
 
-    private static String generateQRCode(int flag, List<byte[]> segments,
-                                         @Nullable SignProviderInterface signProvider) {
-        segments.sort(Comparator.comparingInt(a -> a[0]));
+    private static String generateQRCode(final int flag, final List<byte[]> segments,
+                                         @Nullable final SignProviderInterface signProvider) {
+        segments.sort(Comparator.comparingInt(a -> a[0] & 0xff));
 
         // put flag in first
         byte[] contentBytes = ByteBuffer.allocate(2).putShort((short) flag).array();
 
-        for (byte[] segment : segments) {
+        for (final byte[] segment : segments) {
             contentBytes = ArrayUtils.addAll(contentBytes, segment);
         }
 
@@ -60,9 +57,9 @@ public class EvtLink {
 
         if (signProvider != null) {
             byte[] signaturesBytes = new byte[]{};
-            List<Signature> signatures = signProvider.sign(Utils.hash(contentBytes));
+            final List<Signature> signatures = signProvider.sign(Utils.hash(contentBytes));
 
-            for (Signature signature : signatures) {
+            for (final Signature signature : signatures) {
                 signaturesBytes = ArrayUtils.addAll(signaturesBytes, signature.getBytes());
             }
 
@@ -72,31 +69,33 @@ public class EvtLink {
         return content;
     }
 
-    public static ParsedLink parseLink(String rawContent, boolean recoverPublicKey) {
-        String[] parts = rawContent.split("_");
+    public static ParsedLink parseLink(final String rawContent, final boolean recoverPublicKey) {
+        final String[] parts = rawContent.split("_");
 
         // check prefix
         if (parts[0].startsWith(QR_PREFIX)) {
             parts[0] = parts[0].substring(QR_PREFIX.length());
         }
 
-        byte[] contentBytes = EvtLink.decode(parts[0]);
-        byte[] sigBytes = EvtLink.decode(parts[1]);
+        final byte[] contentBytes = EvtLink.decode(parts[0]);
 
-        int flag = ByteBuffer.allocate(2).put(contentBytes, 0, 2).getShort(0) & 0xffff;
+        final int flag = ByteBuffer.allocate(2).put(contentBytes, 0, 2).getShort(0) & 0xffff;
 
-        List<Signature> signatures = new ArrayList<>();
-        List<PublicKey> publicKeys = new ArrayList<>();
+        final List<Signature> signatures = new ArrayList<>();
+        final List<PublicKey> publicKeys = new ArrayList<>();
 
-        for (int i = 0; i < sigBytes.length; i = i + Signature.BUFFER_LENGTH) {
-            byte[] singleSigBytes = ByteBuffer.allocate(Signature.BUFFER_LENGTH)
-                    .put(sigBytes, i, Signature.BUFFER_LENGTH).array();
-            Signature sig = Signature.of(singleSigBytes);
-            signatures.add(sig);
+        if (parts.length > 1) {
+            final byte[] sigBytes = EvtLink.decode(parts[1]);
+            for (int i = 0; i < sigBytes.length; i = i + Signature.BUFFER_LENGTH) {
+                final byte[] singleSigBytes = ByteBuffer.allocate(Signature.BUFFER_LENGTH)
+                        .put(sigBytes, i, Signature.BUFFER_LENGTH).array();
+                final Signature sig = Signature.of(singleSigBytes);
+                signatures.add(sig);
 
-            if (recoverPublicKey) {
-                PublicKey publicKey = Signature.recoverPublicKey(Utils.hash(contentBytes), sig);
-                publicKeys.add(publicKey);
+                if (recoverPublicKey) {
+                    final PublicKey publicKey = Signature.recoverPublicKey(Utils.hash(contentBytes), sig);
+                    publicKeys.add(publicKey);
+                }
             }
         }
 
@@ -107,34 +106,34 @@ public class EvtLink {
     }
 
     public static String getUniqueLinkId() {
-        SecureRandom random = new SecureRandom();
-        byte[] values = new byte[16];
+        final SecureRandom random = new SecureRandom();
+        final byte[] values = new byte[16];
         random.nextBytes(values);
 
         return Utils.HEX.encode(values);
     }
 
-    public static Segment parseSegment(byte[] content, int offset) {
-        int type = content[offset] & 0xff;
+    public static Segment parseSegment(final byte[] content, final int offset) {
+        final int type = content[offset] & 0xff;
 
         if (type <= 20) {
             return new Segment(type, ByteBuffer.allocate(1).put(content[offset + 1]).array(), 2);
         } else if (type <= 40) {
-            return new Segment(type, ByteBuffer.allocate(2).put(content, 1, 2).array(), 3);
+            return new Segment(type, ByteBuffer.allocate(2).put(content, 1 + offset, 2).array(), 3);
         } else if (type <= 90) {
-            return new Segment(type, ByteBuffer.allocate(4).put(content, 1, 4).array(), 5);
+            return new Segment(type, ByteBuffer.allocate(4).put(content, 1 + offset, 4).array(), 5);
         } else if (type <= 155) {
-            int contentLength = content[offset + 1] & 0xff;
+            final int contentLength = content[offset + 1] & 0xff;
             return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2 + offset, contentLength).array(),
                                contentLength + 2
             );
         } else if (type <= 165) {
-            int contentLength = 16;
+            final int contentLength = 16;
             return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 1 + offset, contentLength).array(),
                                contentLength + 1
             );
         } else if (type <= 180) {
-            int contentLength = content[offset + 1] & 0xff;
+            final int contentLength = content[offset + 1] & 0xff;
             return new Segment(type, ByteBuffer.allocate(contentLength).put(content, 2 + offset, contentLength).array(),
                                contentLength + 2
             );
@@ -143,37 +142,37 @@ public class EvtLink {
         }
     }
 
-    public static byte[] createSegment(int type, byte[] content) {
+    public static byte[] createSegment(final int type, final byte[] content) {
         if (type < 0 || type > 255) {
             throw new IllegalArgumentException("Invalid type value, it must be within 0 to 255");
         }
 
         if (type <= 20) {
-            ByteBuffer b = ByteBuffer.wrap(new byte[2]);
+            final ByteBuffer b = ByteBuffer.wrap(new byte[2]);
             b.put((byte) type);
             b.put(content, 0, 1);
             return b.array();
         } else if (type <= 40) {
-            ByteBuffer b = ByteBuffer.wrap(new byte[3]);
+            final ByteBuffer b = ByteBuffer.wrap(new byte[3]);
             b.put((byte) type);
             b.put(content, 0, 2);
             return b.array();
         } else if (type <= 90) {
-            ByteBuffer b = ByteBuffer.wrap(new byte[5]);
+            final ByteBuffer b = ByteBuffer.wrap(new byte[5]);
             b.put((byte) type);
             b.put(content, 0, 4);
             return b.array();
         } else if (type <= 155) {
-            ByteBuffer b = ByteBuffer.wrap(new byte[2]);
+            final ByteBuffer b = ByteBuffer.wrap(new byte[2]);
             b.put((byte) type);
             b.put((byte) content.length);
             return ArrayUtils.addAll(b.array(), content);
-        } else if (type <= 165) { // TODO double check
-            ByteBuffer b = ByteBuffer.wrap(new byte[1]);
+        } else if (type <= 165) {
+            final ByteBuffer b = ByteBuffer.wrap(new byte[1]);
             b.put((byte) type);
             return ArrayUtils.addAll(b.array(), content);
         } else if (type <= 180) {
-            ByteBuffer b = ByteBuffer.wrap(new byte[2]);
+            final ByteBuffer b = ByteBuffer.wrap(new byte[2]);
             b.put((byte) type);
             b.put((byte) content.length);
             return ArrayUtils.addAll(b.array(), content);
@@ -182,15 +181,15 @@ public class EvtLink {
         }
     }
 
-    public static String encode(byte[] input) {
+    public static String encode(final byte[] input) {
         if (input.length == 0) {
             return "";
         }
 
         // build prefix string buffer
-        StringBuilder prefix = new StringBuilder();
+        final StringBuilder prefix = new StringBuilder();
 
-        for (byte i : input) {
+        for (final byte i : input) {
             if ((int) i != 0) {
                 break;
             }
@@ -198,11 +197,11 @@ public class EvtLink {
         }
 
         BigInteger bigInteger = new BigInteger(input);
-        BigInteger baseBn = BigInteger.valueOf(BASE);
-        StringBuilder sb = new StringBuilder();
+        final BigInteger baseBn = BigInteger.valueOf(BASE);
+        final StringBuilder sb = new StringBuilder();
 
         while (bigInteger.compareTo(BigInteger.ZERO) > 0) {
-            BigInteger mod = bigInteger.mod(baseBn);
+            final BigInteger mod = bigInteger.mod(baseBn);
             bigInteger = bigInteger.subtract(mod).divide(baseBn);
             sb.append(ALPHABET.charAt(mod.intValue()));
         }
@@ -210,13 +209,13 @@ public class EvtLink {
         return prefix.append(sb.reverse()).toString();
     }
 
-    public static byte[] decode(String base42EncodedString) {
+    public static byte[] decode(final String base42EncodedString) {
         if (base42EncodedString.length() == 0) {
             return new byte[]{};
         }
 
         BigInteger resultBn = BigInteger.ZERO;
-        BigInteger baseBn = BigInteger.valueOf(BASE);
+        final BigInteger baseBn = BigInteger.valueOf(BASE);
 
         int leadingZerosCount = 0;
 
@@ -229,8 +228,8 @@ public class EvtLink {
         }
 
         for (int i = 0; i < base42EncodedString.length(); i++) {
-            char c = base42EncodedString.charAt(i);
-            int index = ALPHABET.indexOf(c);
+            final char c = base42EncodedString.charAt(i);
+            final int index = ALPHABET.indexOf(c);
 
             if (ALPHABET.indexOf(c) == -1) {
                 throw new IllegalArgumentException(String.format("Illegal character found \"%s\" at index %d", c,
@@ -244,37 +243,57 @@ public class EvtLink {
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
     }
 
-    public static String getEveriPayText(@NotNull EveriPayParam param) {
-
-        return "getEveriPayText";
-    }
-
-    public static String getEvtLinkForPayeeCode(@NotNull EveriLinkPayeeCodeParam param) {
+    public static String getEvtLinkForPayeeCode(@NotNull final EveriLinkPayeeCodeParam param,
+                                                @Nullable final SignProviderInterface signProvide) {
         // TODO
         return "getEvtLinkForPayeeCode";
     }
 
-    public static void main(String[] args) {
-        EveriPassParam everiPassParam = new EveriPassParam(true, "testDomain", "testToken");
-
-        TestNetNetParams testNetNetParams = new TestNetNetParams();
-        EvtLink evtLink = new EvtLink(testNetNetParams);
-        String passText = evtLink.getEveriPassText(everiPassParam, SignProvider.of(KeyProvider.of(
-                "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
-        ParsedLink parsedLink = parseLink(passText, true);
-        System.out.println(parsedLink.getPublicKeys());
+    public static long getUnsignedInt(final byte[] bytes) {
+        return Long.parseUnsignedLong(Utils.HEX.encode(bytes), 16);
     }
 
-    public String getEveriPassText(@NotNull EveriPassParam param, @Nullable SignProviderInterface signProvider) {
+    public String getEveriPayText(@NotNull final EveriPayParam param,
+                                  @Nullable final SignProviderInterface signProvider) {
+        final int flag = 1 + 4;
 
-        int flag = 1 + 2 + (param.isAutoDestroy() ? 8 : 0);
-        byte[] timeBytes = createSegment(
+        final byte[] timeBytes = createSegment(
                 42,
                 ByteBuffer.allocate(4).putInt((int) getCorrectedTime().getMillis() / 1000).array()
         );
 
-        byte[] domainBytes = createSegment(91, param.getDomain().getBytes());
-        byte[] tokenBytes = createSegment(92, param.getToken().getBytes());
+
+        final byte[] symbolBytes = createSegment(44, ByteBuffer.allocate(4).putInt(param.getSymbol()).array());
+        final byte[] maxAmountBytes;
+
+        final long MAX_32_BITS_UNSIGNED_VALUE = 4_294_967_295L;
+
+        if (param.getMaxAmount() >= MAX_32_BITS_UNSIGNED_VALUE) {
+            maxAmountBytes = createSegment(94, Long.toString(param.getMaxAmount()).getBytes());
+        } else {
+            // FIXME: Here comes the fucking hack, trying to pack long type in to 4 bytes
+            final byte[] lBytes = ArrayUtils.subarray(ByteBuffer.allocate(8).putLong(param.getMaxAmount()).array(), 4
+                    , 8);
+
+            maxAmountBytes = createSegment(43, lBytes);
+        }
+
+        final byte[] linkIdBytes = createSegment(156, Utils.HEX.decode(param.getLinkId()));
+
+        return generateQRCode(flag, Arrays.asList(timeBytes, symbolBytes, maxAmountBytes, linkIdBytes), signProvider);
+    }
+
+    public String getEveriPassText(@NotNull final EveriPassParam param,
+                                   @Nullable final SignProviderInterface signProvider) {
+
+        final int flag = 1 + 2 + (param.isAutoDestroy() ? 8 : 0);
+        final byte[] timeBytes = createSegment(
+                42,
+                ByteBuffer.allocate(4).putInt((int) getCorrectedTime().getMillis() / 1000).array()
+        );
+
+        final byte[] domainBytes = createSegment(91, param.getDomain().getBytes());
+        final byte[] tokenBytes = createSegment(92, param.getToken().getBytes());
 
         return generateQRCode(flag, Arrays.asList(timeBytes, domainBytes, tokenBytes), signProvider);
     }
@@ -282,9 +301,9 @@ public class EvtLink {
     private DateTime getCorrectedTime() {
         if (correctedTime == null) {
             try {
-                Api api = new Api(netParams);
+                final Api api = new Api(netParams);
                 correctedTime = Utils.getCorrectedTime(api.getInfo().getHeadBlockTime());
-            } catch (ApiResponseException ex) {
+            } catch (final ApiResponseException ex) {
                 throw new EvtLinkSyncTimeException("Unable sync time with node", ex);
             }
         }
@@ -297,7 +316,7 @@ public class EvtLink {
         private final byte[] content;
         private final int length;
 
-        private Segment(int typeKey, byte[] content, int length) {
+        private Segment(final int typeKey, final byte[] content, final int length) {
             this.typeKey = typeKey;
             this.content = content;
             this.length = length;
@@ -322,7 +341,8 @@ public class EvtLink {
         private final List<Segment> segments;
         private final int flag;
 
-        private ParsedLink(int flag, List<Segment> segments, List<Signature> signatures, List<PublicKey> publicKeys) {
+        private ParsedLink(final int flag, final List<Segment> segments, final List<Signature> signatures,
+                           final List<PublicKey> publicKeys) {
             this.flag = flag;
             this.segments = segments;
             this.signatures = signatures;
@@ -347,7 +367,36 @@ public class EvtLink {
     }
 
     static class EveriPayParam {
+        private final int symbol;
+        private final String linkId;
+        private final long maxAmount;
 
+        public EveriPayParam(final int symbol, @NotNull final String linkId, final long maxAmount) {
+            Objects.requireNonNull(linkId);
+
+            if (linkId.length() != 32) {
+                throw new IllegalArgumentException(String.format(
+                        "LinkId must be with length 32, \"%s\" passed",
+                        linkId
+                ));
+            }
+
+            this.symbol = symbol;
+            this.linkId = linkId;
+            this.maxAmount = maxAmount;
+        }
+
+        public int getSymbol() {
+            return symbol;
+        }
+
+        public String getLinkId() {
+            return linkId;
+        }
+
+        public long getMaxAmount() {
+            return maxAmount;
+        }
     }
 
     static class EveriPassParam {
@@ -355,7 +404,7 @@ public class EvtLink {
         private final String domain;
         private final String token;
 
-        public EveriPassParam(boolean autoDestroy, String domain, String token) {
+        public EveriPassParam(final boolean autoDestroy, final String domain, final String token) {
             Objects.requireNonNull(domain);
             Objects.requireNonNull(token);
 
