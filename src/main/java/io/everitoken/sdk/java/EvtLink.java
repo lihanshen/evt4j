@@ -288,7 +288,6 @@ public class EvtLink {
                 ByteBuffer.allocate(4).putInt((int) getCorrectedTime().getMillis() / 1000).array()
         );
 
-
         final byte[] symbolBytes = createSegment(44, ByteBuffer.allocate(4).putInt(param.getSymbol()).array());
         final byte[] maxAmountBytes;
 

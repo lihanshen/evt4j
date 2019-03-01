@@ -3,6 +3,13 @@ package io.everitoken.sdk.java;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.io.BaseEncoding;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import io.everitoken.sdk.java.exceptions.Base58CheckException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.AddressFormatException;
@@ -16,9 +23,14 @@ import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Hashtable;
 
 
 public class Utils {
@@ -161,4 +173,31 @@ public class Utils {
         return dateTime.minus(diff);
     }
 
+    public static String getQrImageDateUri(String rawText) throws WriterException, IOException {
+        byte[] qr = getQrImageInBytes(rawText);
+
+        String data = new String(
+                Base64.getEncoder().encode(qr),
+                StandardCharsets.UTF_8
+        );
+
+        return String.format("data:image/png;base64,%s", data);
+    }
+
+    public static byte[] getQrImageInBytes(String rawText) throws WriterException,
+            IOException {
+        int width = 600;
+        int height = 600;
+
+        Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(rawText, BarcodeFormat.QR_CODE, width, height, hints);
+
+        ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
+
+        return pngOutputStream.toByteArray();
+    }
 }
