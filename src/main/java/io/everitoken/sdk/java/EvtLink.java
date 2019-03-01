@@ -40,6 +40,8 @@ public class EvtLink {
 
     private static String generateQRCode(final int flag, final List<byte[]> segments,
                                          @Nullable final SignProviderInterface signProvider) {
+
+        // sort segments based on type key
         segments.sort(Comparator.comparingInt(a -> a[0] & 0xff));
 
         // put flag in first
@@ -59,6 +61,13 @@ public class EvtLink {
             byte[] signaturesBytes = new byte[]{};
             final List<Signature> signatures = signProvider.sign(Utils.hash(contentBytes));
 
+            if (signatures.size() > 3) {
+                throw new IllegalArgumentException(String.format(
+                        "Only 3 signatures are allowed, \"%d\" passed",
+                        signatures.size()
+                ));
+            }
+
             for (final Signature signature : signatures) {
                 signaturesBytes = ArrayUtils.addAll(signaturesBytes, signature.getBytes());
             }
@@ -70,6 +79,12 @@ public class EvtLink {
     }
 
     public static ParsedLink parseLink(final String rawContent, final boolean recoverPublicKey) {
+        int rawContentLength = rawContent.length();
+
+        if (rawContentLength < 3 || rawContentLength > 2000) {
+            throw new IllegalArgumentException(String.format("Invalid EvtLink length of \"%d\"", rawContentLength));
+        }
+
         final String[] parts = rawContent.split("_");
 
         // check prefix
@@ -243,10 +258,21 @@ public class EvtLink {
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
     }
 
-    public static String getEvtLinkForPayeeCode(@NotNull final EveriLinkPayeeCodeParam param,
-                                                @Nullable final SignProviderInterface signProvide) {
-        // TODO
-        return "getEvtLinkForPayeeCode";
+    public static String getEvtLinkForPayeeCode(@NotNull final EveriLinkPayeeCodeParam param) {
+        int flag = 1 + 16;
+        byte[] addressBytes = createSegment(95, param.getAddress().getBytes());
+        byte[] fungibleIdBytes = {};
+        byte[] amountBytes = {};
+
+        if (param.getFungibleId() != null) {
+            fungibleIdBytes = createSegment(45, ByteBuffer.allocate(4).putInt(param.getFungibleId()).array());
+        }
+
+        if (param.getAmount() != null) {
+            amountBytes = createSegment(96, param.getAmount().getBytes());
+        }
+
+        return generateQRCode(flag, Arrays.asList(addressBytes, fungibleIdBytes, amountBytes), null);
     }
 
     public static long getUnsignedInt(final byte[] bytes) {
@@ -427,7 +453,36 @@ public class EvtLink {
     }
 
     static class EveriLinkPayeeCodeParam {
+        private Integer fungibleId;
+        private Address address;
+        private String amount;
 
+        public EveriLinkPayeeCodeParam(Address address, @Nullable Integer fungibleId, @Nullable String amount) {
+            Objects.requireNonNull(address);
+
+            if (amount != null) {
+                Objects.requireNonNull(fungibleId);
+            }
+
+            this.fungibleId = fungibleId;
+            this.address = address;
+            this.amount = amount;
+        }
+
+        public EveriLinkPayeeCodeParam(Address address) {
+            this(address, null, null);
+        }
+
+        public Integer getFungibleId() {
+            return fungibleId;
+        }
+
+        public String getAddress() {
+            return address.toString();
+        }
+
+        public String getAmount() {
+            return amount;
+        }
     }
-
 }

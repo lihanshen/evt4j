@@ -170,4 +170,57 @@ class EvtLinkTest {
         final EvtLink.Segment segment = EvtLink.parseSegment(EvtLink.decode(link), 0);
         Assertions.assertEquals(4294967295L, EvtLink.getUnsignedInt(segment.getContent()));
     }
+
+    @Test
+    void everiLinkPayeeCodeParam() {
+        Address address = Address.of(
+                "EVT00000000000000000000000000000000000000000000000000");
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            new EvtLink.EveriLinkPayeeCodeParam(address, null, "1.00000");
+        });
+
+        EvtLink.EveriLinkPayeeCodeParam param = new EvtLink.EveriLinkPayeeCodeParam(address);
+        Assertions.assertNull(param.getFungibleId());
+        Assertions.assertNull(param.getAmount());
+        Assertions.assertEquals(address.toString(), param.getAddress());
+    }
+
+    @Test
+    void getEvtLinkForPayeeCodeOnlyWithAddress() {
+        // here is encoded with only the address "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa"
+        String qrText = "https://evt.li/03$5CLY539FEQR3NBG*NQ4W70P7W0EU$0$GAM5:1GNK-E5A0L+++5JAU*4PEA64ZTRDGOO" +
+                "/7LGLW2C6JI289";
+
+        EvtLink.ParsedLink parsedLink = EvtLink.parseLink(qrText, false);
+        Assertions.assertEquals(1, parsedLink.getSegments().size());
+        Assertions.assertEquals(
+                "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa",
+                new String(parsedLink.getSegments().get(0).getContent(), StandardCharsets.UTF_8)
+        );
+    }
+
+    @Test
+    void getEvtLinkForPayeeCode() {
+        // here is encoded with the address "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa", fungibleId
+        // and amount
+        String qrText = "https://evt.li/01P-:EM95I7F1W9*5BZZ049FS*3SW3F4K-:1UM**KL98VK*XHBW2VIZYZAAG3FO-JIGQ0A9KB2Z5" +
+                "/QT2UKPP14BGCN7ZXLXG21A5JTJ7C";
+
+        EvtLink.ParsedLink parsedLink = EvtLink.parseLink(qrText, false);
+        Assertions.assertEquals(3, parsedLink.getSegments().size());
+
+        Assertions.assertEquals(
+                1,
+                ByteBuffer.allocate(4).put(parsedLink.getSegments().get(0).getContent()).getInt(0)
+        );
+        Assertions.assertEquals(
+                "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa",
+                new String(parsedLink.getSegments().get(1).getContent(), StandardCharsets.UTF_8)
+        );
+
+        Assertions.assertEquals(
+                "1.23456",
+                new String(parsedLink.getSegments().get(2).getContent(), StandardCharsets.UTF_8)
+        );
+    }
 }
