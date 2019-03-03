@@ -94,6 +94,7 @@ Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"
 * [ ] implement meta dto
 * [ ] request timeout
 * [ ] create builder in abi package, implement build() functionalInterface
+* [ ] refreshing qr code
 
 
 ## Resources

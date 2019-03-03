@@ -9,8 +9,6 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class AuthorizerWeight {
-    private static final String ACCOUNT_IDENTIFIER = "[A]";
-    private static final String GROUP_IDENTIFIER = "[G]";
     private final String ref;
     private final int weight;
 
@@ -29,19 +27,22 @@ public class AuthorizerWeight {
     @NotNull
     @Contract("_, _ -> new")
     public static AuthorizerWeight createAccount(@NotNull PublicKey key, int weightType) {
-        return new AuthorizerWeight(String.format("%s %s", ACCOUNT_IDENTIFIER, key.toString()), weightType);
+        AuthorizerRef account = AuthorizerRef.createAccount(key);
+        return new AuthorizerWeight(String.format(account.toString(), key.toString()), weightType);
     }
 
     @NotNull
     @Contract("_, _ -> new")
     public static AuthorizerWeight createGroup(@NotNull PublicKey key, int weightType) {
-        return new AuthorizerWeight(String.format("%s %s", GROUP_IDENTIFIER, key.toString()), weightType);
+        AuthorizerRef group = AuthorizerRef.createGroup(key);
+        return new AuthorizerWeight(group.toString(), weightType);
     }
 
     @NotNull
     @Contract("_ -> new")
     public static AuthorizerWeight createOwner(int weightType) {
-        return new AuthorizerWeight(String.format("%s %s", GROUP_IDENTIFIER, ".OWNER"), weightType);
+        AuthorizerRef group = AuthorizerRef.createGroup();
+        return new AuthorizerWeight(group.toString(), weightType);
     }
 
     public String getRef() {
