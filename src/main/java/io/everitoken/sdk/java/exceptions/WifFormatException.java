@@ -10,5 +10,4 @@ public class WifFormatException extends IllegalArgumentException implements EvtE
     public WifFormatException(String message, Throwable ex) {
         super(message, ex);
     }
-
 }

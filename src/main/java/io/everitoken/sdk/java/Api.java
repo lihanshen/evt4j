@@ -36,10 +36,13 @@ public class Api {
 //            final PublicKeysParams publicKeysParams = new PublicKeysParams(new String[]{
 //                    "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"
 //            });
-            NodeInfo info = api.getInfo();
-            System.out.println(info.getEvtApiVersion());
+//            NodeInfo info = api.getInfo();
+//            System.out.println(info.getEvtApiVersion());
 //            JSONObject res = api.getHeadBlockHeaderState();
 //            System.out.println(res);
+
+//            String testProposal8 = api.getSuspendedProposal("testProposal8");
+//            JSONObject jsonObject = new JSONObject(testProposal8);
 
 //            List<NameableResource> res1 = api.getCreatedDomains(publicKeysParams);
 //            System.out.println(JSON.toJSONString(res1));
@@ -135,6 +138,14 @@ public class Api {
         return new TokenDetail().request(RequestParams.of(netParams, () -> {
             JSONObject body = new JSONObject();
             body.put("domain", domain);
+            body.put("name", name);
+            return body.toString();
+        }));
+    }
+
+    public String getSuspendedProposal(String name) throws ApiResponseException{
+        return new SuspendedProposal().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
             body.put("name", name);
             return body.toString();
         }));
