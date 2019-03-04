@@ -143,7 +143,7 @@ public class Api {
         }));
     }
 
-    public String getSuspendedProposal(String name) throws ApiResponseException{
+    public String getSuspendedProposal(String name) throws ApiResponseException {
         return new SuspendedProposal().request(RequestParams.of(netParams, () -> {
             JSONObject body = new JSONObject();
             body.put("name", name);
@@ -187,6 +187,19 @@ public class Api {
         return new FungibleDetail().request(RequestParams.of(netParams, () -> {
             JSONObject body = new JSONObject();
             body.put("id", id);
+            return body.toString();
+        }));
+    }
+
+    public byte[] getSignableDigest(String data) throws ApiResponseException {
+        return new SignableDigest().request(RequestParams.of(netParams, () -> data));
+    }
+
+    public JSONArray getSuspendRequiredKeys(String name, List<String> keys) throws ApiResponseException {
+        return new RequiredSuspendedKeys().request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("name", name);
+            body.put("available_keys", keys);
             return body.toString();
         }));
     }

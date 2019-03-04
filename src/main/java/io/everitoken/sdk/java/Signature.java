@@ -27,6 +27,16 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
+    public static void main(String[] args) {
+        Signature sig = Signature.of(
+                "SIG_K1_KZ6wKSFqJrQjwVPUz4ERbBr4rvumhqAmNTSw3UL9VjsmMuzgaRPFNRYfxDSH3xyeUUpchbiYdB1qNSuXiNz5JKXJTzLK9M");
+        PrivateKey privateKey = PrivateKey.fromWif("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
+        String hash = "ca58167193040610492aeddb8572ddaafe075516040fde4e07bb0d9239893f60";
+
+        PublicKey publicKey = Signature.recoverPublicKey(Utils.hash(Utils.HEX.decode(hash)), sig);
+        System.out.println(publicKey.toString());
+    }
+
     public static Signature of(byte[] signatureBytes) {
 
         int recId = (int) signatureBytes[0] - 4 - 27;

@@ -29,15 +29,19 @@ public class SignProvider implements SignProviderInterface {
         return new SignProvider(keyProvider);
     }
 
+    public static byte[] getSignableDigest(final NetParams netParams, final Transaction tx) throws ApiResponseException {
+        return (new SignableDigest()).request(RequestParams.of(netParams, () -> JSON.toJSONString(tx)));
+    }
+
+    public KeyProviderInterface getKeyProvider() {
+        return keyProvider;
+    }
+
     public List<Signature> sign(final byte[] bufToSign) {
         Objects.requireNonNull(keyProvider);
         final List<PrivateKey> keys = keyProvider.get();
         return keys.stream()
                 .map(privateKey -> Signature.signHash(bufToSign, privateKey))
                 .collect(Collectors.toList());
-    }
-
-    public static byte[] getSignableDigest(final NetParams netParams, final Transaction tx) throws ApiResponseException {
-        return (new SignableDigest()).request(RequestParams.of(netParams, () -> JSON.toJSONString(tx)));
     }
 }

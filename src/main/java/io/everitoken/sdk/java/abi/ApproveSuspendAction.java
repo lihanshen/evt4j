@@ -1,7 +1,6 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.PrivateKey;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.Signature;
 import io.everitoken.sdk.java.dto.PushableAction;
@@ -33,26 +32,27 @@ public class ApproveSuspendAction extends Abi implements PushableAction {
 
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
-        ApproveSuspendAction action = ApproveSuspendAction.of(
-                "testProposal8",
-                Arrays.asList(
-                        "SIG_K1_JzzAt8sCBmZRQv8VmaaCzsfsmNZxVvrfxtFZRoY5gfja2ouBDK16Bf2MubLrTqdtJYSeyVACPSsmqud8Qihe8Zh551g8tw")
-        );
-
         TransactionService transactionService = TransactionService.of(netParam);
-        TransactionConfiguration txConfig = new TransactionConfiguration(
-                1000000,
-                PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
-                KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
-        );
-        System.out.println(PrivateKey.fromWif("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D").toPublicKey().toString());
-
+        KeyProvider keyProvider = KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
 
         try {
+            List<Signature> signatures = transactionService.getSignaturesByProposalName(keyProvider, "testProposal10");
+            signatures.stream().forEach(signature -> System.out.println(signature.toString()));
+
+            ApproveSuspendAction action = ApproveSuspendAction.of(
+                    "testProposal10",
+                    signatures.stream().map(Signature::toString).collect(Collectors.toList())
+            );
+            TransactionConfiguration txConfig = new TransactionConfiguration(
+                    1000000,
+                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
+                    keyProvider
+            );
+
             TransactionData txData = transactionService.push(txConfig, Arrays.asList(action));
             System.out.println(txData.getTrxId());
         } catch (Exception ex) {
-            System.out.println(ex.getCause().getMessage());
+            System.out.println(ex.getMessage());
         }
     }
 

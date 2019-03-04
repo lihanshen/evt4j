@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.service;
 
 import com.alibaba.fastjson.JSON;
-import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.Utils;
+import io.everitoken.sdk.java.*;
 import io.everitoken.sdk.java.abi.Abi;
 import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
 import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
@@ -17,6 +16,8 @@ import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
+import io.everitoken.sdk.java.param.TestNetNetParams;
+import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.provider.SignProvider;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class TransactionService {
     private final NetParams netParams;
@@ -71,6 +73,26 @@ public class TransactionService {
         DateTime expiration = dateTime.plus(expireDuration);
 
         return expiration.toString().substring(0, TIMESTAMP_LENGTH);
+    }
+
+    public static void main(String[] args) {
+
+        NetParams netParam = new TestNetNetParams();
+
+        try {
+            TransactionService transactionService = TransactionService.of(netParam);
+//            TransactionConfiguration trxConfig = new TransactionConfiguration(
+//                    1000000,
+//                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
+//                    KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
+//            );
+
+            transactionService.getSignaturesByProposalName(KeyProvider.of(new String[]{
+                    "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"
+            }), "testProposal8");
+        } catch (Exception ex) {
+
+        }
     }
 
     public TransactionData push(TransactionConfiguration txConfig, List<Abi> actions) throws ApiResponseException {
@@ -126,5 +148,31 @@ public class TransactionService {
                                txConfig.getMaxCharge(),
                                txConfig.getPayer()
         );
+    }
+
+    public List<Signature> getSignaturesByProposalName(KeyProvider keyProvider, String proposalName) throws ApiResponseException {
+        // get proposal transactions
+        Api api = new Api(netParams);
+        String suspendedProposalRaw = api.getSuspendedProposal(proposalName);
+        JSONObject trxRaw = (new JSONObject(suspendedProposalRaw)).getJSONObject("trx");
+
+        // get the signable digest
+        byte[] trxSignableDigest = api.getSignableDigest(trxRaw.toString());
+
+        System.out.println(Utils.HEX.encode(trxSignableDigest));
+
+        // get required keys for suspended proposals
+        List<String> publicKeys =
+                keyProvider.get().stream().map(PrivateKey::toPublicKey).map(PublicKey::toString).collect(Collectors.toList());
+
+        List<String> suspendRequiredKeys =
+                StreamSupport.stream(api.getSuspendRequiredKeys(proposalName, publicKeys).spliterator(), true)
+                        .map(publicKey -> (String) publicKey).collect(Collectors.toList());
+
+        // sign it to get the signatures
+        return keyProvider.get().stream().filter(privateKey -> {
+            PublicKey publicKey = privateKey.toPublicKey();
+            return suspendRequiredKeys.contains(publicKey.toString());
+        }).map(privateKey -> Signature.signHash(Utils.hash(trxSignableDigest), privateKey)).collect(Collectors.toList());
     }
 }
