@@ -70,7 +70,7 @@ Make sure maven is installed
     * [x] "destroytoken"
     * [x] "evt2pevt"
     * [ ] "addmeta"
-    * [ ] "newsuspend"
+    * [x] "newsuspend"
     * [ ] "aprvsuspend"
     * [ ] "cancelsuspend"
     * [ ] "execsuspend"
