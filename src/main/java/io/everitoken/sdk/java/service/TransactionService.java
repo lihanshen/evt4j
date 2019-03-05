@@ -153,13 +153,12 @@ public class TransactionService {
     public List<Signature> getSignaturesByProposalName(KeyProvider keyProvider, String proposalName) throws ApiResponseException {
         // get proposal transactions
         Api api = new Api(netParams);
+
         String suspendedProposalRaw = api.getSuspendedProposal(proposalName);
         JSONObject trxRaw = (new JSONObject(suspendedProposalRaw)).getJSONObject("trx");
 
         // get the signable digest
         byte[] trxSignableDigest = api.getSignableDigest(trxRaw.toString());
-
-        System.out.println(Utils.HEX.encode(trxSignableDigest));
 
         // get required keys for suspended proposals
         List<String> publicKeys =
@@ -173,6 +172,6 @@ public class TransactionService {
         return keyProvider.get().stream().filter(privateKey -> {
             PublicKey publicKey = privateKey.toPublicKey();
             return suspendRequiredKeys.contains(publicKey.toString());
-        }).map(privateKey -> Signature.signHash(Utils.hash(trxSignableDigest), privateKey)).collect(Collectors.toList());
+        }).map(privateKey -> Signature.signHash(trxSignableDigest, privateKey)).collect(Collectors.toList());
     }
 }
