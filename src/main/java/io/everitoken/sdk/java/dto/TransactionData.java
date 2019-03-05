@@ -17,7 +17,6 @@ public class TransactionData implements Transactable {
     @NotNull
     @Contract("_ -> new")
     public static TransactionData ofRaw(@NotNull JSONObject raw) {
-        System.out.println(raw.toString());
         return new TransactionData(
                 raw.getString("transaction_id"),
                 raw.getJSONObject("processed")

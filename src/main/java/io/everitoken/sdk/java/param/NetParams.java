@@ -39,6 +39,19 @@ public abstract class NetParams {
     public static enum NET {
         MAINNET1("mainnet1.everitoken.io"),
         MAINNET2("mainnet2.everitoken.io"),
+        MAINNET3("mainnet3.everitoken.io"),
+        MAINNET4("mainnet4.everitoken.io"),
+        MAINNET5("mainnet5.everitoken.io"),
+        MAINNET6("mainnet6.everitoken.io"),
+        MAINNET7("mainnet7.everitoken.io"),
+        MAINNET8("mainnet8.everitoken.io"),
+        MAINNET9("mainnet9.everitoken.io"),
+        MAINNET10("mainnet10.everitoken.io"),
+        MAINNET11("mainnet11.everitoken.io"),
+        MAINNET12("mainnet12.everitoken.io"),
+        MAINNET13("mainnet13.everitoken.io"),
+        MAINNET14("mainnet14.everitoken.io"),
+        MAINNET15("mainnet15.everitoken.io"),
         TESTNET("testnet1.everitoken.io");
 
         private final String url;

@@ -41,19 +41,19 @@ Make sure maven is installed
 * [x] getManagedGroups
 * [x] getCreatedFungibles
 * [x] getActions
-* [-] getTransactionIdsInBlock // needs testing
-* [ ] getTokens
+* [x] getTransactionIdsInBlock // needs testing
 * [x] getToken
 * [x] getFungibleBalance
 * [x] getTransactionDetailById
 * [x] getDomainDetail
 * [x] getGroupDetail
-* [-] getFungibleActionsByAddress // needs testing with real data
+* [x] getFungibleActionsByAddress // needs testing with real data
+* [x] getTokens
 * [ ] getTransactionsDetailOfPublicKeys
-* [-] getFungibleSymbolDetail
-* [ ] getRequiredKeysForSuspendedTransaction // need suspendedTransaction first
 * [ ] getStatusOfEvtLink
-* [ ] getSuspendedTransactionDetail // need suspendedTransaction first
+* [x] getFungibleSymbolDetail
+* [x] getRequiredKeysForSuspendedTransaction // need suspendedTransaction first
+* [x] getSuspendedTransactionDetail // need suspendedTransaction first
 * [x] getEstimatedChargeForTransaction
 * [x] generateUnsignedTransaction
 * [x] pushTransaction
@@ -71,7 +71,7 @@ Make sure maven is installed
     * [x] "evt2pevt"
     * [ ] "addmeta"
     * [x] "newsuspend"
-    * [ ] "aprvsuspend"
+    * [x] "aprvsuspend"
     * [ ] "cancelsuspend"
     * [ ] "execsuspend"
     * [ ] "everipass"

@@ -32,7 +32,7 @@ public class NewSuspendExample {
         );
         try {
             Transaction tx = transactionService.buildRawTransaction(txConfig, Arrays.asList(evt2PevtAction));
-            NewSuspendAction action = NewSuspendAction.of("testProposal10",
+            NewSuspendAction action = NewSuspendAction.of("testProposal11",
                                                           "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", tx
             );
 

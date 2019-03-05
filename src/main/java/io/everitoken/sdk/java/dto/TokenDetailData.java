@@ -17,10 +17,11 @@ public class TokenDetailData implements Meta {
     private final List<PublicKey> owner;
     private final JSONArray metas;
     private String name;
+    private String domain;
 
     private TokenDetailData(@NotNull JSONObject raw) throws JSONException {
         name = raw.getString("name");
-        name = raw.getString("domain");
+        domain = raw.getString("domain");
         metas = raw.getJSONArray("metas");
 
         JSONArray owner = raw.getJSONArray("owner");
@@ -42,6 +43,10 @@ public class TokenDetailData implements Meta {
 
     public String getName() {
         return name;
+    }
+
+    public String getDomain() {
+        return domain;
     }
 
     public List<PublicKey> getOwner() {
