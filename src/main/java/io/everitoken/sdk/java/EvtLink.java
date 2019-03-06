@@ -430,7 +430,7 @@ public class EvtLink {
         }
     }
 
-    static class EveriPassParam {
+    public static class EveriPassParam {
         private final boolean autoDestroy;
         private final String domain;
         private final String token;

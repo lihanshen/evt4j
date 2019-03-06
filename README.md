@@ -3,7 +3,7 @@ Official Java SDK for everiToken public chain.
 
 ## initial RC
 * [x] everipay action
-* [ ] everipass action
+* [x] everipass action
 * [ ] getStatusOfEvtLink api
 * [ ] timeout
 * [ ] suspend
@@ -82,7 +82,7 @@ Make sure maven is installed
     * [x] "aprvsuspend"
     * [ ] "cancelsuspend"
     * [ ] "execsuspend"
-    * [ ] "everipass"
+    * [x] "everipass"
     * [x] "everipay"
     * [ ] "recycleft"
     * [ ] "newlock"

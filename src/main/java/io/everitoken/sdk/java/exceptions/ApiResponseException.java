@@ -7,6 +7,10 @@ public class ApiResponseException extends Exception implements EvtException {
 
     public ApiResponseException(String message, Throwable cause) {
         super(message, cause);
+
+        if (cause instanceof ApiResponseException) {
+            this.raw = ((ApiResponseException) cause).getRaw();
+        }
     }
 
     public ApiResponseException(String message, JSONObject raw) {

@@ -17,7 +17,7 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
-            testDomainTokens();
+            getToken();
         } catch (ApiResponseException ex) {
 
         }
