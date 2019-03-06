@@ -1,6 +1,14 @@
 # evt4j
 Official Java SDK for everiToken public chain.
 
+## initial RC
+* [x] everipay action
+* [ ] everipass action
+* [ ] getStatusOfEvtLink api
+* [ ] timeout
+* [ ] suspend
+* [ ] unsafe
+
 ## Api (working in progress)
 
 ### PrivateKey
@@ -75,7 +83,7 @@ Make sure maven is installed
     * [ ] "cancelsuspend"
     * [ ] "execsuspend"
     * [ ] "everipass"
-    * [ ] "everipay"
+    * [x] "everipay"
     * [ ] "recycleft"
     * [ ] "newlock"
     * [ ] "aprvlock"
@@ -95,7 +103,6 @@ Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"
 * [ ] request timeout
 * [ ] create builder in abi package, implement build() functionalInterface
 * [ ] refreshing qr code
-
 
 ## Resources
 * [Abi reference](https://www.everitoken.io/developers/apis,_sdks_and_tools/abi_reference/en_US)

@@ -16,6 +16,7 @@ import java.util.List;
 public class ApiExample {
     public static void main(String[] args) {
         try {
+            // replace this with method you want to test
             testDomainTokens();
         } catch (ApiResponseException ex) {
 

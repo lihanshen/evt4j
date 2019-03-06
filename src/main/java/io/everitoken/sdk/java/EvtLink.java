@@ -283,9 +283,11 @@ public class EvtLink {
                                   @Nullable final SignProviderInterface signProvider) {
         final int flag = 1 + 4;
 
-        final byte[] timeBytes = createSegment(
+        DateTime localTime = new DateTime();
+        final byte[] timestampBytes = createSegment(
                 42,
-                ByteBuffer.allocate(4).putInt((int) getCorrectedTime().getMillis() / 1000).array()
+                ArrayUtils.subarray(ByteBuffer.allocate(8).putLong(localTime.getMillis() / 1000).array(), 4
+                        , 8)
         );
 
         final byte[] symbolBytes = createSegment(44, ByteBuffer.allocate(4).putInt(param.getSymbol()).array());
@@ -305,22 +307,26 @@ public class EvtLink {
 
         final byte[] linkIdBytes = createSegment(156, Utils.HEX.decode(param.getLinkId()));
 
-        return generateQRCode(flag, Arrays.asList(timeBytes, symbolBytes, maxAmountBytes, linkIdBytes), signProvider);
+        return generateQRCode(flag, Arrays.asList(timestampBytes, symbolBytes, maxAmountBytes, linkIdBytes),
+                              signProvider
+        );
     }
 
     public String getEveriPassText(@NotNull final EveriPassParam param,
                                    @Nullable final SignProviderInterface signProvider) {
 
         final int flag = 1 + 2 + (param.isAutoDestroy() ? 8 : 0);
-        final byte[] timeBytes = createSegment(
+        DateTime localTime = new DateTime();
+        final byte[] timestampBytes = createSegment(
                 42,
-                ByteBuffer.allocate(4).putInt((int) getCorrectedTime().getMillis() / 1000).array()
+                ArrayUtils.subarray(ByteBuffer.allocate(8).putLong(localTime.getMillis() / 1000).array(), 4
+                        , 8)
         );
 
         final byte[] domainBytes = createSegment(91, param.getDomain().getBytes());
         final byte[] tokenBytes = createSegment(92, param.getToken().getBytes());
 
-        return generateQRCode(flag, Arrays.asList(timeBytes, domainBytes, tokenBytes), signProvider);
+        return generateQRCode(flag, Arrays.asList(timestampBytes, domainBytes, tokenBytes), signProvider);
     }
 
     private DateTime getCorrectedTime() {
@@ -336,7 +342,7 @@ public class EvtLink {
         return correctedTime;
     }
 
-    static class Segment {
+    public static class Segment {
         private final int typeKey;
         private final byte[] content;
         private final int length;
@@ -360,7 +366,7 @@ public class EvtLink {
         }
     }
 
-    static class ParsedLink {
+    public static class ParsedLink {
         private final List<Signature> signatures;
         private final List<PublicKey> publicKeys;
         private final List<Segment> segments;
@@ -391,7 +397,7 @@ public class EvtLink {
         }
     }
 
-    static class EveriPayParam {
+    public static class EveriPayParam {
         private final int symbol;
         private final String linkId;
         private final long maxAmount;

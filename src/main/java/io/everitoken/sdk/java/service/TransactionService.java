@@ -138,11 +138,15 @@ public class TransactionService {
                 actions.stream()
                         .map(action -> action.serialize(actionSerializeProvider))
                         .collect(Collectors.toList());
+
+        boolean hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
+
         NodeInfo res = (new Info()).request(RequestParams.of(netParams));
 
         int refBlockNumber = Utils.getNumHash(res.getLastIrreversibleBlockId());
         long refBlockPrefix = Utils.getLastIrreversibleBlockPrefix(res.getLastIrreversibleBlockId());
-        String expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime());
+        String expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(), hasEveryPay ?
+                "everipay" : null);
 
         return new Transaction(serializedActions, expirationDateTime, refBlockNumber, refBlockPrefix,
                                txConfig.getMaxCharge(),
