@@ -3,6 +3,7 @@ package io.everitoken.sdk.java.apiResource;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
@@ -48,7 +49,7 @@ public abstract class ApiResource {
             JsonNode body = json.getBody();
             checkResponseError(body);
             return body;
-        } catch (Exception ex) {
+        } catch (UnirestException ex) {
             throw new ApiResponseException(ex.getMessage(), ex);
         }
     }

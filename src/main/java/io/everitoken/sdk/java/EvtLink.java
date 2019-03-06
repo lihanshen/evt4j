@@ -1,13 +1,19 @@
 package io.everitoken.sdk.java;
 
+import com.mashape.unirest.http.JsonNode;
+import io.everitoken.sdk.java.apiResource.EvtLinkStatus;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.exceptions.EvtLinkSyncTimeException;
+import io.everitoken.sdk.java.param.EvtLinkStatusParam;
 import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.RequestParams;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -340,6 +346,59 @@ public class EvtLink {
         }
 
         return correctedTime;
+    }
+
+    public Map<String, String> getStatusOfEvtLink(EvtLinkStatusParam params) throws ApiResponseException {
+        Map<String, String> rst = new HashMap<>();
+        boolean isOnline = false;
+        DateTime startTime = DateTime.now();
+        rst.put("success", "false");
+
+        do {
+            try {
+                JsonNode res = new EvtLinkStatus(params.isBlock()).request(RequestParams.of(netParams, () -> {
+                    JSONObject payload = new JSONObject();
+                    payload.put("link_id", params.getLinkId());
+                    return payload.toString();
+                }));
+                isOnline = true;
+
+                JSONObject json = res.getObject();
+
+                if (json.getString("trx_id") != null && json.getInt("block_num") > 0) {
+                    rst.put("pending", "false");
+                    rst.put("success", "true");
+                    rst.put("trx_id", json.getString("trx_id"));
+                    rst.put("block_num", Integer.toString(json.getInt("block_num")));
+                    return rst;
+                }
+
+            } catch (Exception ex) {
+                if (params.isThrowException()) {
+                    throw new IllegalArgumentException("EveriPay can not be confirmed", ex);
+                }
+
+                rst.put("pending", "true");
+
+                if (ex instanceof ApiResponseException) {
+                    isOnline = true;
+                    rst.put("error", ((ApiResponseException) ex).getRaw().toString());
+                } else if (ex instanceof JSONException) {
+                    isOnline = true;
+                    rst.put("error", ex.getMessage());
+                } else {
+                    rst.put("error", ex.getMessage());
+                }
+            }
+
+        } while (params.isBlock() && (DateTime.now().getMillis() - startTime.getMillis()) < 15000);
+
+        if (!isOnline) {
+            rst.put("pending", "true");
+            rst.put("error", "Network is not available");
+        }
+
+        return rst;
     }
 
     public static class Segment {

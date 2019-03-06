@@ -6,10 +6,7 @@ import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.ActionQueryParams;
-import io.everitoken.sdk.java.param.PublicKeysParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
-import io.everitoken.sdk.java.param.TransactionDetailParams;
+import io.everitoken.sdk.java.param.*;
 
 import java.util.List;
 
@@ -17,15 +14,16 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
+//            getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
             getToken();
-        } catch (ApiResponseException ex) {
-
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
     static void testDomainTokens() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        List<TokenDetailData> testdomainfei1 = new Api(netParams).getDomainTokens("testdomainfei1", 10, 0);
+        List<TokenDetailData> testdomainfei1 = new Api(netParams).getDomainTokens("test1122", 10, 0);
         testdomainfei1.stream().forEach(tokenDetailData -> {
             System.out.println(tokenDetailData.getName());
         });
@@ -88,7 +86,7 @@ public class ApiExample {
 
     static void getToken() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        TokenDetailData res = new Api(netParams).getToken("nd1545706101478", "tk3091412207.0522");
+        TokenDetailData res = new Api(netParams).getToken("testdomainfei1", "ttt");
         System.out.println(res.getName());
         res.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
     }
@@ -112,11 +110,10 @@ public class ApiExample {
         res.forEach(balance -> System.out.println(balance.toString()));
     }
 
-    static void getTransactionDetailById() throws ApiResponseException {
-        TestNetNetParams netParams = new TestNetNetParams();
-        TransactionDetailParams transactionDetailParams = new TransactionDetailParams(
-                "d7032971c96637ae3f541a16b3c7cfd4fef4859082eb7ecc925644854bda5c6b"
-        );
+    static void getTransactionDetailById(String trxId) throws ApiResponseException {
+        // 93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f
+        MainNetNetParams netParams = new MainNetNetParams(NetParams.NET.MAINNET1);
+        TransactionDetailParams transactionDetailParams = new TransactionDetailParams(trxId);
         TransactionDetail res = new Api(netParams).getTransactionDetailById(transactionDetailParams);
         System.out.println(res.getTransaction());
     }
