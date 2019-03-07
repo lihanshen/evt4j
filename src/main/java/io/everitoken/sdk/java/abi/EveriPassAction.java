@@ -3,6 +3,7 @@ package io.everitoken.sdk.java.abi;
 import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.dto.PushableAction;
+import io.everitoken.sdk.java.exceptions.EvtLinkException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,22 +28,24 @@ public class EveriPassAction extends Abi implements PushableAction {
 
         // sanity control to make sure the link is for everipay
         if ((parsedLink.getFlag() & 2) != 2) {
-            throw new IllegalArgumentException("Invalid EvtLink: This link is not for everiPass");
+            throw new EvtLinkException("Invalid EvtLink: This link is not for everiPass");
         }
 
-        // get symbol from link
+        // get domain
         Optional<EvtLink.Segment> domainSegment =
                 parsedLink.getSegments().stream().filter(segment -> segment.getTypeKey() == 91).findFirst();
 
+        if (!domainSegment.isPresent()) {
+            throw new EvtLinkException("Failed to parse EveriPass link to extract \"domain\"");
+        }
+
+        // get token name
         Optional<EvtLink.Segment> tokenSegment =
                 parsedLink.getSegments().stream().filter(segment -> segment.getTypeKey() == 92).findFirst();
 
-        if (!domainSegment.isPresent()) {
-            throw new IllegalArgumentException("Failed to parse EveriPass link to extract \"domain\"");
-        }
 
         if (!tokenSegment.isPresent()) {
-            throw new IllegalArgumentException("Failed to parse EveriPass link to extract \"token name\"");
+            throw new EvtLinkException("Failed to parse EveriPass link to extract \"token name\"");
         }
 
         String domain = new String(domainSegment.get().getContent(), StandardCharsets.UTF_8);

@@ -22,6 +22,10 @@ public class PublicKeysParams implements ApiParams {
         this.publicKeys = publicKeys;
     }
 
+    public static PublicKeysParams of(List<PublicKey> publicKeys) {
+        return new PublicKeysParams(publicKeys);
+    }
+
     @JSONField(name = "keys")
     public List<String> getPublicKeys() {
         return publicKeys.stream().map(PublicKey::toString).collect(Collectors.toList());

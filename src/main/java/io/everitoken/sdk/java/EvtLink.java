@@ -2,11 +2,13 @@ package io.everitoken.sdk.java;
 
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.apiResource.EvtLinkStatus;
+import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.exceptions.EvtLinkException;
 import io.everitoken.sdk.java.exceptions.EvtLinkSyncTimeException;
-import io.everitoken.sdk.java.param.EvtLinkStatusParam;
-import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.RequestParams;
+import io.everitoken.sdk.java.param.*;
+import io.everitoken.sdk.java.provider.KeyProvider;
+import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -29,6 +32,82 @@ public class EvtLink {
 
     public EvtLink(final NetParams netParams) {
         this.netParams = netParams;
+    }
+
+    public static EveriPassVerificationResult validateEveriPassUnsafe(NetParams netParams, String link) {
+        return validateEveriPassUnsafe(netParams, EvtLink.parseLink(link, true));
+    }
+
+    public static void main(String[] args) {
+        NetParams netParams = new TestNetNetParams();
+
+        EvtLink evtLink = new EvtLink(netParams);
+        // make sure the domain and token you use exist and has correct authorize keys
+        EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "nd1545712090718", "tk3091424185" +
+                ".8122");
+        String passText = evtLink.getEveriPassText(
+                everiPassParam,
+                SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"))
+        );
+        validateEveriPassUnsafe(netParams, passText);
+    }
+
+    public static EveriPassVerificationResult validateEveriPassUnsafe(NetParams netParams, ParsedLink parsedLink) {
+        if ((parsedLink.getFlag() & 2) != 2) {
+            throw new EvtLinkException("Flag is not correct for everiPass");
+        }
+
+        // get timestamp
+        Optional<EvtLink.Segment> timestampSegment =
+                parsedLink.getSegments().stream().filter(segment -> segment.getTypeKey() == 42).findFirst();
+
+        if (!timestampSegment.isPresent()) {
+            throw new EvtLinkException("Failed to parse EveriPass link to extract \"timestamp\"");
+        }
+
+        long timestampInMilli = getUnsignedInt(timestampSegment.get().getContent()) * 1000;
+
+        if (DateTime.now().getMillis() - timestampInMilli > 6 * 1000) {
+            throw new EvtLinkException("EveriPass is already expired");
+        }
+
+        // get domain
+        Optional<EvtLink.Segment> domainSegment =
+                parsedLink.getSegments().stream().filter(segment -> segment.getTypeKey() == 91).findFirst();
+
+        if (!domainSegment.isPresent()) {
+            throw new EvtLinkException("Failed to parse EveriPass link to extract \"domain\"");
+        }
+
+        // get token name
+        Optional<EvtLink.Segment> tokenSegment =
+                parsedLink.getSegments().stream().filter(segment -> segment.getTypeKey() == 92).findFirst();
+
+
+        if (!tokenSegment.isPresent()) {
+            throw new EvtLinkException("Failed to parse EveriPass link to extract \"token name\"");
+        }
+
+        String domain = new String(domainSegment.get().getContent(), StandardCharsets.UTF_8);
+        String tokenName = new String(tokenSegment.get().getContent(), StandardCharsets.UTF_8);
+
+        if (parsedLink.getPublicKeys().size() != 1) {
+            throw new EvtLinkException("For unsafe validation of everiPass, evtLink must have one and only one " +
+                                               "signature.");
+        }
+
+        try {
+            List<TokenDomain> ownedTokens =
+                    new Api(netParams).getOwnedTokens(PublicKeysParams.of(parsedLink.getPublicKeys()));
+
+            boolean ownToken =
+                    ownedTokens.stream().anyMatch(token -> token.getDomain().equals(domain) && token.getName().equals(tokenName));
+
+            return new EveriPassVerificationResult(ownToken, domain, tokenName);
+        } catch (ApiResponseException ex) {
+            throw new EvtLinkException(String.format("Can't get owned tokens from the public keys, detailed error: " +
+                                                             "%s", ex.getRaw()), ex);
+        }
     }
 
     private static List<Segment> parseSegments(final byte[] segmentBytes) {
@@ -68,7 +147,7 @@ public class EvtLink {
             final List<Signature> signatures = signProvider.sign(Utils.hash(contentBytes));
 
             if (signatures.size() > 3) {
-                throw new IllegalArgumentException(String.format(
+                throw new EvtLinkException(String.format(
                         "Only 3 signatures are allowed, \"%d\" passed",
                         signatures.size()
                 ));
@@ -88,7 +167,7 @@ public class EvtLink {
         int rawContentLength = rawContent.length();
 
         if (rawContentLength < 3 || rawContentLength > 2000) {
-            throw new IllegalArgumentException(String.format("Invalid EvtLink length of \"%d\"", rawContentLength));
+            throw new EvtLinkException(String.format("Invalid EvtLink length of \"%d\"", rawContentLength));
         }
 
         final String[] parts = rawContent.split("_");
@@ -159,13 +238,13 @@ public class EvtLink {
                                contentLength + 2
             );
         } else {
-            throw new IllegalArgumentException(String.format("Segment type %d is not supported", type));
+            throw new EvtLinkException(String.format("Segment type %d is not supported", type));
         }
     }
 
     public static byte[] createSegment(final int type, final byte[] content) {
         if (type < 0 || type > 255) {
-            throw new IllegalArgumentException("Invalid type value, it must be within 0 to 255");
+            throw new EvtLinkException("Invalid type value, it must be within 0 to 255");
         }
 
         if (type <= 20) {
@@ -198,7 +277,7 @@ public class EvtLink {
             b.put((byte) content.length);
             return ArrayUtils.addAll(b.array(), content);
         } else {
-            throw new IllegalArgumentException(String.format("Segment type %d is not supported", type));
+            throw new EvtLinkException(String.format("Segment type %d is not supported", type));
         }
     }
 
@@ -253,8 +332,8 @@ public class EvtLink {
             final int index = ALPHABET.indexOf(c);
 
             if (ALPHABET.indexOf(c) == -1) {
-                throw new IllegalArgumentException(String.format("Illegal character found \"%s\" at index %d", c,
-                                                                 i
+                throw new EvtLinkException(String.format("Illegal character found \"%s\" at index %d", c,
+                                                         i
                 ));
             }
 
@@ -375,7 +454,7 @@ public class EvtLink {
                 }
             } catch (Exception ex) {
                 if (params.isThrowException()) {
-                    throw new IllegalArgumentException("EveriPay can not be confirmed", ex);
+                    throw new EvtLinkException("EveriPay can not be confirmed", ex);
                 }
 
                 rst.put("pending", "true");
@@ -465,7 +544,7 @@ public class EvtLink {
             Objects.requireNonNull(linkId);
 
             if (linkId.length() != 32) {
-                throw new IllegalArgumentException(String.format(
+                throw new EvtLinkException(String.format(
                         "LinkId must be with length 32, \"%s\" passed",
                         linkId
                 ));
@@ -547,6 +626,30 @@ public class EvtLink {
 
         public String getAmount() {
             return amount;
+        }
+    }
+
+    public static class EveriPassVerificationResult {
+        private boolean valid;
+        private String domain;
+        private String tokenName;
+
+        public EveriPassVerificationResult(boolean valid, String domain, String tokenName) {
+            this.valid = valid;
+            this.domain = domain;
+            this.tokenName = tokenName;
+        }
+
+        public boolean isValid() {
+            return valid;
+        }
+
+        public String getDomain() {
+            return domain;
+        }
+
+        public String getTokenName() {
+            return tokenName;
         }
     }
 }
