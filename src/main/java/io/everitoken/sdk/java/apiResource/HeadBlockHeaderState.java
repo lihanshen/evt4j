@@ -5,6 +5,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 public class HeadBlockHeaderState extends ApiResource {
@@ -12,7 +13,11 @@ public class HeadBlockHeaderState extends ApiResource {
     private static final String method = "GET";
 
     public HeadBlockHeaderState() {
-        super(uri, method);
+        super(uri, method, null);
+    }
+
+    public HeadBlockHeaderState(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, method, apiRequestConfig);
     }
 
     @Override

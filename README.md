@@ -4,8 +4,8 @@ Official Java SDK for everiToken public chain.
 ## initial RC
 * [x] everipay action
 * [x] everipass action
-* [ ] getStatusOfEvtLink api
-* [ ] timeout
+* [x] getStatusOfEvtLink api
+* [x] timeout
 * [ ] suspend
 * [ ] unsafe
 

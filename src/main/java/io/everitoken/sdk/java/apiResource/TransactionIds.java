@@ -2,6 +2,7 @@ package io.everitoken.sdk.java.apiResource;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 public class TransactionIds extends ApiResource {
@@ -9,6 +10,10 @@ public class TransactionIds extends ApiResource {
 
     public TransactionIds() {
         super(uri);
+    }
+
+    public TransactionIds(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {

@@ -361,6 +361,7 @@ public class EvtLink {
                     payload.put("link_id", params.getLinkId());
                     return payload.toString();
                 }));
+
                 isOnline = true;
 
                 JSONObject json = res.getObject();
@@ -372,7 +373,6 @@ public class EvtLink {
                     rst.put("block_num", Integer.toString(json.getInt("block_num")));
                     return rst;
                 }
-
             } catch (Exception ex) {
                 if (params.isThrowException()) {
                     throw new IllegalArgumentException("EveriPay can not be confirmed", ex);

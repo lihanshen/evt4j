@@ -4,12 +4,17 @@ import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.dto.FungibleDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 
 public class FungibleDetail extends ApiResource {
     private static final String uri = "/v1/evt/get_fungible";
 
     public FungibleDetail() {
         super(uri);
+    }
+
+    public FungibleDetail(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public FungibleDetailData request(RequestParams requestParams) throws ApiResponseException {

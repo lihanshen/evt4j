@@ -3,6 +3,7 @@ package io.everitoken.sdk.java.apiResource;
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 import java.util.List;
@@ -14,6 +15,10 @@ public class SigningRequiredKeys extends ApiResource {
 
     public SigningRequiredKeys() {
         super(uri);
+    }
+
+    public SigningRequiredKeys(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public List<String> request(RequestParams requestParams) throws ApiResponseException {

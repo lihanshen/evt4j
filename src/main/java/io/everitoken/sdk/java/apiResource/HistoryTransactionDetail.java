@@ -4,6 +4,7 @@ import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.dto.TransactionDetail;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 
 public class HistoryTransactionDetail extends ApiResource {
     private static final String uri = "/v1/history/get_transaction";
@@ -14,6 +15,10 @@ public class HistoryTransactionDetail extends ApiResource {
 
     public HistoryTransactionDetail() {
         super(uri);
+    }
+
+    public HistoryTransactionDetail(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public TransactionDetail request(RequestParams requestParams) throws ApiResponseException {

@@ -3,6 +3,7 @@ package io.everitoken.sdk.java.apiResource;
 import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 
 public class RequiredSuspendedKeys extends ApiResource {
@@ -10,6 +11,10 @@ public class RequiredSuspendedKeys extends ApiResource {
 
     public RequiredSuspendedKeys() {
         super(uri);
+    }
+
+    public RequiredSuspendedKeys(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {

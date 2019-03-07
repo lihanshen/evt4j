@@ -4,6 +4,7 @@ import com.mashape.unirest.http.JsonNode;
 import io.everitoken.sdk.java.dto.ActionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -15,6 +16,10 @@ public class FungibleAction extends ApiResource {
 
     public FungibleAction() {
         super(uri);
+    }
+
+    public FungibleAction(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public List<ActionData> request(RequestParams requestParams) throws ApiResponseException {

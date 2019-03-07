@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
+import io.everitoken.sdk.java.apiResource.ApiResource;
 import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.*;
@@ -86,7 +87,10 @@ public class ApiExample {
 
     static void getToken() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        TokenDetailData res = new Api(netParams).getToken("testdomainfei1", "ttt");
+        TokenDetailData res = new Api(netParams, ApiResource.ApiRequestConfig.of(10000)).getToken(
+                "testdomainfei1",
+                "ttt"
+        );
         System.out.println(res.getName());
         res.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
     }

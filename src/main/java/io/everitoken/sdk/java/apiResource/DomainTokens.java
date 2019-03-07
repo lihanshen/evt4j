@@ -3,6 +3,7 @@ package io.everitoken.sdk.java.apiResource;
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,6 +16,10 @@ public class DomainTokens extends ApiResource {
 
     public DomainTokens() {
         super(uri);
+    }
+
+    public DomainTokens(@NotNull ApiRequestConfig apiRequestConfig) {
+        super(uri, apiRequestConfig);
     }
 
     public List<TokenDetailData> request(RequestParams requestParams) throws ApiResponseException {

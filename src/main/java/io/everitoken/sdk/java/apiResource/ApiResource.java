@@ -14,21 +14,31 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
+
 
 public abstract class ApiResource {
 
     private final String uri;
     private final String method;
 
-    protected ApiResource(String uri, String method) {
+    protected ApiResource(String uri, String method, @Nullable ApiRequestConfig apiRequestConfig) {
         this.uri = uri;
         this.method = method;
-        int timeout = 15;
+
+        ApiRequestConfig localApiReqConfig = new ApiRequestConfig();
+
+        if (apiRequestConfig != null) {
+            localApiReqConfig = apiRequestConfig;
+        }
+
+        int timeout = localApiReqConfig.getTimeout();
+
         RequestConfig.Builder configBuilder = RequestConfig.custom()
-                .setConnectTimeout(timeout * 1000)
-                .setConnectionRequestTimeout(timeout * 1000)
-                .setSocketTimeout(timeout * 1000);
+                .setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout)
+                .setSocketTimeout(timeout);
 
         HttpClientBuilder clientBuilder = HttpClients.custom().setDefaultRequestConfig(configBuilder.build());
         clientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(5, false));
@@ -36,7 +46,11 @@ public abstract class ApiResource {
     }
 
     protected ApiResource(String uri) {
-        this(uri, "POST");
+        this(uri, "POST", null);
+    }
+
+    protected ApiResource(String uri, @NotNull ApiRequestConfig apiRequestConfig) {
+        this(uri, "POST", apiRequestConfig);
     }
 
     protected BaseRequest buildRequest(RequestParams requestParams) {
@@ -78,5 +92,26 @@ public abstract class ApiResource {
     public boolean equals(ApiResource obj) {
         String resourceName = getUri() + getMethod();
         return resourceName.equals(obj.getUri() + getMethod());
+    }
+
+    public static class ApiRequestConfig {
+        public static int DEFAULT_TIMEOUT = 15 * 1000;
+        private int timeout;
+
+        public ApiRequestConfig(int timeout) {
+            this.timeout = timeout;
+        }
+
+        public ApiRequestConfig() {
+            this(DEFAULT_TIMEOUT);
+        }
+
+        public static ApiRequestConfig of(int timeout) {
+            return new ApiRequestConfig(timeout);
+        }
+
+        public int getTimeout() {
+            return timeout;
+        }
     }
 }
