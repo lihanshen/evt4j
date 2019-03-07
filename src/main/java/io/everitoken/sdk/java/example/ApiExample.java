@@ -16,7 +16,7 @@ public class ApiExample {
         try {
             // replace this with method you want to test
 //            getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
-            getSuspendedProposalByName();
+            getToken();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -88,8 +88,8 @@ public class ApiExample {
     static void getToken() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
         TokenDetailData res = new Api(netParams, ApiResource.ApiRequestConfig.of(10000)).getToken(
-                "testdomainfei1",
-                "ttt"
+                "test1122",
+                "t2"
         );
         System.out.println(res.getName());
         res.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
@@ -103,7 +103,7 @@ public class ApiExample {
 
     static void getGroupDetail() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        GroupDetailData res = new Api(netParams).getGroupDetail("testgroupcreationfei");
+        GroupDetailData res = new Api(netParams).getGroupDetail("g309903549");
         System.out.println(res.getRoot());
     }
 

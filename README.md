@@ -7,6 +7,7 @@ Official Java SDK for everiToken public chain.
 * [x] getStatusOfEvtLink api
 * [x] timeout
 * [x] suspend
+* [x] addmeta
 * [ ] unsafe
 
 ## Api (working in progress)
@@ -77,7 +78,7 @@ Make sure maven is installed
     * [x] "transfer"
     * [x] "destroytoken"
     * [x] "evt2pevt"
-    * [ ] "addmeta"
+    * [x] "addmeta"
     * [x] "newsuspend"
     * [x] "aprvsuspend"
     * [x] "cancelsuspend"
@@ -100,7 +101,6 @@ Error: `{"code":500,"message":"Internal Service Error","error":{"code":3100003,"
 
 ## TODO
 * [ ] implement meta dto
-* [ ] request timeout
 * [ ] create builder in abi package, implement build() functionalInterface
 * [ ] refreshing qr code
 
