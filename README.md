@@ -6,7 +6,7 @@ Official Java SDK for everiToken public chain.
 * [x] everipass action
 * [x] getStatusOfEvtLink api
 * [x] timeout
-* [ ] suspend
+* [x] suspend
 * [ ] unsafe
 
 ## Api (working in progress)
@@ -58,7 +58,7 @@ Make sure maven is installed
 * [x] getFungibleActionsByAddress // needs testing with real data
 * [x] getTokens
 * [ ] getTransactionsDetailOfPublicKeys
-* [ ] getStatusOfEvtLink
+* [x] getStatusOfEvtLink
 * [x] getFungibleSymbolDetail
 * [x] getRequiredKeysForSuspendedTransaction // need suspendedTransaction first
 * [x] getSuspendedTransactionDetail // need suspendedTransaction first
@@ -80,8 +80,8 @@ Make sure maven is installed
     * [ ] "addmeta"
     * [x] "newsuspend"
     * [x] "aprvsuspend"
-    * [ ] "cancelsuspend"
-    * [ ] "execsuspend"
+    * [x] "cancelsuspend"
+    * [x] "execsuspend"
     * [x] "everipass"
     * [x] "everipay"
     * [ ] "recycleft"

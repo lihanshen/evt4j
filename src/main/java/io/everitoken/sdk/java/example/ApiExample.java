@@ -16,7 +16,7 @@ public class ApiExample {
         try {
             // replace this with method you want to test
 //            getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
-            getToken();
+            getSuspendedProposalByName();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -32,7 +32,7 @@ public class ApiExample {
 
     static void getSuspendedProposalByName() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        String suspendedProposal = new Api(netParams).getSuspendedProposal("testProposal10");
+        String suspendedProposal = new Api(netParams).getSuspendedProposal("testProposal13");
         System.out.println(suspendedProposal);
     }
 

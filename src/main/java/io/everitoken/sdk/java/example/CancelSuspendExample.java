@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.example;
 
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.Signature;
-import io.everitoken.sdk.java.abi.ApproveSuspendAction;
+import io.everitoken.sdk.java.abi.CancelSuspendAction;
 import io.everitoken.sdk.java.dto.TransactionData;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
 import io.everitoken.sdk.java.provider.KeyProvider;
@@ -11,24 +11,16 @@ import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class ApproveSuspendExample {
+public class CancelSuspendExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
         TransactionService transactionService = TransactionService.of(netParam);
         KeyProvider keyProvider = KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
 
         try {
-            List<Signature> signatures = transactionService.getSignaturesByProposalName(
-                    keyProvider,
-                    "testProposal12"
-            );
-
-            ApproveSuspendAction action = ApproveSuspendAction.of(
-                    "testProposal12",
-                    signatures.stream().map(Signature::toString).collect(Collectors.toList())
+            CancelSuspendAction action = CancelSuspendAction.of(
+                    "testProposal13"
             );
 
             TransactionConfiguration txConfig = new TransactionConfiguration(
@@ -40,8 +32,8 @@ public class ApproveSuspendExample {
             TransactionData txData = transactionService.push(txConfig, Arrays.asList(action));
             System.out.println(txData.getTrxId());
 
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        } catch (ApiResponseException ex) {
+            System.out.println(ex.getRaw());
         }
     }
 }
