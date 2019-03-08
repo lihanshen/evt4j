@@ -3,9 +3,7 @@ package io.everitoken.sdk.java.example;
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.EveriPayAction;
-import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.EvtLinkStatusParam;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
 import io.everitoken.sdk.java.provider.KeyProvider;
@@ -13,12 +11,10 @@ import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class EvtStatusLinkExample {
     public static void main(String[] args) {
-
         int maxAmount = 100;
         NetParams netParams = new TestNetNetParams();
         EvtLink evtLink = new EvtLink(netParams);
@@ -42,15 +38,10 @@ public class EvtStatusLinkExample {
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
             );
 
-            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(action));
-            System.out.println(txData.getTrxId());
-            Map<String, String> statusOfEvtLink = evtLink.getStatusOfEvtLink(EvtLinkStatusParam.of(linkId, true,
-                                                                                                   false
-            ));
+            Map<String, String> statusOfEvtLink = transactionService.pushEveriPayAction(trxConfig, action);
             System.out.println(statusOfEvtLink);
         } catch (ApiResponseException ex) {
             System.out.println(ex.getCause().getMessage());
-//        } catch (InterruptedException ex) {
         }
     }
 }

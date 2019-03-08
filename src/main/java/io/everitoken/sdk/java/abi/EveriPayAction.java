@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.EvtLink;
+import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.dto.PushableAction;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -22,13 +23,15 @@ public class EveriPayAction extends Abi implements PushableAction {
     private final String link;
     private final Asset asset;
     private final Address payee;
+    private final String linkId;
 
     private EveriPayAction(@NotNull String link, @NotNull String symbolId, @NotNull Asset asset,
-                           @NotNull Address payee) {
+                           @NotNull Address payee, @NotNull String linkId) {
         super(name, symbolId, domain);
         this.asset = asset;
         this.payee = payee;
         this.link = link;
+        this.linkId = linkId;
     }
 
     @Contract("_, _, _ -> new")
@@ -51,9 +54,17 @@ public class EveriPayAction extends Abi implements PushableAction {
 
         int symbolId = ByteBuffer.allocate(4).put(symbolIdSegment.get().getContent()).getInt(0);
 
+        Optional<EvtLink.Segment> linkId =
+                parsedLink.getSegments().stream().filter(segment -> segment.getTypeKey() == 156).findFirst();
+
+        if (!linkId.isPresent()) {
+            throw new IllegalArgumentException("Failed to parse EveriPay link to extract linkId");
+        }
+
         return new EveriPayAction(link, Integer.toString(symbolId),
                                   Asset.parseFromRawBalance(asset),
-                                  Address.of(payee)
+                                  Address.of(payee),
+                                  Utils.HEX.encode(linkId.get().getContent())
         );
     }
 
@@ -80,5 +91,10 @@ public class EveriPayAction extends Abi implements PushableAction {
 
     public String getPayee() {
         return payee.toString();
+    }
+
+    @JSONField(deserialize = false, serialize = false)
+    public String getLinkId() {
+        return linkId;
     }
 }

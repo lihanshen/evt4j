@@ -9,7 +9,8 @@ Official Java SDK for everiToken public chain.
 * [x] suspend
 * [x] addmeta
 * [x] unsafe
-* [ ] expiration
+* [x] expiration
+* [x] getStatusOfEvtLink at push actions
 
 ## Api (working in progress)
 

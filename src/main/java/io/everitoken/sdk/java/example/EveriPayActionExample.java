@@ -3,7 +3,6 @@ package io.everitoken.sdk.java.example;
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.EveriPayAction;
-import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
@@ -12,7 +11,7 @@ import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
-import java.util.Arrays;
+import java.util.Map;
 
 public class EveriPayActionExample {
     public static void main(String[] args) {
@@ -40,8 +39,8 @@ public class EveriPayActionExample {
                     null
             );
 
-            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(action));
-            System.out.println(txData.getTrxId());
+            Map<String, String> rst = transactionService.pushEveriPayAction(trxConfig, action);
+            System.out.println(rst);
         } catch (ApiResponseException ex) {
             System.out.println(ex.getCause().getMessage());
         }

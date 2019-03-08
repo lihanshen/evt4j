@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import io.everitoken.sdk.java.*;
 import io.everitoken.sdk.java.abi.Abi;
 import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
+import io.everitoken.sdk.java.abi.EveriPayAction;
 import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
 import io.everitoken.sdk.java.apiResource.Info;
 import io.everitoken.sdk.java.apiResource.SigningRequiredKeys;
@@ -14,9 +15,9 @@ import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.dto.Transaction;
 import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.EvtLinkStatusParam;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
 import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.provider.SignProvider;
 import org.jetbrains.annotations.Contract;
@@ -27,7 +28,9 @@ import org.joda.time.Duration;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -75,24 +78,26 @@ public class TransactionService {
         return expiration.toString().substring(0, TIMESTAMP_LENGTH);
     }
 
-    public static void main(String[] args) {
 
-        NetParams netParam = new TestNetNetParams();
-
-        try {
-            System.out.println(DateTime.now().toString().substring(0, 19));
-        } catch (Exception ex) {
-
-        }
+    public Map<String, String> pushEveriPayAction(TransactionConfiguration trxConfig, EveriPayAction action) throws ApiResponseException {
+        push(trxConfig, Collections.singletonList(action));
+        return new EvtLink(netParams).getStatusOfEvtLink(EvtLinkStatusParam.of(action.getLinkId()));
     }
 
     public TransactionData push(TransactionConfiguration trxConfig, List<Abi> actions) throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
+
         // get signable digest from node
         byte[] digest = SignProvider.getSignableDigest(netParams, rawTx);
 
+        boolean hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
+
+        if (hasEveryPay) {
+            throw new IllegalArgumentException("EveriPay action is found in this action list, use " +
+                                                       "\"pushEverPayAction\" for everipay action instead.");
+        }
+
         return new TransactionCommit().request(RequestParams.of(netParams, () -> {
-            // build transaction body
             JSONObject payload = new JSONObject();
             payload.put("compression", "none");
             payload.put("transaction", new JSONObject(JSON.toJSONString(rawTx)));
@@ -142,7 +147,7 @@ public class TransactionService {
         int refBlockNumber = Utils.getNumHash(res.getLastIrreversibleBlockId());
         long refBlockPrefix = Utils.getLastIrreversibleBlockPrefix(res.getLastIrreversibleBlockId());
         String expirationDateTime = trxConfig.getExpiration();
-        
+
         if (expirationDateTime == null) {
             expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(), hasEveryPay ?
                     "everipay" : null);
