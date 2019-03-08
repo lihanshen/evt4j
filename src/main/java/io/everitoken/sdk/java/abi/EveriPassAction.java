@@ -26,8 +26,8 @@ public class EveriPassAction extends Abi implements PushableAction {
     public static EveriPassAction of(String link) {
         EvtLink.ParsedLink parsedLink = EvtLink.parseLink(link, false);
 
-        // sanity control to make sure the link is for everipay
-        if ((parsedLink.getFlag() & 2) != 2) {
+        // sanity control to make sure the link is for everipass
+        if (!EvtLink.ParsedLink.isEveriPass(parsedLink)) {
             throw new EvtLinkException("Invalid EvtLink: This link is not for everiPass");
         }
 

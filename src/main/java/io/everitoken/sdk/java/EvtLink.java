@@ -53,7 +53,7 @@ public class EvtLink {
     }
 
     public static EveriPassVerificationResult validateEveriPassUnsafe(NetParams netParams, ParsedLink parsedLink) {
-        if ((parsedLink.getFlag() & 2) != 2) {
+        if (!ParsedLink.isEveriPass(parsedLink)) {
             throw new EvtLinkException("Flag is not correct for everiPass");
         }
 
@@ -516,6 +516,14 @@ public class EvtLink {
             this.segments = segments;
             this.signatures = signatures;
             this.publicKeys = publicKeys;
+        }
+
+        public static boolean isEveriPass(ParsedLink link) {
+            return (link.getFlag() & 2) == 2;
+        }
+
+        public static boolean isEveriPay(ParsedLink link) {
+            return (link.getFlag() & 4) == 4;
         }
 
         public List<Signature> getSignatures() {

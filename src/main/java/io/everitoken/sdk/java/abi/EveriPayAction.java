@@ -37,7 +37,7 @@ public class EveriPayAction extends Abi implements PushableAction {
         EvtLink.ParsedLink parsedLink = EvtLink.parseLink(link, false);
 
         // sanity control to make sure the link is for everipay
-        if ((parsedLink.getFlag() & 4) != 4) {
+        if (!EvtLink.ParsedLink.isEveriPay(parsedLink)) {
             throw new IllegalArgumentException("Invalid EvtLink: This link is not for everiPay");
         }
 
