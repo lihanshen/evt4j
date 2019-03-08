@@ -80,23 +80,14 @@ public class TransactionService {
         NetParams netParam = new TestNetNetParams();
 
         try {
-            TransactionService transactionService = TransactionService.of(netParam);
-//            TransactionConfiguration trxConfig = new TransactionConfiguration(
-//                    1000000,
-//                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
-//                    KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
-//            );
-
-            transactionService.getSignaturesByProposalName(KeyProvider.of(new String[]{
-                    "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"
-            }), "testProposal8");
+            System.out.println(DateTime.now().toString().substring(0, 19));
         } catch (Exception ex) {
 
         }
     }
 
-    public TransactionData push(TransactionConfiguration txConfig, List<Abi> actions) throws ApiResponseException {
-        Transaction rawTx = buildRawTransaction(txConfig, actions);
+    public TransactionData push(TransactionConfiguration trxConfig, List<Abi> actions) throws ApiResponseException {
+        Transaction rawTx = buildRawTransaction(trxConfig, actions);
         // get signable digest from node
         byte[] digest = SignProvider.getSignableDigest(netParams, rawTx);
 
@@ -105,14 +96,14 @@ public class TransactionService {
             JSONObject payload = new JSONObject();
             payload.put("compression", "none");
             payload.put("transaction", new JSONObject(JSON.toJSONString(rawTx)));
-            payload.put("signatures", new JSONArray(txConfig.getSignProvider().sign(digest).toString()));
+            payload.put("signatures", new JSONArray(trxConfig.getSignProvider().sign(digest).toString()));
             return payload.toString();
         }));
     }
 
-    public Charge estimateCharge(TransactionConfiguration txConfig, List<Abi> actions,
+    public Charge estimateCharge(TransactionConfiguration trxConfig, List<Abi> actions,
                                  List<PublicKey> availablePublicKeys) throws ApiResponseException {
-        Transaction rawTx = buildRawTransaction(txConfig, actions);
+        Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
         JSONObject txObj = new JSONObject(JSON.toJSONString(rawTx));
         List<String> requiredKeys = new SigningRequiredKeys().request(RequestParams.of(netParams, () -> {
@@ -133,7 +124,7 @@ public class TransactionService {
         }));
     }
 
-    public Transaction buildRawTransaction(TransactionConfiguration txConfig, List<Abi> actions) throws ApiResponseException {
+    public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<Abi> actions) throws ApiResponseException {
         List<String> serializedActions =
                 actions.stream()
                         .map(action -> action.serialize(actionSerializeProvider))
@@ -141,16 +132,25 @@ public class TransactionService {
 
         boolean hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
 
+        if (hasEveryPay && trxConfig.getExpiration() != null) {
+            throw new IllegalArgumentException("Expiration can not be set in a transaction including a everipay " +
+                                                       "action, the expiration must be set automatically by SDK");
+        }
+
         NodeInfo res = (new Info()).request(RequestParams.of(netParams));
 
         int refBlockNumber = Utils.getNumHash(res.getLastIrreversibleBlockId());
         long refBlockPrefix = Utils.getLastIrreversibleBlockPrefix(res.getLastIrreversibleBlockId());
-        String expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(), hasEveryPay ?
-                "everipay" : null);
+        String expirationDateTime = trxConfig.getExpiration();
+        
+        if (expirationDateTime == null) {
+            expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(), hasEveryPay ?
+                    "everipay" : null);
+        }
 
         return new Transaction(serializedActions, expirationDateTime, refBlockNumber, refBlockPrefix,
-                               txConfig.getMaxCharge(),
-                               txConfig.getPayer()
+                               trxConfig.getMaxCharge(),
+                               trxConfig.getPayer()
         );
     }
 

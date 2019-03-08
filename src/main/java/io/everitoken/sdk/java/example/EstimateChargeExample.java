@@ -26,15 +26,14 @@ public class EstimateChargeExample {
 
         try {
             TransactionService transactionService = TransactionService.of(netParam);
-            TransactionConfiguration txConfig = new TransactionConfiguration(
+            TransactionConfiguration trxConfig = new TransactionConfiguration(
                     1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
-
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
             );
 
             Charge charge = transactionService.estimateCharge(
-                    txConfig,
+                    trxConfig,
                     Arrays.asList(issueTokenAction),
                     Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"))
             );
@@ -42,7 +41,7 @@ public class EstimateChargeExample {
             System.out.println(JSON.toJSONString(charge));
 
 
-//            TransactionData txData = transactionService.push(txConfig, Arrays.asList(issueTokenAction));
+//            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(issueTokenAction));
 //            System.out.println(txData.getTrxId());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());

@@ -25,18 +25,18 @@ public class NewSuspendExample {
         );
 
         TransactionService transactionService = TransactionService.of(netParam);
-        TransactionConfiguration txConfig = new TransactionConfiguration(
+        TransactionConfiguration trxConfig = new TransactionConfiguration(
                 1000000,
                 PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
                 KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
         );
         try {
-            Transaction tx = transactionService.buildRawTransaction(txConfig, Arrays.asList(evt2PevtAction));
+            Transaction tx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(evt2PevtAction));
             NewSuspendAction action = NewSuspendAction.of("testProposal13",
                                                           "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", tx
             );
 
-            TransactionData push = transactionService.push(txConfig, Arrays.asList(action));
+            TransactionData push = transactionService.push(trxConfig, Arrays.asList(action));
             System.out.println(push.getTrxId());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getCause().getMessage());

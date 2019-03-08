@@ -24,14 +24,14 @@ public class TransferExample {
 
         try {
             TransactionService transactionService = TransactionService.of(netParam);
-            TransactionConfiguration txConfig = new TransactionConfiguration(
+            TransactionConfiguration trxConfig = new TransactionConfiguration(
                     1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
 
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
             );
 
-            TransactionData txData = transactionService.push(txConfig, Arrays.asList(transferAction));
+            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(transferAction));
             System.out.println(txData.getTrxId());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());

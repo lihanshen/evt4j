@@ -23,13 +23,13 @@ public class CancelSuspendExample {
                     "testProposal13"
             );
 
-            TransactionConfiguration txConfig = new TransactionConfiguration(
+            TransactionConfiguration trxConfig = new TransactionConfiguration(
                     1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
                     keyProvider
             );
 
-            TransactionData txData = transactionService.push(txConfig, Arrays.asList(action));
+            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(action));
             System.out.println(txData.getTrxId());
 
         } catch (ApiResponseException ex) {

@@ -36,13 +36,13 @@ public class EvtStatusLinkExample {
 
         try {
             TransactionService transactionService = TransactionService.of(netParams);
-            TransactionConfiguration txConfig = new TransactionConfiguration(
+            TransactionConfiguration trxConfig = new TransactionConfiguration(
                     1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
             );
 
-            TransactionData txData = transactionService.push(txConfig, Arrays.asList(action));
+            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(action));
             System.out.println(txData.getTrxId());
             Map<String, String> statusOfEvtLink = evtLink.getStatusOfEvtLink(EvtLinkStatusParam.of(linkId, true,
                                                                                                    false

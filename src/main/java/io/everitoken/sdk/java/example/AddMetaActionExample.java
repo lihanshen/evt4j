@@ -35,13 +35,13 @@ public class AddMetaActionExample {
                             "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"))
             );
 
-            TransactionConfiguration txConfig = new TransactionConfiguration(
+            TransactionConfiguration trxConfig = new TransactionConfiguration(
                     1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
                     keyProvider
             );
 
-            TransactionData txData = transactionService.push(txConfig, Arrays.asList(
+            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(
                     actionForDomainToken,
                     actionForGroup,
                     actionForFungible
