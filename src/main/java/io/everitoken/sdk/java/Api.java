@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Api {
     private final NetParams netParams;
@@ -92,8 +93,10 @@ public class Api {
     }
 
     public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws ApiResponseException {
-        return new HistoryTransactionDetail(apiRequestConfig).request(RequestParams.of(netParams,
-                                                                                       transactionDetailParams));
+        return new HistoryTransactionDetail(apiRequestConfig).request(RequestParams.of(
+                netParams,
+                transactionDetailParams
+        ));
     }
 
     public DomainDetailData getDomainDetail(String name) throws ApiResponseException {
@@ -144,6 +147,27 @@ public class Api {
             JSONObject body = new JSONObject();
             body.put("name", name);
             body.put("available_keys", keys);
+            return body.toString();
+        }));
+    }
+
+    public JSONArray getTransactionsDetailOfPublicKeys(List<PublicKey> publicKeys, int skip, int take,
+                                                       String direction) throws ApiResponseException {
+
+        if (!direction.equals("asc") && !direction.equals("desc")) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Direct \"%s\" is not supported, only asc and desc are supported",
+                            direction
+                    ));
+        }
+
+        return new TransactionDetailsOfPublicKeys(apiRequestConfig).request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("keys", publicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
+            body.put("skip", skip);
+            body.put("take", take);
+            body.put("dire", direction);
             return body.toString();
         }));
     }

@@ -60,7 +60,7 @@ Make sure maven is installed
 * [x] getGroupDetail
 * [x] getFungibleActionsByAddress // needs testing with real data
 * [x] getTokens
-* [ ] getTransactionsDetailOfPublicKeys
+* [x] getTransactionsDetailOfPublicKeys
 * [x] getStatusOfEvtLink
 * [x] getFungibleSymbolDetail
 * [x] getRequiredKeysForSuspendedTransaction // need suspendedTransaction first

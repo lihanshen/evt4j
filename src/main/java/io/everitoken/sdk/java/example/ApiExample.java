@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
+import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.apiResource.ApiResource;
 import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ApiExample {
@@ -16,7 +18,7 @@ public class ApiExample {
         try {
             // replace this with method you want to test
 //            getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
-            getToken();
+            getTransactionsDetailOfPublicKeys();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -126,5 +128,13 @@ public class ApiExample {
         TestNetNetParams netParams = new TestNetNetParams();
         FungibleDetailData res = new Api(netParams).getFungibleSymbolDetail(1);
         System.out.println(res.getCreator());
+    }
+
+    static void getTransactionsDetailOfPublicKeys() throws ApiResponseException {
+        TestNetNetParams netParams = new TestNetNetParams();
+        org.json.JSONArray res = new Api(netParams).getTransactionsDetailOfPublicKeys(Arrays.asList(
+                PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")
+        ), 1, 1, "asc");
+        System.out.println(res);
     }
 }
