@@ -6,9 +6,10 @@ import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.exceptions.EvtLinkException;
 import io.everitoken.sdk.java.exceptions.EvtLinkSyncTimeException;
-import io.everitoken.sdk.java.param.*;
-import io.everitoken.sdk.java.provider.KeyProvider;
-import io.everitoken.sdk.java.provider.SignProvider;
+import io.everitoken.sdk.java.param.EvtLinkStatusParam;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.PublicKeysParams;
+import io.everitoken.sdk.java.param.RequestParams;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
@@ -36,20 +37,6 @@ public class EvtLink {
 
     public static EveriPassVerificationResult validateEveriPassUnsafe(NetParams netParams, String link) {
         return validateEveriPassUnsafe(netParams, EvtLink.parseLink(link, true));
-    }
-
-    public static void main(String[] args) {
-        NetParams netParams = new TestNetNetParams();
-
-        EvtLink evtLink = new EvtLink(netParams);
-        // make sure the domain and token you use exist and has correct authorize keys
-        EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "nd1545712090718", "tk3091424185" +
-                ".8122");
-        String passText = evtLink.getEveriPassText(
-                everiPassParam,
-                SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"))
-        );
-        validateEveriPassUnsafe(netParams, passText);
     }
 
     public static EveriPassVerificationResult validateEveriPassUnsafe(NetParams netParams, ParsedLink parsedLink) {

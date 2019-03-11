@@ -69,7 +69,7 @@ Make sure maven is installed
 * [x] generateUnsignedTransaction
 * [x] pushTransaction
     * [x] newdomain
-    * [ ] "updatedomain"
+    * [x] "updatedomain"
     * [x] "issuetoken"
     * [ ] "newgroup"
     * [ ] "updategroup"
@@ -91,6 +91,8 @@ Make sure maven is installed
     * [ ] "newlock"
     * [ ] "aprvlock"
     * [ ] "tryunlock"
+    * [ ] "setpsvbonus"
+    * [ ] "distpsvbonus"
 
 ## Misc
 

@@ -21,10 +21,6 @@ public class AddMetaAction extends Abi implements PushableAction {
         this.creator = creator;
     }
 
-    public static void main(String[] args) {
-
-    }
-
     public static AddMetaAction ofGroup(String key, String metaKey, String metaValue, AuthorizerRef creator) {
         return new AddMetaAction(key, ".group", metaKey, metaValue, creator);
     }

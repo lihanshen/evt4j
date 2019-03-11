@@ -18,7 +18,7 @@ public class ApiExample {
         try {
             // replace this with method you want to test
 //            getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
-            getTransactionsDetailOfPublicKeys();
+            getDomainDetail();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -99,7 +99,8 @@ public class ApiExample {
 
     static void getDomainDetail() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        DomainDetailData res = new Api(netParams).getDomainDetail("testdomainfei1");
+        DomainDetailData res = new Api(netParams).getDomainDetail("test1123");
+        System.out.println(JSON.toJSONString(res));
         System.out.println(res.getTransfer().getAuthorizers().get(0).getRef());
     }
 

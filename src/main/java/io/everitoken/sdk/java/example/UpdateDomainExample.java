@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.example;
 
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.abi.NewDomainAction;
+import io.everitoken.sdk.java.abi.UpdateDomainAction;
 import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
@@ -13,24 +13,18 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class NewDomainExample {
+public class UpdateDomainExample {
     public static void main(String[] args) {
         final NetParams netParam = new TestNetNetParams();
-        final String data = "{\"name\":\"test1123\"," +
-                "\"creator\":\"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"issue\":{\"name\":\"issue\"," +
-                "\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] " +
-                "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\"," +
-                "\"weight\":1}]},\"transfer\":{\"name\":\"transfer\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[G] " +
-                ".OWNER\",\"weight\":1}]},\"manage\":{\"name\":\"manage\",\"threshold\":1," +
-                "\"authorizers\":[{\"ref\":\"[A]" +
-                " EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":1}]}}";
+        final String data = "{\"manage\":{\"name\":\"manage\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] " +
+                "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":1},{\"ref\":\"[A] " +
+                "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U\",\"weight\":1}]},\"name\":\"test1123\"}";
 
         final JSONObject json = new JSONObject(data);
-        final NewDomainAction newDomainAction = NewDomainAction.ofRaw(
+        final UpdateDomainAction updateDomainAction = UpdateDomainAction.ofRaw(
                 json.getString("name"),
-                json.getString("creator"),
-                json.getJSONObject("issue"),
-                json.getJSONObject("transfer"),
+                null,
+                null,
                 json.getJSONObject("manage")
         );
 
@@ -41,7 +35,7 @@ public class NewDomainExample {
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
             );
-            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(newDomainAction));
+            TransactionData txData = transactionService.push(trxConfig, Arrays.asList(updateDomainAction));
             System.out.println(txData.getTrxId());
         } catch (final ApiResponseException ex) {
             System.out.println(ex.getRaw());
