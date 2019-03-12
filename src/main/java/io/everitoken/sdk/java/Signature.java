@@ -28,6 +28,7 @@ public class Signature {
     }
 
     public static Signature of(byte[] signatureBytes) {
+
         int recId = (int) signatureBytes[0] - 4 - 27;
         BigInteger r = new BigInteger(ArrayUtils.subarray(signatureBytes, 1, 33));
         BigInteger s = new BigInteger(ArrayUtils.subarray(signatureBytes, 33, signatureBytes.length));
@@ -46,7 +47,6 @@ public class Signature {
         }
 
         String signatureWithoutPrefix = signature.substring(K1_PREFIX.length());
-
         byte[] signatureBytes = Utils.base58CheckDecode(signatureWithoutPrefix, "K1");
 
         if (signatureBytes.length != BUFFER_LENGTH) {
@@ -61,9 +61,9 @@ public class Signature {
 
         // init deterministic k calculator
         Signer signer = new Signer(new HMacDSAKCalculator(new SHA256Digest()));
-        ECPrivateKeyParameters privKey = new ECPrivateKeyParameters(key.getD(), ECKey.CURVE);
+        ECPrivateKeyParameters privateKeyParameters = new ECPrivateKeyParameters(key.getD(), ECKey.CURVE);
 
-        signer.init(true, privKey);
+        signer.init(true, privateKeyParameters);
         BigInteger[] components = signer.generateSignature(hash);
 
         Signature sig = new Signature(components[0], components[1]).toCanonicalised();
@@ -89,7 +89,7 @@ public class Signature {
      * @return Signature
      */
     public static Signature sign(byte[] data, @NotNull PrivateKey key) {
-        return signHash(Sha256Hash.hash(data), key);
+        return signHash(Utils.hash(data), key);
     }
 
     /**
@@ -124,7 +124,7 @@ public class Signature {
      * @return boolean
      */
     public static boolean verify(byte[] data, @NotNull Signature signature, @NotNull PublicKey publicKey) {
-        return verifyHash(Sha256Hash.hash(data), signature, publicKey);
+        return verifyHash(Utils.hash(data), signature, publicKey);
     }
 
     public static boolean verifyHash(byte[] hash, @NotNull Signature signature, @NotNull PublicKey publicKey) {

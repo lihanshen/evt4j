@@ -140,16 +140,8 @@ public class Utils {
         return JSON.toJSONString(raw, SerializerFeature.PrettyFormat);
     }
 
-    // TODO: this needs more checking dirty hack
     public static int getNumHash(String hash) {
-        byte[] input = Utils.HEX.decode(hash);
-        short v = ByteBuffer.wrap(input, 2, input.length - 2).getShort();
-
-        if (v > 0) {
-            return (int) v;
-        }
-
-        return v & 0xffff;
+        return Integer.parseUnsignedInt(hash.substring(4, 8), 16);
     }
 
     public static long getLastIrreversibleBlockPrefix(String hash) {
