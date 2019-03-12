@@ -226,6 +226,7 @@ public class Signature {
         if (!(obj instanceof Signature)) {
             return false;
         }
+
         Signature s = (Signature) obj;
 
         return getR().equals(s.getR()) && getS().equals(s.getS()) && getRecId() == s.getRecId();

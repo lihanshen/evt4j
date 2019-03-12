@@ -122,7 +122,7 @@ public class ApiExample {
         MainNetNetParams netParams = new MainNetNetParams(NetParams.NET.MAINNET1);
         TransactionDetailParams transactionDetailParams = new TransactionDetailParams(trxId);
         TransactionDetail res = new Api(netParams).getTransactionDetailById(transactionDetailParams);
-        System.out.println(res.getTransaction());
+        res.getSignatures().forEach((signature) -> System.out.println(signature.toString()));
     }
 
     static void getFungibleSymbolDetail() throws ApiResponseException {

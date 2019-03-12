@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public class PublicKey {
-    private static final String nullAddress = Constants.NullAddress;
+    private static final String EVT = "EVT";
     private final LazyECPoint pub;
 
     public PublicKey(String key) throws InvalidPublicKeyException {
@@ -45,7 +45,7 @@ public class PublicKey {
             return new ImmutablePair<>(false, new byte[]{});
         }
 
-        if (!key.startsWith(Constants.EVT)) {
+        if (!key.startsWith(EVT)) {
             return new ImmutablePair<>(false, new byte[]{});
         }
 
@@ -75,7 +75,7 @@ public class PublicKey {
 
     @Override
     public String toString() {
-        return String.format("%s%s", Constants.EVT, Utils.base58Check(pub.getEncoded(true)));
+        return String.format("%s%s", EVT, Utils.base58Check(pub.getEncoded(true)));
     }
 
     public String getEncoded(boolean compressed) {

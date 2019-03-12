@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import io.everitoken.sdk.java.Signature;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -17,11 +18,10 @@ public class TransactionDetail {
     private final String packedTrx;
     private final String id;
     private final String compression;
-    private final List<String> signatures;
+    private final List<Signature> signatures;
     private final JSONObject transaction;
     private final String blockId;
 
-    // TODO put signature into signature object
     private TransactionDetail(@NotNull JSONObject raw) throws JSONException {
         blockNum = raw.getInt("block_num");
         packedTrx = raw.getString("packed_trx");
@@ -29,7 +29,7 @@ public class TransactionDetail {
         compression = raw.getString("compression");
         JSONArray signaturesArray = raw.getJSONArray("signatures");
         signatures = StreamSupport.stream(signaturesArray.spliterator(), false)
-                .map(sig -> sig.toString()).collect(Collectors.toList());
+                .map(sig -> Signature.of((String) sig)).collect(Collectors.toList());
         transaction = raw.getJSONObject("transaction");
         blockId = raw.getString("block_id");
     }
@@ -59,7 +59,7 @@ public class TransactionDetail {
         return compression;
     }
 
-    public List<String> getSignatures() {
+    public List<Signature> getSignatures() {
         return signatures;
     }
 

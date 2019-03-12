@@ -9,7 +9,7 @@ public class TransactionDetailParams implements ApiParams {
     private final String trxId;
     private final String blockNum;
 
-    TransactionDetailParams(String trxId, @Nullable String blockNum) {
+    public TransactionDetailParams(String trxId, @Nullable String blockNum) {
         this.trxId = trxId;
         this.blockNum = blockNum;
     }

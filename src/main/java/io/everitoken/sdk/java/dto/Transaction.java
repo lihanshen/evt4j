@@ -21,6 +21,7 @@ public class Transaction {
                        final long refBlockPrefix,
                        final int maxCharge
             , final String payer) {
+
         this.actions = actions.stream().map(JSONObject::new).map(Action::ofRaw).collect(Collectors.toList());
         this.expiration = expiration;
         this.refBlockNumber = refBlockNumber;
