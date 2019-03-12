@@ -2,6 +2,7 @@ package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 class AbiToBin<T> {
     private final String action;
@@ -10,6 +11,14 @@ class AbiToBin<T> {
     AbiToBin(@NotNull String action, @NotNull T args) {
         this.action = action;
         this.args = args;
+    }
+
+    public static String pack(String name, JSONObject args) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action", name);
+        jsonObject.put("args", args);
+
+        return jsonObject.toString();
     }
 
     public String getAction() {

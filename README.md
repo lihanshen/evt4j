@@ -71,8 +71,8 @@ Make sure maven is installed
     * [x] newdomain
     * [x] "updatedomain"
     * [x] "issuetoken"
-    * [ ] "newgroup"
-    * [ ] "updategroup"
+    * [x] "newgroup"
+    * [x] "updategroup"
     * [x] "newfungible"
     * [x] "issuefungible"
     * [x] "updfungible"

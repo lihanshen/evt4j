@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.json.JSONObject;
 
-public abstract class Abi {
+public abstract class Abi implements AbiSerialisable {
     private final String name;
     private final String key;
     private final String domain;

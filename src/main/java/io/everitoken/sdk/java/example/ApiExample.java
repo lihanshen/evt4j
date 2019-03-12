@@ -106,7 +106,7 @@ public class ApiExample {
 
     static void getGroupDetail() throws ApiResponseException {
         TestNetNetParams netParams = new TestNetNetParams();
-        GroupDetailData res = new Api(netParams).getGroupDetail("g309903549");
+        GroupDetailData res = new Api(netParams).getGroupDetail("feitestgroup2");
         System.out.println(res.getRoot());
     }
 
