@@ -27,6 +27,10 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
+    /**
+     * @param signatureBytes Signature in bytes
+     * @return {@link Signature}
+     */
     public static Signature of(byte[] signatureBytes) {
 
         int recId = (int) signatureBytes[0] - 4 - 27;
@@ -38,6 +42,10 @@ public class Signature {
         return sig;
     }
 
+    /**
+     * @param signature Signature in string
+     * @return {@link Signature}
+     */
     public static Signature of(String signature) {
         if (!signature.startsWith(K1_PREFIX)) {
             throw new InvalidSignatureException(String.format(
@@ -86,15 +94,12 @@ public class Signature {
      *
      * @param data Data hash with 32 bits
      * @param key  PrivateKey
-     * @return Signature
+     * @return {@link Signature}
      */
     public static Signature sign(byte[] data, @NotNull PrivateKey key) {
         return signHash(Utils.hash(data), key);
     }
 
-    /**
-     * Calculate the recover id from signature with original data bytes and reference public key
-     */
     private static int getRecId(Signature signature, byte[] hash, @NotNull PublicKey publicKey) {
         Sha256Hash dataHash = Sha256Hash.wrap(hash);
 
@@ -148,7 +153,7 @@ public class Signature {
      *
      * @param data      original data signed by the private key
      * @param signature signature from sign method
-     * @return
+     * @return {@link PublicKey}
      */
     @NotNull
     @Contract("_, _ -> new")
