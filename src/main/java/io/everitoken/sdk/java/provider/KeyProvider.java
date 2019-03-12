@@ -12,7 +12,7 @@ public class KeyProvider implements KeyProviderInterface {
     private final List<PrivateKey> keys;
 
     private KeyProvider(@NotNull final List<String> keys) {
-        this.keys = keys.stream().map(PrivateKey::fromWif).collect(Collectors.toList());
+        this.keys = keys.stream().map(PrivateKey::of).collect(Collectors.toList());
     }
 
     public static KeyProvider of(String key) {

@@ -48,13 +48,13 @@ public class PrivateKey {
 
     @NotNull
     @Contract("_ -> new")
-    public static PrivateKey fromWif(String wif) throws WifFormatException {
+    public static PrivateKey of(String wif) throws WifFormatException {
         return new PrivateKey(wif);
     }
 
     public static boolean isValidPrivateKey(String key) {
         try {
-            fromWif(key);
+            of(key);
             return true;
         } catch (WifFormatException ex) {
             return false;

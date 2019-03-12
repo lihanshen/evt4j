@@ -25,7 +25,7 @@ class SignProviderTest {
     void singleKey() {
         String validPrivateKey = "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D";
         SignProvider signProvider = SignProvider.of(
-                () -> Collections.singletonList(PrivateKey.fromWif(validPrivateKey))
+                () -> Collections.singletonList(PrivateKey.of(validPrivateKey))
         );
         List<Signature> signatures = signProvider.sign(Utils.HEX.decode(
                 "08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"));
@@ -41,7 +41,7 @@ class SignProviderTest {
         String privateKey1 = "5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D";
         String privateKey2 = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
         SignProvider signProvider = SignProvider.of(
-                () -> Arrays.asList(PrivateKey.fromWif(privateKey1), PrivateKey.fromWif(privateKey2))
+                () -> Arrays.asList(PrivateKey.of(privateKey1), PrivateKey.of(privateKey2))
         );
         List<Signature> signatures = signProvider.sign(Utils.hash("helloworld".getBytes()));
         Assertions.assertEquals(2, signatures.size());

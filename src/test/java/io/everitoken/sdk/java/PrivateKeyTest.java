@@ -12,7 +12,7 @@ class PrivateKeyTest {
     @DisplayName("Invalid wif will throw exception")
     void newPrivateKeyWithInvalidWif() {
         Assertions.assertThrows(WifFormatException.class, () -> {
-            PrivateKey.fromWif("");
+            PrivateKey.of("");
         });
     }
 
@@ -21,7 +21,7 @@ class PrivateKeyTest {
     void toPublicKey() {
         Assertions.assertDoesNotThrow(() -> {
             String wif = "5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB";
-            PublicKey publicKey = PrivateKey.fromWif(wif).toPublicKey();
+            PublicKey publicKey = PrivateKey.of(wif).toPublicKey();
             assertEquals("EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U", publicKey.toString());
         });
     }

@@ -15,7 +15,7 @@ class SignatureTest {
     void SignAndVerify() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
 
             boolean verifyResult = Signature.verify(message.getBytes(), sig, key.toPublicKey());
@@ -28,7 +28,7 @@ class SignatureTest {
     void signAndSignHash() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworldwhatnot";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
             Signature sig1 = Signature.signHash(Utils.hash(message.getBytes()), key);
 
@@ -40,7 +40,7 @@ class SignatureTest {
     @DisplayName("signHash")
     void signHash() {
         Assertions.assertDoesNotThrow(() -> {
-            PrivateKey key = PrivateKey.fromWif("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
+            PrivateKey key = PrivateKey.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
             Signature sig = Signature.signHash(Utils.HEX.decode(
                     "08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"), key);
             Assertions.assertEquals(
@@ -54,13 +54,13 @@ class SignatureTest {
     @DisplayName("signHash and verifyHash should only work with byte[] of length 32")
     void invalidHashLength() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature.signHash(new byte[]{}, key);
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             String message = "someOtherMessage";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
             Signature.verifyHash(new byte[]{}, sig, key.toPublicKey());
         });
@@ -71,7 +71,7 @@ class SignatureTest {
     void verifyAndVerifyHash() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
             Signature sig1 = Signature.signHash(Utils.hash(message.getBytes()), key);
 
@@ -87,7 +87,7 @@ class SignatureTest {
     void SignatureHasRecId() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
             assertEquals(1, sig.getRecId());
         });
@@ -106,7 +106,7 @@ class SignatureTest {
                     "evtjs",
                     "everitoken.io"
             };
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
 
             Arrays.asList(messages).forEach(message -> {
                 Signature sig = Signature.sign((message.getBytes()), key);
@@ -123,7 +123,7 @@ class SignatureTest {
     void RecoverPublicKeyFromSignatureFailed() {
         Assertions.assertDoesNotThrow(() -> {
             String message = "helloworld";
-            PrivateKey key = PrivateKey.fromWif("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
+            PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
 
             String wrongMessage = "foobar";
