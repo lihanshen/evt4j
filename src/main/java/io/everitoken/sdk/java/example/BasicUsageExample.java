@@ -18,7 +18,7 @@ import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
-class BasicUsage {
+class BasicUsageExample {
     public static void main(String[] args) {
         // generate a key pair
         PrivateKey privateKey = PrivateKey.randomPrivateKey();

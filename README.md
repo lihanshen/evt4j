@@ -7,6 +7,9 @@ To be completed...
 
 ## Basic usage
 
+<details>
+<summary>Click to see full code example</summary>
+
 ```java
 
 package io.everitoken.sdk.java.example;
@@ -82,3 +85,78 @@ class BasicUsage {
 }
 
 ```
+</details>
+
+## PrivateKey
+
+**static** `randomPrivateKey`
+<details>
+<summary>Click to see code example</summary>
+
+```java
+import io.everitoken.sdk.java.PrivateKey;
+
+PrivateKey privateKey = PrivateKey.randomPrivateKey();
+```
+</details>
+
+**static** `seedPrivateKey`
+<details>
+<summary>Click to see code example</summary>
+
+```java
+import io.everitoken.sdk.java.PrivateKey;
+
+PrivateKey seedPrivateKey = PrivateKey.seedPrivateKey("a random string");
+```
+</details>
+
+**static** `of`
+<details>
+<summary>Click to see code example</summary>
+
+```java
+import io.everitoken.sdk.java.PrivateKey;
+
+PrivateKey privateKeyFromWif = PrivateKey.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"); 
+```
+</details>
+
+**static** `isValidPrivateKey`
+<details>
+<summary>Click to see code example</summary>
+
+```java
+import io.everitoken.sdk.java.PrivateKey;
+
+boolean valid = PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
+
+```
+</details>
+
+`toPublicKey`
+<details>
+<summary>Click to see code example</summary>
+
+```java
+import io.everitoken.sdk.java.PrivateKey;
+import io.everitoken.sdk.java.PublicKey;
+
+PrivateKey privateKey = PrivateKey.randomPrivateKey();
+PublicKey publicKey = privateKey.toPublicKey();
+
+```
+</details>
+
+`toWif`
+<details>
+<summary>Click to see code example</summary>
+
+```java
+import io.everitoken.sdk.java.PrivateKey;
+
+PrivateKey privateKey = PrivateKey.randomPrivateKey();
+System.out.println(privateKey.toWif());
+
+```
+</details>
