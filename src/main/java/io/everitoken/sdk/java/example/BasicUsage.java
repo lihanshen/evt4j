@@ -1,14 +1,3 @@
-# evt4j
-Official Java SDK for everiToken public chain.
-
-## Install
-
-To be completed...
-
-## Basic usage
-
-```java
-
 package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
@@ -80,5 +69,3 @@ class BasicUsage {
         }
     }
 }
-
-```

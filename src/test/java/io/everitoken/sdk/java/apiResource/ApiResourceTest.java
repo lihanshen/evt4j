@@ -24,7 +24,6 @@ class ApiResourceTest {
 
     @Test
     void equals() {
-        // TODO test not equal
         ApiResource info = new Info();
         ApiResource info1 = new Info();
         assertTrue(info.equals(info1), "Should equal");

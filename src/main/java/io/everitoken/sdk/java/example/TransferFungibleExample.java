@@ -16,7 +16,6 @@ public class TransferFungibleExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
 
-
         TransferFungibleAction transferFungibleAction = TransferFungibleAction.of(
                 "2.00002 S#20",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",

@@ -78,8 +78,8 @@ public class TransactionService {
         return expiration.toString().substring(0, TIMESTAMP_LENGTH);
     }
 
-
-    public Map<String, String> pushEveriPayAction(TransactionConfiguration trxConfig, EveriPayAction action) throws ApiResponseException {
+    public Map<String, String> pushEveriPayAction(TransactionConfiguration trxConfig, EveriPayAction action)
+            throws ApiResponseException {
         push(trxConfig, Collections.singletonList(action));
         return new EvtLink(netParams).getStatusOfEvtLink(EvtLinkStatusParam.of(action.getLinkId()));
     }
@@ -93,8 +93,8 @@ public class TransactionService {
         boolean hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
 
         if (hasEveryPay) {
-            throw new IllegalArgumentException("EveriPay action is found in this action list, use " +
-                                                       "\"pushEverPayAction\" for everipay action instead.");
+            throw new IllegalArgumentException("EveriPay action is found in this action list, use "
+                    + "\"pushEverPayAction\" for everipay action instead.");
         }
 
         return new TransactionCommit().request(RequestParams.of(netParams, () -> {
@@ -107,17 +107,15 @@ public class TransactionService {
     }
 
     public Charge estimateCharge(TransactionConfiguration trxConfig, List<Abi> actions,
-                                 List<PublicKey> availablePublicKeys) throws ApiResponseException {
+            List<PublicKey> availablePublicKeys) throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
         JSONObject txObj = new JSONObject(JSON.toJSONString(rawTx));
         List<String> requiredKeys = new SigningRequiredKeys().request(RequestParams.of(netParams, () -> {
             JSONObject json = new JSONObject();
             json.put("transaction", txObj);
-            json.put(
-                    "available_keys",
-                    availablePublicKeys.stream().map(PublicKey::toString).collect(Collectors.toList())
-            );
+            json.put("available_keys",
+                    availablePublicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
             return json.toString();
         }));
 
@@ -129,17 +127,16 @@ public class TransactionService {
         }));
     }
 
-    public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<Abi> actions) throws ApiResponseException {
-        List<String> serializedActions =
-                actions.stream()
-                        .map(action -> action.serialize(actionSerializeProvider))
-                        .collect(Collectors.toList());
+    public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<Abi> actions)
+            throws ApiResponseException {
+        List<String> serializedActions = actions.stream().map(action -> action.serialize(actionSerializeProvider))
+                .collect(Collectors.toList());
 
         boolean hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
 
         if (hasEveryPay && trxConfig.getExpiration() != null) {
-            throw new IllegalArgumentException("Expiration can not be set in a transaction including a everipay " +
-                                                       "action, the expiration must be set automatically by SDK");
+            throw new IllegalArgumentException("Expiration can not be set in a transaction including a everipay "
+                    + "action, the expiration must be set automatically by SDK");
         }
 
         NodeInfo res = (new Info()).request(RequestParams.of(netParams));
@@ -149,17 +146,16 @@ public class TransactionService {
         String expirationDateTime = trxConfig.getExpiration();
 
         if (expirationDateTime == null) {
-            expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(), hasEveryPay ?
-                    "everipay" : null);
+            expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(),
+                    hasEveryPay ? "everipay" : null);
         }
 
         return new Transaction(serializedActions, expirationDateTime, refBlockNumber, refBlockPrefix,
-                               trxConfig.getMaxCharge(),
-                               trxConfig.getPayer()
-        );
+                trxConfig.getMaxCharge(), trxConfig.getPayer());
     }
 
-    public List<Signature> getSignaturesByProposalName(KeyProvider keyProvider, String proposalName) throws ApiResponseException {
+    public List<Signature> getSignaturesByProposalName(KeyProvider keyProvider, String proposalName)
+            throws ApiResponseException {
         // get proposal transactions
         Api api = new Api(netParams);
 
@@ -170,12 +166,12 @@ public class TransactionService {
         byte[] trxSignableDigest = api.getSignableDigest(trxRaw.toString());
 
         // get required keys for suspended proposals
-        List<String> publicKeys =
-                keyProvider.get().stream().map(PrivateKey::toPublicKey).map(PublicKey::toString).collect(Collectors.toList());
+        List<String> publicKeys = keyProvider.get().stream().map(PrivateKey::toPublicKey).map(PublicKey::toString)
+                .collect(Collectors.toList());
 
-        List<String> suspendRequiredKeys =
-                StreamSupport.stream(api.getSuspendRequiredKeys(proposalName, publicKeys).spliterator(), true)
-                        .map(publicKey -> (String) publicKey).collect(Collectors.toList());
+        List<String> suspendRequiredKeys = StreamSupport
+                .stream(api.getSuspendRequiredKeys(proposalName, publicKeys).spliterator(), true)
+                .map(publicKey -> (String) publicKey).collect(Collectors.toList());
 
         // sign it to get the signatures
         return keyProvider.get().stream().filter(privateKey -> {
