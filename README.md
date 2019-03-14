@@ -87,7 +87,7 @@ class BasicUsage {
 ```
 </details>
 
-## PrivateKey
+## PrivateKey usage
 
 **static** `randomPrivateKey`
 <details>
