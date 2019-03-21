@@ -94,7 +94,7 @@ public class TransactionService {
 
         if (hasEveryPay) {
             throw new IllegalArgumentException("EveriPay action is found in this action list, use "
-                                                       + "\"pushEverPayAction\" for everipay action instead.");
+                                                       + "\"pushEveriPayAction\" for everipay action instead.");
         }
 
         return new TransactionCommit().request(RequestParams.of(netParams, () -> {
