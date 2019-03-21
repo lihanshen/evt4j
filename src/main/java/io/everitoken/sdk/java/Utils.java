@@ -36,6 +36,10 @@ import java.util.Hashtable;
 public class Utils {
     public static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
 
+    public static void main(String[] args) {
+        System.out.println(HEX.encode(hash("helloworld".getBytes())));
+    }
+
     private static byte[] ripemd160(byte[] data) {
         RIPEMD160Digest digest = new RIPEMD160Digest();
         digest.update(data, 0, data.length);

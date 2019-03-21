@@ -54,7 +54,7 @@ public class EvtLink {
 
         long timestampInMilli = getUnsignedInt(timestampSegment.get().getContent()) * 1000;
 
-        if (DateTime.now().getMillis() - timestampInMilli > 6 * 1000) {
+        if (Math.abs(DateTime.now().getMillis() - timestampInMilli) > 6 * 10000) {
             throw new EvtLinkException("EveriPass is already expired");
         }
 
@@ -319,9 +319,7 @@ public class EvtLink {
             final int index = ALPHABET.indexOf(c);
 
             if (ALPHABET.indexOf(c) == -1) {
-                throw new EvtLinkException(String.format("Illegal character found \"%s\" at index %d", c,
-                                                         i
-                ));
+                throw new EvtLinkException(String.format("Illegal character found \"%s\" at index %d", c, i));
             }
 
             resultBn = resultBn.multiply(baseBn).add(BigInteger.valueOf(index));

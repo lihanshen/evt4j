@@ -17,8 +17,11 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
-            getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
+//            getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
             // getDomainDetail();
+            NetParams netParams = new TestNetNetParams();
+            NodeInfo info = new Api(netParams).getInfo();
+            System.out.println(info.getHeadBlockTime());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());
         }
@@ -41,7 +44,7 @@ public class ApiExample {
     static void getCreatedDomain() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         final PublicKeysParams publicKeysParams = new PublicKeysParams(
-                new String[] { "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND" });
+                new String[]{"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"});
 
         List<NameableResource> createdDomains = new Api(netParams).getCreatedDomains(publicKeysParams);
         System.out.println(JSON.toJSONString(createdDomains));
@@ -50,7 +53,7 @@ public class ApiExample {
     static void getOwnedTokens() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         final PublicKeysParams publicKeysParams = new PublicKeysParams(
-                new String[] { "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND" });
+                new String[]{"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"});
 
         List<TokenDomain> res = new Api(netParams).getOwnedTokens(publicKeysParams);
         System.out.println(JSON.toJSONString(res));
@@ -59,7 +62,7 @@ public class ApiExample {
     static void getManagedGroups() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         final PublicKeysParams publicKeysParams = new PublicKeysParams(
-                new String[] { "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND" });
+                new String[]{"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"});
 
         List<NameableResource> res = new Api(netParams).getManagedGroups(publicKeysParams);
         System.out.println(JSON.toJSONString(res));
@@ -68,7 +71,7 @@ public class ApiExample {
     static void getCreatedFungibles() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         final PublicKeysParams publicKeysParams = new PublicKeysParams(
-                new String[] { "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND" });
+                new String[]{"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"});
 
         FungibleCreated res = new Api(netParams).getCreatedFungibles(publicKeysParams);
         System.out.println(res);
@@ -76,8 +79,8 @@ public class ApiExample {
 
     static void getActions() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1", null,
-                new String[] { "issuetoken", "transfer" });
+        ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1", null, new String[]{"issuetoken",
+                "transfer"});
 
         List<ActionData> res = new Api(netParams).getActions(actionParams);
         System.out.println(JSON.toJSONString(res));
