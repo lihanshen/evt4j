@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.provider;
 
-import io.everitoken.sdk.java.Signature;
-
 import java.util.List;
+
+import io.everitoken.sdk.java.Signature;
 
 @FunctionalInterface
 public interface SignProviderInterface {

@@ -1,9 +1,11 @@
 package io.everitoken.sdk.java.apiResource;
 
 import com.mashape.unirest.http.JsonNode;
+
+import org.json.JSONObject;
+
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
-import org.json.JSONObject;
 
 public class AbiBin extends ApiResource {
     private static final String uri = "/v1/chain/abi_json_to_bin";

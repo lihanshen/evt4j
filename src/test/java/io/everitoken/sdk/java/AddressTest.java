@@ -1,11 +1,14 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.InvalidAddressException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import io.everitoken.sdk.java.exceptions.InvalidAddressException;
 
 class AddressTest {
     private final String validPublicKey = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
@@ -37,7 +40,8 @@ class AddressTest {
     @Test
     @DisplayName("Throw exceptions when having invalid addresses")
     void errorOutWithInvalidAddress() {
-        Assertions.assertThrows(InvalidAddressException.class, () -> Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDWFRvsv2FxgN"));
+        Assertions.assertThrows(InvalidAddressException.class,
+                () -> Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDWFRvsv2FxgN"));
     }
 
 }

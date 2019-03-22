@@ -1,10 +1,11 @@
 package io.everitoken.sdk.java.apiResource;
 
-import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.TestNetNetParams;
 
 class ApiResourceTest {
 

@@ -6,6 +6,6 @@ class NodeInfoTest {
 
     @Test
     void test() {
-//        NetParams
+        // NetParams
     }
 }

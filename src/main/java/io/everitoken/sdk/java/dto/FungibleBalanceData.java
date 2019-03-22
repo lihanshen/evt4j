@@ -2,8 +2,10 @@ package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
+
 import org.spongycastle.util.Strings;
+
+import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
 
 public class FungibleBalanceData {
     private final double balance;

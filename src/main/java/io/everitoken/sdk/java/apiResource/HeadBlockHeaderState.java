@@ -3,10 +3,12 @@ package io.everitoken.sdk.java.apiResource;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.RequestParams;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
+
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.RequestParams;
 
 public class HeadBlockHeaderState extends ApiResource {
     private static final String uri = "/v1/chain/get_head_block_header_state";

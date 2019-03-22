@@ -1,9 +1,11 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class DestroyTokenAction extends Abi implements PushableAction {
 

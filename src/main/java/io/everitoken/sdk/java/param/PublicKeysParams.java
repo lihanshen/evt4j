@@ -1,13 +1,15 @@
 package io.everitoken.sdk.java.param;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.PublicKey;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
+
+import org.jetbrains.annotations.NotNull;
+
+import io.everitoken.sdk.java.PublicKey;
 
 public class PublicKeysParams implements ApiParams {
     private List<PublicKey> publicKeys = new ArrayList<>();

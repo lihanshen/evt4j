@@ -1,14 +1,16 @@
 package io.everitoken.sdk.java.abi;
 
+import java.util.Objects;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-import java.util.Objects;
+import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.dto.Permission;
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class NewDomainAction extends Abi implements PushableAction {
     @JSONField(deserialize = false, serialize = false)
@@ -21,7 +23,7 @@ public class NewDomainAction extends Abi implements PushableAction {
     private final Permission manage;
 
     protected NewDomainAction(String domain, PublicKey creator, Permission issue, Permission transfer,
-                              Permission manage) {
+            Permission manage) {
         super(name, key, domain);
         this.creator = creator;
         this.issue = issue;
@@ -31,14 +33,13 @@ public class NewDomainAction extends Abi implements PushableAction {
 
     protected NewDomainAction(String domain, String creator, JSONObject issue, JSONObject transfer, JSONObject manage) {
         this(domain, PublicKey.of(creator), Permission.ofRaw(issue), Permission.ofRaw(transfer),
-             Permission.ofRaw(manage)
-        );
+                Permission.ofRaw(manage));
     }
 
     @NotNull
     @Contract("_, _, _, _, _ -> new")
     public static NewDomainAction ofRaw(String domain, String creator, JSONObject issue, JSONObject transfer,
-                                        JSONObject manage) {
+            JSONObject manage) {
         Objects.requireNonNull(issue);
         Objects.requireNonNull(transfer);
         Objects.requireNonNull(manage);

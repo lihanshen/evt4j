@@ -1,12 +1,13 @@
 package io.everitoken.sdk.java.provider;
 
-import io.everitoken.sdk.java.PrivateKey;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.NotNull;
+
+import io.everitoken.sdk.java.PrivateKey;
 
 public class KeyProvider implements KeyProviderInterface {
     private final List<PrivateKey> keys;
@@ -22,7 +23,6 @@ public class KeyProvider implements KeyProviderInterface {
     public static KeyProvider of(String[] keys) {
         return new KeyProvider(Arrays.asList(keys));
     }
-
 
     public List<PrivateKey> get() {
         return keys;

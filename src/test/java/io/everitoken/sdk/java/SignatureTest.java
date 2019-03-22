@@ -1,12 +1,14 @@
 package io.everitoken.sdk.java;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class SignatureTest {
 
@@ -41,12 +43,11 @@ class SignatureTest {
     void signHash() {
         Assertions.assertDoesNotThrow(() -> {
             PrivateKey key = PrivateKey.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
-            Signature sig = Signature.signHash(Utils.HEX.decode(
-                    "08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"), key);
+            Signature sig = Signature.signHash(
+                    Utils.HEX.decode("08d576d1aa63a53daa610744989eb1997506c2dd9a86af67af51707ea81b8dae"), key);
             Assertions.assertEquals(
                     "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD",
-                    sig.toString()
-            );
+                    sig.toString());
         });
     }
 
@@ -55,14 +56,14 @@ class SignatureTest {
     void invalidHashLength() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
-            Signature.signHash(new byte[]{}, key);
+            Signature.signHash(new byte[] {}, key);
         });
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             String message = "someOtherMessage";
             PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign(message.getBytes(), key);
-            Signature.verifyHash(new byte[]{}, sig, key.toPublicKey());
+            Signature.verifyHash(new byte[] {}, sig, key.toPublicKey());
         });
     }
 
@@ -97,15 +98,7 @@ class SignatureTest {
     @DisplayName("Can recover public key from signature")
     void RecoverPublicKeyFromSignatureSuccessful() {
         Assertions.assertDoesNotThrow(() -> {
-            String[] messages = new String[]{
-                    "helloworld",
-                    "foo",
-                    "bar",
-                    "baz",
-                    "evt",
-                    "evtjs",
-                    "everitoken.io"
-            };
+            String[] messages = new String[] { "helloworld", "foo", "bar", "baz", "evt", "evtjs", "everitoken.io" };
             PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
 
             Arrays.asList(messages).forEach(message -> {
@@ -136,18 +129,13 @@ class SignatureTest {
     @DisplayName("Init signature object from string")
     void newSignature() {
         Assertions.assertDoesNotThrow(() -> {
-            String sig =
-                    "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD";
+            String sig = "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD";
             Signature signature = Signature.of(sig);
 
-            assertEquals(
-                    "5334a049e9bd38c8f6d9a92dac39bf07e6e5a5e0c04a668f788f7c514ef9fea6",
-                    Utils.HEX.encode(signature.getR().toByteArray())
-            );
-            assertEquals(
-                    "14b0de5c1d94c8e7e4bc1786fbfdcd1d0307d8194d770303dddd7e38df9a2fcf",
-                    Utils.HEX.encode(signature.getS().toByteArray())
-            );
+            assertEquals("5334a049e9bd38c8f6d9a92dac39bf07e6e5a5e0c04a668f788f7c514ef9fea6",
+                    Utils.HEX.encode(signature.getR().toByteArray()));
+            assertEquals("14b0de5c1d94c8e7e4bc1786fbfdcd1d0307d8194d770303dddd7e38df9a2fcf",
+                    Utils.HEX.encode(signature.getS().toByteArray()));
             assertEquals(1, signature.getRecId());
         });
     }

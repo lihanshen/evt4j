@@ -1,10 +1,10 @@
 package io.everitoken.sdk.java.dto;
 
+import java.util.Objects;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
-
-import java.util.Objects;
 
 public class Charge {
     private final int charge;

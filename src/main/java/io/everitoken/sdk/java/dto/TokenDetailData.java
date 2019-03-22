@@ -1,17 +1,18 @@
 package io.everitoken.sdk.java.dto;
 
-import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 
 public class TokenDetailData implements Meta {
     private final List<PublicKey> owner;
@@ -61,7 +62,6 @@ public class TokenDetailData implements Meta {
     @Override
     public String toString() {
         return String.format("%s, %s -> %s, %s -> %s", super.toString(), "NewDomainAction", getName(), "owner",
-                             owner.stream().map(PublicKey::toString).reduce(String::concat)
-        );
+                owner.stream().map(PublicKey::toString).reduce(String::concat));
     }
 }

@@ -1,14 +1,16 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.dto.NameableResource;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.RequestParams;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import com.mashape.unirest.http.JsonNode;
+
+import org.jetbrains.annotations.NotNull;
+
+import io.everitoken.sdk.java.dto.NameableResource;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.RequestParams;
 
 public class HistoryGroup extends ApiResource {
     private static final String uri = "/v1/history/get_groups";
@@ -25,7 +27,6 @@ public class HistoryGroup extends ApiResource {
         JsonNode res = super.makeRequest(requestParams);
 
         return StreamSupport.stream(res.getArray().spliterator(), false)
-                .map((name) -> NameableResource.create((String) name))
-                .collect(Collectors.toList());
+                .map((name) -> NameableResource.create((String) name)).collect(Collectors.toList());
     }
 }

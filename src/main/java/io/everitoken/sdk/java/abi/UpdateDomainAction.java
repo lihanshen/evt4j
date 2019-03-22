@@ -1,12 +1,14 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
+
+import io.everitoken.sdk.java.dto.Permission;
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class UpdateDomainAction extends Abi implements PushableAction {
     @JSONField(deserialize = false, serialize = false)
@@ -18,7 +20,7 @@ public class UpdateDomainAction extends Abi implements PushableAction {
     private final Permission manage;
 
     public UpdateDomainAction(@NotNull String domain, @Nullable Permission issue, @Nullable Permission transfer,
-                              @Nullable Permission manage) {
+            @Nullable Permission manage) {
         super(name, key, domain);
         this.issue = issue;
         this.transfer = transfer;
@@ -26,17 +28,14 @@ public class UpdateDomainAction extends Abi implements PushableAction {
     }
 
     public UpdateDomainAction(@NotNull String domain, JSONObject issue, JSONObject transfer, JSONObject manage) {
-        this(domain, issue != null ? Permission.ofRaw(issue) : null, transfer != null ? Permission.ofRaw(transfer) :
-                     null,
-             manage != null ? Permission.ofRaw(manage) : null
-        );
+        this(domain, issue != null ? Permission.ofRaw(issue) : null,
+                transfer != null ? Permission.ofRaw(transfer) : null, manage != null ? Permission.ofRaw(manage) : null);
     }
 
     @NotNull
     @Contract("_, _, _, _ -> new")
     public static UpdateDomainAction ofRaw(@NotNull String domain, @Nullable JSONObject issue,
-                                           @Nullable JSONObject transfer,
-                                           @Nullable JSONObject manage) {
+            @Nullable JSONObject transfer, @Nullable JSONObject manage) {
         return new UpdateDomainAction(domain, issue, transfer, manage);
     }
 

@@ -1,11 +1,14 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.WifFormatException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import io.everitoken.sdk.java.exceptions.WifFormatException;
 
 class PrivateKeyTest {
     @Test
@@ -43,13 +46,9 @@ class PrivateKeyTest {
     @Test
     @DisplayName("Check validity of a private key")
     void isValidPrivateKey() {
-        assertTrue(
-                PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"),
-                "Valid private key"
-        );
-        assertFalse(
-                PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER7XsAR2eCcpt3D"),
-                "Invalid private key"
-        );
+        assertTrue(PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"),
+                "Valid private key");
+        assertFalse(PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER7XsAR2eCcpt3D"),
+                "Invalid private key");
     }
 }

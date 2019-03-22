@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
+
 import io.everitoken.sdk.java.dto.AuthorizerRef;
 import io.everitoken.sdk.java.dto.PushableAction;
 
@@ -12,7 +13,6 @@ public class AddMetaAction extends Abi implements PushableAction {
     private final String metaKey;
     private final String metaValue;
     private final AuthorizerRef creator;
-
 
     private AddMetaAction(String key, String domain, String metaKey, String metaValue, AuthorizerRef creator) {
         super(name, key, domain);
@@ -30,7 +30,7 @@ public class AddMetaAction extends Abi implements PushableAction {
     }
 
     public static AddMetaAction ofDomainToken(String key, String domain, String metaKey, String metaValue,
-                                              AuthorizerRef creator) {
+            AuthorizerRef creator) {
         return new AddMetaAction(key, domain, metaKey, metaValue, creator);
     }
 

@@ -5,9 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.BaseRequest;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.RequestParams;
+
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -17,6 +15,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.RequestParams;
 
 public abstract class ApiResource {
 
@@ -35,10 +36,8 @@ public abstract class ApiResource {
 
         int timeout = localApiReqConfig.getTimeout();
 
-        RequestConfig.Builder configBuilder = RequestConfig.custom()
-                .setConnectTimeout(timeout)
-                .setConnectionRequestTimeout(timeout)
-                .setSocketTimeout(timeout);
+        RequestConfig.Builder configBuilder = RequestConfig.custom().setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout).setSocketTimeout(timeout);
 
         HttpClientBuilder clientBuilder = HttpClients.custom().setDefaultRequestConfig(configBuilder.build());
         clientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(5, false));
@@ -54,7 +53,8 @@ public abstract class ApiResource {
     }
 
     protected BaseRequest buildRequest(RequestParams requestParams) {
-        return Unirest.post(getUrl(requestParams.getNetParams())).body(new JSONObject(requestParams.getApiParams().asBody()));
+        return Unirest.post(getUrl(requestParams.getNetParams()))
+                .body(new JSONObject(requestParams.getApiParams().asBody()));
     }
 
     public JsonNode makeRequest(RequestParams requestParams) throws ApiResponseException {

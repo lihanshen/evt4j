@@ -1,14 +1,15 @@
 package io.everitoken.sdk.java.dto;
 
-import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
+import java.util.Objects;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
+import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 
 public class GroupDetailData implements Meta, Namable {
     private final String name;

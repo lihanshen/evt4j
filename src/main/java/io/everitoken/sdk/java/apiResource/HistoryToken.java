@@ -1,16 +1,18 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.dto.TokenDomain;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.RequestParams;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import io.everitoken.sdk.java.dto.TokenDomain;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.RequestParams;
 
 public class HistoryToken extends ApiResource {
     private static final String uri = "/v1/history/get_tokens";

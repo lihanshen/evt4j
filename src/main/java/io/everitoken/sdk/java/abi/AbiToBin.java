@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -30,4 +31,3 @@ class AbiToBin<T> {
         return args;
     }
 }
-

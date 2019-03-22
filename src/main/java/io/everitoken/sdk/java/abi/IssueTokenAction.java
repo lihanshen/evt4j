@@ -1,13 +1,15 @@
 package io.everitoken.sdk.java.abi;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.Address;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import io.everitoken.sdk.java.Address;
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class IssueTokenAction extends Abi implements PushableAction {
 

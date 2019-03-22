@@ -1,11 +1,13 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.dto.PushableAction;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class Evt2PevtAction extends Abi implements PushableAction {
 

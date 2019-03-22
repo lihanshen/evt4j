@@ -1,12 +1,13 @@
 package io.everitoken.sdk.java.dto;
 
-import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 
 class GroupDetailDataTest {
 

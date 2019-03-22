@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.GetRequest;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
-import org.jetbrains.annotations.NotNull;
 
 public class Info extends ApiResource {
     private static final String uri = "/v1/chain/get_info";

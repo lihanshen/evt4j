@@ -1,10 +1,11 @@
 package io.everitoken.sdk.java.service;
 
+import org.jetbrains.annotations.Nullable;
+
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.provider.KeyProviderInterface;
 import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
-import org.jetbrains.annotations.Nullable;
 
 public class TransactionConfiguration {
     private final int maxCharge;
@@ -12,8 +13,8 @@ public class TransactionConfiguration {
     private final SignProviderInterface signProvider;
     private String expiration;
 
-    public TransactionConfiguration(final int maxCharge, final PublicKey payer,
-                                    SignProviderInterface signProvider, @Nullable String expiration) {
+    public TransactionConfiguration(final int maxCharge, final PublicKey payer, SignProviderInterface signProvider,
+            @Nullable String expiration) {
         this.maxCharge = maxCharge;
         this.payer = payer;
         this.signProvider = signProvider;
@@ -25,7 +26,7 @@ public class TransactionConfiguration {
     }
 
     public TransactionConfiguration(final int maxCharge, final PublicKey payer, KeyProviderInterface keyProvider,
-                                    String expiration) {
+            String expiration) {
         this(maxCharge, payer, SignProvider.of(keyProvider), expiration);
     }
 
@@ -45,4 +46,3 @@ public class TransactionConfiguration {
         return expiration;
     }
 }
-

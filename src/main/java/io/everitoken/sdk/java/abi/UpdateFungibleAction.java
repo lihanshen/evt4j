@@ -1,13 +1,15 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.Symbol;
-import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
+
+import io.everitoken.sdk.java.Symbol;
+import io.everitoken.sdk.java.dto.Permission;
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class UpdateFungibleAction extends Abi implements PushableAction {
     @JSONField(deserialize = false, serialize = false)
@@ -30,8 +32,7 @@ public class UpdateFungibleAction extends Abi implements PushableAction {
     @NotNull
     public static UpdateFungibleAction of(Symbol symbol, @Nullable JSONObject issue, @Nullable JSONObject manage) {
         return new UpdateFungibleAction(symbol, issue != null ? Permission.ofRaw(issue) : null,
-                                        manage != null ? Permission.ofRaw(manage) : null
-        );
+                manage != null ? Permission.ofRaw(manage) : null);
     }
 
     public Permission getIssue() {

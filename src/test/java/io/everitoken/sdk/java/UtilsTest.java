@@ -1,11 +1,12 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.Base58CheckException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import io.everitoken.sdk.java.exceptions.Base58CheckException;
 
 class UtilsTest {
 
@@ -32,11 +33,9 @@ class UtilsTest {
         Assertions.assertDoesNotThrow(() -> {
             Utils.base58CheckDecode(
                     "KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD",
-                    "K1"
-            );
+                    "K1");
         });
     }
-
 
     @Test
     void random32BytesAsHex() {

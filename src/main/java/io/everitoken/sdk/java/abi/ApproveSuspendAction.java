@@ -1,13 +1,15 @@
 package io.everitoken.sdk.java.abi;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.Signature;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import io.everitoken.sdk.java.Signature;
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class ApproveSuspendAction extends Abi implements PushableAction {
 
@@ -25,10 +27,8 @@ public class ApproveSuspendAction extends Abi implements PushableAction {
     @NotNull
     @Contract("_, _ -> new")
     public static ApproveSuspendAction of(String proposalName, List<String> signatures) {
-        return new ApproveSuspendAction(
-                proposalName,
-                signatures.stream().map(Signature::of).collect(Collectors.toList())
-        );
+        return new ApproveSuspendAction(proposalName,
+                signatures.stream().map(Signature::of).collect(Collectors.toList()));
     }
 
     @Override

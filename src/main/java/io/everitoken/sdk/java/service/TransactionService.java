@@ -1,7 +1,28 @@
 package io.everitoken.sdk.java.service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import com.alibaba.fastjson.JSON;
-import io.everitoken.sdk.java.*;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import io.everitoken.sdk.java.Api;
+import io.everitoken.sdk.java.EvtLink;
+import io.everitoken.sdk.java.PrivateKey;
+import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.Signature;
+import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.abi.Abi;
 import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
 import io.everitoken.sdk.java.abi.EveriPayAction;
@@ -20,20 +41,6 @@ import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
 import io.everitoken.sdk.java.provider.KeyProviderInterface;
 import io.everitoken.sdk.java.provider.SignProvider;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class TransactionService {
     private final NetParams netParams;
@@ -94,7 +101,7 @@ public class TransactionService {
 
         if (hasEveryPay) {
             throw new IllegalArgumentException("EveriPay action is found in this action list, use "
-                                                       + "\"pushEveriPayAction\" for everipay action instead.");
+                    + "\"pushEveriPayAction\" for everipay action instead.");
         }
 
         return new TransactionCommit().request(RequestParams.of(netParams, () -> {
@@ -107,17 +114,15 @@ public class TransactionService {
     }
 
     public Charge estimateCharge(TransactionConfiguration trxConfig, List<Abi> actions,
-                                 List<PublicKey> availablePublicKeys) throws ApiResponseException {
+            List<PublicKey> availablePublicKeys) throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
         JSONObject txObj = new JSONObject(JSON.toJSONString(rawTx));
         List<String> requiredKeys = new SigningRequiredKeys().request(RequestParams.of(netParams, () -> {
             JSONObject json = new JSONObject();
             json.put("transaction", txObj);
-            json.put(
-                    "available_keys",
-                    availablePublicKeys.stream().map(PublicKey::toString).collect(Collectors.toList())
-            );
+            json.put("available_keys",
+                    availablePublicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
             return json.toString();
         }));
 
@@ -138,7 +143,7 @@ public class TransactionService {
 
         if (hasEveryPay && trxConfig.getExpiration() != null) {
             throw new IllegalArgumentException("Expiration can not be set in a transaction including a everipay "
-                                                       + "action, the expiration must be set automatically by SDK");
+                    + "action, the expiration must be set automatically by SDK");
         }
 
         NodeInfo res = (new Info()).request(RequestParams.of(netParams));
@@ -148,15 +153,12 @@ public class TransactionService {
         String expirationDateTime = trxConfig.getExpiration();
 
         if (expirationDateTime == null) {
-            expirationDateTime = TransactionService.getExpirationTime(
-                    res.getHeadBlockTime(),
-                    hasEveryPay ? "everipay" : null
-            );
+            expirationDateTime = TransactionService.getExpirationTime(res.getHeadBlockTime(),
+                    hasEveryPay ? "everipay" : null);
         }
 
         return new Transaction(serializedActions, expirationDateTime, refBlockNumber, refBlockPrefix,
-                               trxConfig.getMaxCharge(), trxConfig.getPayer()
-        );
+                trxConfig.getMaxCharge(), trxConfig.getPayer());
     }
 
     public List<Signature> getSignaturesByProposalName(KeyProviderInterface keyProvider, String proposalName)

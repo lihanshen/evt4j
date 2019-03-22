@@ -1,8 +1,10 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.dto.PushableAction;
+
 import org.json.JSONObject;
+
+import io.everitoken.sdk.java.dto.PushableAction;
 
 public class GroupAction extends Abi implements PushableAction {
     @JSONField(deserialize = false, serialize = false)

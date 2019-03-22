@@ -1,10 +1,11 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongycastle.util.Strings;
+
+import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
 
 public class Asset {
     private final int balance;
@@ -35,18 +36,14 @@ public class Asset {
 
         if (parts.length != 2) {
             throw new IllegalArgumentException(
-                    String.format("Failed to parse balance: \"1.00000 S#1\" is expected, %s is passed in.", balance)
-            );
+                    String.format("Failed to parse balance: \"1.00000 S#1\" is expected, %s is passed in.", balance));
         }
 
         String[] balanceParts = Strings.split(parts[0], '.');
 
         if (balanceParts.length != 2) {
             throw new IllegalArgumentException(String.format(
-                    "Failed to parse precision in balance. A \".\" is " +
-                            "expected, \"%s\" is passed in",
-                    balance
-            ));
+                    "Failed to parse precision in balance. A \".\" is " + "expected, \"%s\" is passed in", balance));
         }
 
         precision = balanceParts[1].length();
@@ -63,7 +60,6 @@ public class Asset {
         if (symbol == null) {
             localSymbol = Symbol.of(id, precision);
         }
-
 
         float balanceInFloat = Float.parseFloat(parts[0]) * (int) Math.pow(10.0, localSymbol.getPrecision());
 

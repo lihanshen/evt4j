@@ -16,12 +16,7 @@ public class Action {
     }
 
     public static Action ofRaw(JSONObject raw) {
-        return new Action(
-                raw.getString("name"),
-                raw.getString("key"),
-                raw.getString("domain"),
-                raw.getString("data")
-        );
+        return new Action(raw.getString("name"), raw.getString("key"), raw.getString("domain"), raw.getString("data"));
     }
 
     public String getName() {

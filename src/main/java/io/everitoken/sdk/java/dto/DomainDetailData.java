@@ -1,7 +1,9 @@
 package io.everitoken.sdk.java.dto;
 
+import java.util.Objects;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.abi.NewDomainAction;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
@@ -9,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
+import io.everitoken.sdk.java.abi.NewDomainAction;
 
 public class DomainDetailData extends NewDomainAction implements Meta, Addressable {
     private final JSONArray metas;
@@ -17,13 +19,8 @@ public class DomainDetailData extends NewDomainAction implements Meta, Addressab
     private final DateTime createdTime;
 
     private DomainDetailData(@NotNull JSONObject raw) {
-        super(
-                raw.getString("name"),
-                raw.getString("creator"),
-                raw.getJSONObject("issue"),
-                raw.getJSONObject("transfer"),
-                raw.getJSONObject("manage")
-        );
+        super(raw.getString("name"), raw.getString("creator"), raw.getJSONObject("issue"),
+                raw.getJSONObject("transfer"), raw.getJSONObject("manage"));
         address = raw.getString("address");
         metas = raw.getJSONArray("metas");
         createdTime = new DateTime(raw.getString("create_time"));

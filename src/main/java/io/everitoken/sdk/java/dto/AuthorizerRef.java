@@ -1,7 +1,8 @@
 package io.everitoken.sdk.java.dto;
 
-import io.everitoken.sdk.java.PublicKey;
 import org.jetbrains.annotations.Nullable;
+
+import io.everitoken.sdk.java.PublicKey;
 
 public class AuthorizerRef {
 

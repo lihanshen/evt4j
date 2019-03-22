@@ -1,11 +1,27 @@
 # evt4j
+
+- [evt4j](#evt4j)
+  - [Install](#install)
+    - [use with Maven project](#use-with-maven-project)
+    - [use with Gradle project](#use-with-gradle-project)
+    - [other](#other)
+  - [Usage overview](#usage-overview)
+  - [PrivateKey usage](#privatekey-usage)
+  - [Api usage overview](#api-usage-overview)
+
 Official Java SDK for everiToken public chain.
 
 ## Install
 
-To be completed...
+### use with Maven project
 
-## Basic usage
+### use with Gradle project
+
+### other
+
+## Usage overview
+
+Here is the code example which highlights the common usage of the SDK.
 
 <details>
 <summary>Click to see full code example</summary>
@@ -85,11 +101,13 @@ class BasicUsage {
 }
 
 ```
+
 </details>
 
 ## PrivateKey usage
 
 **static** `randomPrivateKey`
+
 <details>
 <summary>Click to see code example</summary>
 
@@ -98,9 +116,11 @@ import io.everitoken.sdk.java.PrivateKey;
 
 PrivateKey privateKey = PrivateKey.randomPrivateKey();
 ```
+
 </details>
 
 **static** `seedPrivateKey`
+
 <details>
 <summary>Click to see code example</summary>
 
@@ -109,20 +129,24 @@ import io.everitoken.sdk.java.PrivateKey;
 
 PrivateKey seedPrivateKey = PrivateKey.seedPrivateKey("a random string");
 ```
+
 </details>
 
 **static** `of`
+
 <details>
 <summary>Click to see code example</summary>
 
 ```java
 import io.everitoken.sdk.java.PrivateKey;
 
-PrivateKey privateKeyFromWif = PrivateKey.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"); 
+PrivateKey privateKeyFromWif = PrivateKey.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
 ```
+
 </details>
 
 **static** `isValidPrivateKey`
+
 <details>
 <summary>Click to see code example</summary>
 
@@ -132,9 +156,11 @@ import io.everitoken.sdk.java.PrivateKey;
 boolean valid = PrivateKey.isValidPrivateKey("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
 
 ```
+
 </details>
 
 `toPublicKey`
+
 <details>
 <summary>Click to see code example</summary>
 
@@ -146,9 +172,11 @@ PrivateKey privateKey = PrivateKey.randomPrivateKey();
 PublicKey publicKey = privateKey.toPublicKey();
 
 ```
+
 </details>
 
 `toWif`
+
 <details>
 <summary>Click to see code example</summary>
 
@@ -159,4 +187,11 @@ PrivateKey privateKey = PrivateKey.randomPrivateKey();
 System.out.println(privateKey.toWif());
 
 ```
+
 </details>
+
+## Api usage overview
+
+By instantiate an `Api` instance, you will be able to use it to interact with the specified remote node.
+
+Please refer to [ApiExample.java](src/main/java/io/everitoken/sdk/java/example/ApiExample.java) in our [example package](src/main/java/io/everitoken/sdk/java/example/) for detailed code examples.

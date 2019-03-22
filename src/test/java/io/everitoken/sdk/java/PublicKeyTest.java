@@ -1,12 +1,13 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 
 class PublicKeyTest {
     private final String validPublicKey = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";
@@ -33,10 +34,8 @@ class PublicKeyTest {
     @Test
     void isValidPublicKeyInvalidKey() {
         assertFalse(PublicKey.isValidPublicKey(inValidPublicKey), "Invalid key");
-        assertFalse(
-                PublicKey.isValidPublicKey("EVT00000000000000000000000000000000000000000000000000"),
-                "Null Address is invalid"
-        );
+        assertFalse(PublicKey.isValidPublicKey("EVT00000000000000000000000000000000000000000000000000"),
+                "Null Address is invalid");
     }
 
     @Test

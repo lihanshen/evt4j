@@ -1,20 +1,26 @@
 package io.everitoken.sdk.java;
 
-import org.spongycastle.crypto.CipherParameters;
-import org.spongycastle.crypto.DSA;
-import org.spongycastle.crypto.params.*;
-import org.spongycastle.crypto.signers.DSAKCalculator;
-import org.spongycastle.math.ec.*;
-
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import org.spongycastle.crypto.CipherParameters;
+import org.spongycastle.crypto.DSA;
+import org.spongycastle.crypto.params.ECDomainParameters;
+import org.spongycastle.crypto.params.ECKeyParameters;
+import org.spongycastle.crypto.params.ECPrivateKeyParameters;
+import org.spongycastle.crypto.params.ECPublicKeyParameters;
+import org.spongycastle.crypto.params.ParametersWithRandom;
+import org.spongycastle.crypto.signers.DSAKCalculator;
+import org.spongycastle.math.ec.ECAlgorithms;
+import org.spongycastle.math.ec.ECConstants;
+import org.spongycastle.math.ec.ECMultiplier;
+import org.spongycastle.math.ec.ECPoint;
+import org.spongycastle.math.ec.FixedPointCombMultiplier;
 
 /**
  * EC-DSA as described in X9.62
  */
-public class Signer
-        implements ECConstants, DSA {
+public class Signer implements ECConstants, DSA {
     private final DSAKCalculator kCalculator;
 
     private ECKeyParameters key;
@@ -53,9 +59,7 @@ public class Signer
     }
 
     @Override
-    public void init(
-            boolean forSigning,
-            CipherParameters param) {
+    public void init(boolean forSigning, CipherParameters param) {
         SecureRandom providedRandom = null;
 
         if (forSigning) {
@@ -75,15 +79,14 @@ public class Signer
     }
 
     /**
-     * generate a signature for the given message using the key we were
-     * initialised with. For conventional DSA the message should be a SHA-1
-     * hash of the message of interest.
+     * generate a signature for the given message using the key we were initialised
+     * with. For conventional DSA the message should be a SHA-1 hash of the message
+     * of interest.
      *
      * @param message the message that will be verified later.
      */
     @Override
-    public BigInteger[] generateSignature(
-            byte[] message) {
+    public BigInteger[] generateSignature(byte[] message) {
         ECDomainParameters ec = key.getParameters();
         BigInteger n = ec.getN();
         BigInteger e = calculateE(n, message);
@@ -113,26 +116,21 @@ public class Signer
                 // 5.3.3
                 r = p.getAffineXCoord().toBigInteger().mod(n);
                 rLen = r.toByteArray().length;
-            }
-            while (r.equals(ZERO) || rLen == 33); // make sure that length of r is 32 bytes
+            } while (r.equals(ZERO) || rLen == 33); // make sure that length of r is 32 bytes
 
             s = k.modInverse(n).multiply(e.add(d.multiply(r))).mod(n);
-        }
-        while (s.equals(ZERO));
+        } while (s.equals(ZERO));
 
-        return new BigInteger[]{r, s};
+        return new BigInteger[] { r, s };
     }
 
     /**
-     * return true if the value r and s represent a DSA signature for
-     * the passed in message (for standard DSA the message should be
-     * a SHA-1 hash of the real message to be verified).
+     * return true if the value r and s represent a DSA signature for the passed in
+     * message (for standard DSA the message should be a SHA-1 hash of the real
+     * message to be verified).
      */
     @Override
-    public boolean verifySignature(
-            byte[] message,
-            BigInteger r,
-            BigInteger s) {
+    public boolean verifySignature(byte[] message, BigInteger r, BigInteger s) {
         ECDomainParameters ec = key.getParameters();
         BigInteger n = ec.getN();
         BigInteger e = calculateE(n, message);
@@ -167,4 +165,3 @@ public class Signer
         return v.equals(r);
     }
 }
-

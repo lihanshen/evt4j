@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.JSON;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.InvalidSignatureException;
-import io.everitoken.sdk.java.exceptions.PublicKeyRecoverFailureException;
-import io.everitoken.sdk.java.exceptions.RecoverIDNotFoundException;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.Sha256Hash;
@@ -14,8 +14,9 @@ import org.spongycastle.crypto.params.ECPublicKeyParameters;
 import org.spongycastle.crypto.signers.ECDSASigner;
 import org.spongycastle.crypto.signers.HMacDSAKCalculator;
 
-import java.math.BigInteger;
-import java.nio.ByteBuffer;
+import io.everitoken.sdk.java.exceptions.InvalidSignatureException;
+import io.everitoken.sdk.java.exceptions.PublicKeyRecoverFailureException;
+import io.everitoken.sdk.java.exceptions.RecoverIDNotFoundException;
 
 public class Signature {
     private static final String K1_PREFIX = "SIG_K1_";
@@ -48,10 +49,8 @@ public class Signature {
      */
     public static Signature of(String signature) {
         if (!signature.startsWith(K1_PREFIX)) {
-            throw new InvalidSignatureException(String.format(
-                    "Only support signature prefixed with \"%s\"",
-                    K1_PREFIX
-            ));
+            throw new InvalidSignatureException(
+                    String.format("Only support signature prefixed with \"%s\"", K1_PREFIX));
         }
 
         String signatureWithoutPrefix = signature.substring(K1_PREFIX.length());
@@ -137,10 +136,8 @@ public class Signature {
 
         ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
-        ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(
-                publicKey.getPoint().get(), // ECPoint
-                ECKey.CURVE
-        );
+        ECPublicKeyParameters publicKeyParams = new ECPublicKeyParameters(publicKey.getPoint().get(), // ECPoint
+                ECKey.CURVE);
 
         signer.init(false, publicKeyParams);
 
@@ -148,8 +145,9 @@ public class Signature {
     }
 
     /**
-     * Recover public key from signature and original data byte[].
-     * Note: one always need to compare the public key recovered from signature match with whe reference public key
+     * Recover public key from signature and original data byte[]. Note: one always
+     * need to compare the public key recovered from signature match with whe
+     * reference public key
      *
      * @param data      original data signed by the private key
      * @param signature signature from sign method

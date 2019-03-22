@@ -1,5 +1,14 @@
 package io.everitoken.sdk.java;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Hashtable;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.io.BaseEncoding;
@@ -10,7 +19,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import io.everitoken.sdk.java.exceptions.Base58CheckException;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.bitcoinj.core.AddressFormatException;
 import org.bitcoinj.core.Base58;
@@ -23,15 +32,7 @@ import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.Hashtable;
-
+import io.everitoken.sdk.java.exceptions.Base58CheckException;
 
 public class Utils {
     public static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
@@ -150,9 +151,8 @@ public class Utils {
 
     public static long getLastIrreversibleBlockPrefix(String hash) {
         byte[] input = Utils.HEX.decode(hash);
-        return Integer.toUnsignedLong(
-                ByteBuffer.wrap(input, 8, input.length - 8).order(ByteOrder.LITTLE_ENDIAN).getInt()
-        );
+        return Integer
+                .toUnsignedLong(ByteBuffer.wrap(input, 8, input.length - 8).order(ByteOrder.LITTLE_ENDIAN).getInt());
     }
 
     public static DateTime getCorrectedTime(String referenceTime) {
@@ -172,16 +172,12 @@ public class Utils {
     public static String getQrImageDateUri(String rawText) throws WriterException, IOException {
         byte[] qr = getQrImageInBytes(rawText);
 
-        String data = new String(
-                Base64.getEncoder().encode(qr),
-                StandardCharsets.UTF_8
-        );
+        String data = new String(Base64.getEncoder().encode(qr), StandardCharsets.UTF_8);
 
         return String.format("data:image/png;base64,%s", data);
     }
 
-    public static byte[] getQrImageInBytes(String rawText) throws WriterException,
-            IOException {
+    public static byte[] getQrImageInBytes(String rawText) throws WriterException, IOException {
         int width = 600;
         int height = 600;
 

@@ -1,16 +1,18 @@
 package io.everitoken.sdk.java.dto;
 
+import java.util.Objects;
+
 import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.Address;
-import io.everitoken.sdk.java.Asset;
-import io.everitoken.sdk.java.PublicKey;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Objects;
+import io.everitoken.sdk.java.Address;
+import io.everitoken.sdk.java.Asset;
+import io.everitoken.sdk.java.PublicKey;
 
 public class FungibleDetailData implements Meta {
     private final PublicKey creator;
@@ -26,8 +28,8 @@ public class FungibleDetailData implements Meta {
     private final Permission manage;
 
     public FungibleDetailData(PublicKey creator, Permission issue, Address address, JSONArray metas, String name,
-                              DateTime createdTime, Asset currentSupply,
-                              Asset totalSupply, String sym, Permission manage, String symName) {
+            DateTime createdTime, Asset currentSupply, Asset totalSupply, String sym, Permission manage,
+            String symName) {
         this.creator = creator;
         this.issue = issue;
         this.address = address;
@@ -45,19 +47,12 @@ public class FungibleDetailData implements Meta {
     @Contract("_ -> new")
     public static FungibleDetailData ofRaw(JSONObject raw) {
         Objects.requireNonNull(raw);
-        return new FungibleDetailData(
-                PublicKey.of(raw.getString("creator")),
-                Permission.ofRaw(raw.getJSONObject("issue")),
-                Address.of(raw.getString("address")),
-                raw.getJSONArray("metas"),
-                raw.getString("name"),
-                new DateTime(raw.getString("create_time")),
+        return new FungibleDetailData(PublicKey.of(raw.getString("creator")),
+                Permission.ofRaw(raw.getJSONObject("issue")), Address.of(raw.getString("address")),
+                raw.getJSONArray("metas"), raw.getString("name"), new DateTime(raw.getString("create_time")),
                 Asset.parseFromRawBalance(raw.getString("current_supply")),
-                Asset.parseFromRawBalance(raw.getString("total_supply")),
-                raw.getString("sym"),
-                Permission.ofRaw(raw.getJSONObject("manage")),
-                raw.getString("sym_name")
-        );
+                Asset.parseFromRawBalance(raw.getString("total_supply")), raw.getString("sym"),
+                Permission.ofRaw(raw.getJSONObject("manage")), raw.getString("sym_name"));
     }
 
     @JSONField(ordinal = 1)

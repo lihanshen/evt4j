@@ -1,13 +1,14 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.Base58CheckException;
-import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.crypto.LazyECPoint;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import io.everitoken.sdk.java.exceptions.Base58CheckException;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 
 public class PublicKey {
     private static final String EVT = "EVT";
@@ -33,7 +34,6 @@ public class PublicKey {
         pub = point;
     }
 
-
     public static boolean isValidPublicKey(String key) {
         return validPublicKey(key).getLeft();
     }
@@ -42,11 +42,11 @@ public class PublicKey {
     @Contract("_ -> new")
     private static Pair<Boolean, byte[]> validPublicKey(@NotNull String key) {
         if (key.length() < 8) {
-            return new ImmutablePair<>(false, new byte[]{});
+            return new ImmutablePair<>(false, new byte[] {});
         }
 
         if (!key.startsWith(EVT)) {
-            return new ImmutablePair<>(false, new byte[]{});
+            return new ImmutablePair<>(false, new byte[] {});
         }
 
         // key is invalid when checksum doesn't match
@@ -55,7 +55,7 @@ public class PublicKey {
         try {
             publicKeyInBytes = Utils.base58CheckDecode(keyWithoutPrefix);
         } catch (Base58CheckException ex) {
-            return new ImmutablePair<>(false, new byte[]{});
+            return new ImmutablePair<>(false, new byte[] {});
         }
 
         LazyECPoint pub = new LazyECPoint(ECKey.CURVE.getCurve(), publicKeyInBytes);

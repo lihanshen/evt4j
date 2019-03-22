@@ -1,10 +1,12 @@
 package io.everitoken.sdk.java.apiResource;
 
 import com.mashape.unirest.http.JsonNode;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.RequestParams;
+
 import org.apache.http.conn.HttpHostConnectException;
 import org.jetbrains.annotations.NotNull;
+
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.RequestParams;
 
 public class EvtLinkStatus extends ApiResource {
 

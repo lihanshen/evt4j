@@ -1,8 +1,9 @@
 package io.everitoken.sdk.java.dto;
 
-import io.everitoken.sdk.java.PublicKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import io.everitoken.sdk.java.PublicKey;
 
 class AuthorizerRefTest {
     private String publicKeyString = "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa";

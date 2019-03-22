@@ -1,12 +1,13 @@
 package io.everitoken.sdk.java.dto;
 
+import java.util.Objects;
+
 import com.alibaba.fastjson.annotation.JSONField;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
-
-import java.util.Objects;
 
 public class ActionData implements Transactable {
     private final String trxId;

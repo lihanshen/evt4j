@@ -1,12 +1,14 @@
 package io.everitoken.sdk.java.dto;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import io.everitoken.sdk.java.abi.Action;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
+import org.json.JSONObject;
+
+import io.everitoken.sdk.java.abi.Action;
 
 public class Transaction {
     private final List<Action> actions;
@@ -18,9 +20,7 @@ public class Transaction {
     private final List<String> transactionExtensions = new ArrayList<>();
 
     public Transaction(final List<String> actions, final String expiration, final int refBlockNumber,
-                       final long refBlockPrefix,
-                       final int maxCharge
-            , final String payer) {
+            final long refBlockPrefix, final int maxCharge, final String payer) {
 
         this.actions = actions.stream().map(JSONObject::new).map(Action::ofRaw).collect(Collectors.toList());
         this.expiration = expiration;

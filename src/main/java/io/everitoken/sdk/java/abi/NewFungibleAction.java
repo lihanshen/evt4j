@@ -1,14 +1,16 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
+
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.Symbol;
 import io.everitoken.sdk.java.dto.Permission;
 import io.everitoken.sdk.java.dto.PushableAction;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 public class NewFungibleAction extends Abi implements PushableAction {
     @JSONField(deserialize = false, serialize = false)
@@ -25,8 +27,7 @@ public class NewFungibleAction extends Abi implements PushableAction {
     private final Symbol symbol;
 
     private NewFungibleAction(@NotNull Symbol symbol, String fungibleName, PublicKey creator, Permission issue,
-                              Permission manage,
-                              Asset totalSupply) {
+            Permission manage, Asset totalSupply) {
         super(name, Integer.toString(symbol.getId()), domain);
         this.symbol = symbol;
         symbolName = Integer.toString(symbol.getId());
@@ -40,12 +41,9 @@ public class NewFungibleAction extends Abi implements PushableAction {
     @Contract("_, _, _, _, _, _ -> new")
     @NotNull
     public static NewFungibleAction of(Symbol symbol, String fungibleName, String creator, JSONObject issue,
-                                       JSONObject manage,
-                                       String totalSupply) {
+            JSONObject manage, String totalSupply) {
         return new NewFungibleAction(symbol, fungibleName, PublicKey.of(creator), Permission.ofRaw(issue),
-                                     Permission.ofRaw(manage),
-                                     Asset.parseFromRawBalance(totalSupply)
-        );
+                Permission.ofRaw(manage), Asset.parseFromRawBalance(totalSupply));
     }
 
     public String getCreator() {

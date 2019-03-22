@@ -18,11 +18,11 @@ public class ActionQueryParams implements ApiParams, Paginatable {
     }
 
     public ActionQueryParams(String domain) {
-        this(domain, null, new String[]{}, 0, 10);
+        this(domain, null, new String[] {}, 0, 10);
     }
 
     public ActionQueryParams(String domain, String key) {
-        this(domain, key, new String[]{}, 0, 10);
+        this(domain, key, new String[] {}, 0, 10);
     }
 
     public ActionQueryParams(String domain, String key, String[] names) {

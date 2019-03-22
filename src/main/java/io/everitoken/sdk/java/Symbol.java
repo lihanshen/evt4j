@@ -18,7 +18,6 @@ public class Symbol {
         this.id = id;
     }
 
-
     @NotNull
     @Contract("_, _ -> new")
     public static Symbol of(int id, int precision) {

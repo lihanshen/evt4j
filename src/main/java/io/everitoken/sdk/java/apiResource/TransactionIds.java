@@ -1,9 +1,10 @@
 package io.everitoken.sdk.java.apiResource;
 
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.RequestParams;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.RequestParams;
 
 public class TransactionIds extends ApiResource {
     private static final String uri = "/v1/chain/get_transaction_ids_for_block";

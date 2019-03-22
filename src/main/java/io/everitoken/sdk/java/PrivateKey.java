@@ -1,14 +1,19 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
-import io.everitoken.sdk.java.exceptions.WifFormatException;
-import org.bitcoinj.core.*;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
+import org.bitcoinj.core.AddressFormatException;
+import org.bitcoinj.core.DumpedPrivateKey;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.NetworkParameters;
+import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.params.MainNetParams;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
+import io.everitoken.sdk.java.exceptions.WifFormatException;
 
 public class PrivateKey {
     private final ECKey key;

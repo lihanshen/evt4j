@@ -1,9 +1,11 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.annotation.JSONField;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.dto.PushableAction;
-import org.jetbrains.annotations.NotNull;
 
 public class ExecuteSuspendAction extends Abi implements PushableAction {
 

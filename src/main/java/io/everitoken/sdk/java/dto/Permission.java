@@ -1,13 +1,14 @@
 package io.everitoken.sdk.java.dto;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import com.alibaba.fastjson.annotation.JSONField;
+
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 public class Permission implements Namable {
     private final String name;
@@ -25,8 +26,7 @@ public class Permission implements Namable {
         Objects.requireNonNull(raw);
         String name = raw.getString("name");
         int threshold = raw.getInt("threshold");
-        List<AuthorizerWeight> authorizers = StreamSupport
-                .stream(raw.getJSONArray("authorizers").spliterator(), true)
+        List<AuthorizerWeight> authorizers = StreamSupport.stream(raw.getJSONArray("authorizers").spliterator(), true)
                 .map(json -> AuthorizerWeight.ofRaw((JSONObject) json)).collect(Collectors.toList());
 
         return new Permission(name, threshold, authorizers);

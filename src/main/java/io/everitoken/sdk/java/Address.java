@@ -1,10 +1,11 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.exceptions.InvalidAddressException;
+import static io.everitoken.sdk.java.PublicKey.isValidPublicKey;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static io.everitoken.sdk.java.PublicKey.isValidPublicKey;
+import io.everitoken.sdk.java.exceptions.InvalidAddressException;
 
 public class Address {
     private static final String nullAddress = "EVT00000000000000000000000000000000000000000000000000";

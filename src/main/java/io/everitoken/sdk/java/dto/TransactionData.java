@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -17,10 +18,7 @@ public class TransactionData implements Transactable {
     @NotNull
     @Contract("_ -> new")
     public static TransactionData ofRaw(@NotNull JSONObject raw) {
-        return new TransactionData(
-                raw.getString("transaction_id"),
-                raw.getJSONObject("processed")
-        );
+        return new TransactionData(raw.getString("transaction_id"), raw.getJSONObject("processed"));
     }
 
     @Override

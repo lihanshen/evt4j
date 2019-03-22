@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.param;
 
+import javax.annotation.Nullable;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-
-import javax.annotation.Nullable;
 
 public class TransactionDetailParams implements ApiParams {
     private final String trxId;

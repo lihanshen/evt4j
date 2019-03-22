@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java.example;
 
+import java.util.Arrays;
+
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.EveriPassAction;
@@ -12,29 +14,23 @@ import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
-import java.util.Arrays;
-
 public class EveriPassActionExample {
     public static void main(String[] args) {
         NetParams netParams = new TestNetNetParams();
         EvtLink evtLink = new EvtLink(netParams);
         // make sure the domain and token you use exist and has correct authorize keys
-        EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "nd1545706101478", "tk3091412207" +
-                ".0522");
-        String passText = evtLink.getEveriPassText(
-                everiPassParam,
-                SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"))
-        );
+        EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "nd1545706101478",
+                "tk3091412207" + ".0522");
+        String passText = evtLink.getEveriPassText(everiPassParam,
+                SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
         EveriPassAction everiPassAction = EveriPassAction.of(passText);
 
         try {
             TransactionService transactionService = TransactionService.of(netParams);
-            TransactionConfiguration trxConfig = new TransactionConfiguration(
-                    1000000,
+            TransactionConfiguration trxConfig = new TransactionConfiguration(1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
-                    KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")
-            );
+                    KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"));
 
             TransactionData txData = transactionService.push(trxConfig, Arrays.asList(everiPassAction));
             System.out.println(txData.getTrxId());

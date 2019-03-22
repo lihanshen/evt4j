@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.param;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class RequestParams {
     private NetParams netParams;

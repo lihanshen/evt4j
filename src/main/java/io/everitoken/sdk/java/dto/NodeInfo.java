@@ -14,17 +14,9 @@ public class NodeInfo {
     private final String headBlockId;
     private final String serverVersionString;
 
-    public NodeInfo(String headBlockProducer,
-                    String evtApiVersion,
-                    int headBlockNum,
-                    String chainId,
-                    String lastIrreversibleBlockId,
-                    String headBlockTime,
-                    int lastIrreversibleBlockNum,
-                    String serverVersion,
-                    String headBlockId,
-                    String serverVersionString
-    ) {
+    public NodeInfo(String headBlockProducer, String evtApiVersion, int headBlockNum, String chainId,
+            String lastIrreversibleBlockId, String headBlockTime, int lastIrreversibleBlockNum, String serverVersion,
+            String headBlockId, String serverVersionString) {
         this.headBlockProducer = headBlockProducer;
         this.evtApiVersion = evtApiVersion;
         this.headBlockNum = headBlockNum;

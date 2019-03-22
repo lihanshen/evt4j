@@ -1,9 +1,11 @@
 package io.everitoken.sdk.java.apiResource;
 
 import com.mashape.unirest.http.JsonNode;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
-import org.jetbrains.annotations.NotNull;
 
 public class SuspendedProposal extends ApiResource {
     private static final String uri = "/v1/evt/get_suspend";
