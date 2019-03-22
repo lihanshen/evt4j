@@ -1,13 +1,14 @@
-# evt4j
+# evt4j<!-- omit in toc -->
 
-- [evt4j](#evt4j)
-  - [Install](#install)
-    - [use with Maven project](#use-with-maven-project)
-    - [use with Gradle project](#use-with-gradle-project)
-    - [other](#other)
-  - [Usage overview](#usage-overview)
-  - [PrivateKey usage](#privatekey-usage)
-  - [Api usage overview](#api-usage-overview)
+- [Install](#install)
+  - [use with Maven project](#use-with-maven-project)
+  - [use with Gradle project](#use-with-gradle-project)
+  - [other](#other)
+- [Usage overview](#usage-overview)
+- [PrivateKey usage](#privatekey-usage)
+- [Api usage](#api-usage)
+- [Action usage](#action-usage)
+- [EvtLink usage](#evtlink-usage)
 
 Official Java SDK for everiToken public chain.
 
@@ -49,7 +50,7 @@ import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
 class BasicUsage {
-    public static void main(String[] args) {
+public static void main(String[] args) {
         // generate a key pair
         PrivateKey privateKey = PrivateKey.randomPrivateKey();
         PublicKey publicKey = privateKey.toPublicKey();
@@ -190,8 +191,56 @@ System.out.println(privateKey.toWif());
 
 </details>
 
-## Api usage overview
+## Api usage
 
 By instantiate an `Api` instance, you will be able to use it to interact with the specified remote node.
 
 Please refer to [ApiExample.java](src/main/java/io/everitoken/sdk/java/example/ApiExample.java) in our [example package](src/main/java/io/everitoken/sdk/java/example/) for detailed code examples.
+
+## Action usage
+
+An **Action** in an instruction to perform a given task on everiToken public chain. In order to send **Action**, the workflow is to:
+
+Please check [example package](src/main/java/io/everitoken/sdk/java/example/) for more code examples of each **Action**.
+
+1. construct the given action locally
+2. instantiate an `TransactionService` to push the action (or actions) to the chain
+
+<details>
+<summary>Here is the code example showing how to create a domain on everiToken public chain</summary>
+
+```java
+// instantiate net parameter, can also be main net
+final NetParams netParam = new TestNetNetParams();
+
+// specify the content of the action
+final String actionData = "...";
+final JSONObject json = new JSONObject(actionData);
+
+// use json data to build the *NewDomainAction*, alternatively you can also build with other constructs, check *NewDomainAction* class for more details
+final NewDomainAction newDomainAction = NewDomainAction.ofRaw(json.getString("name"), json.getString("creator"),
+        json.getJSONObject("issue"), json.getJSONObject("transfer"), json.getJSONObject("manage"));
+
+try {
+    // init *TransactionService* with a net parameter
+    TransactionService transactionService = TransactionService.of(netParam);
+
+    // construct *TransactionConfiguration*
+    TransactionConfiguration trxConfig = new TransactionConfiguration(1000000,
+            PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
+            KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"));
+
+    // push the action to chain. Note: you can also pass multiple actions here
+    TransactionData txData = transactionService.push(trxConfig, Arrays.asList(newDomainAction));
+
+    // get the transaction data
+    System.out.println(txData.getTrxId());
+} catch (final ApiResponseException ex) {
+    System.out.println(ex.getRaw());
+}
+
+```
+
+</details>
+
+## EvtLink usage
