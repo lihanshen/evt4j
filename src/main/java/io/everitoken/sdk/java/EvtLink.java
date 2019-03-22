@@ -351,7 +351,7 @@ public class EvtLink {
 		return Long.parseUnsignedLong(Utils.HEX.encode(bytes), 16);
 	}
 
-	public String getEveriPayText(@NotNull final EveriPayParam param,
+	public String getEvtLinkForEveriPay(@NotNull final EveriPayParam param,
 			@Nullable final SignProviderInterface signProvider) {
 		final int flag = 1 + 4;
 
@@ -380,7 +380,7 @@ public class EvtLink {
 				signProvider);
 	}
 
-	public String getEveriPassText(@NotNull final EveriPassParam param,
+	public String getEvtLinkForEveriPass(@NotNull final EveriPassParam param,
 			@Nullable final SignProviderInterface signProvider) {
 
 		final int flag = 1 + 2 + (param.isAutoDestroy() ? 8 : 0);

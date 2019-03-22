@@ -136,7 +136,7 @@ class EvtLinkTest {
                 final EvtLink evtLink = new EvtLink(netParams);
                 final EvtLink.EveriPayParam everiPayParam1 = new EvtLink.EveriPayParam(1, EvtLink.getUniqueLinkId(),
                                 maxAmount);
-                final String payText1 = evtLink.getEveriPayText(everiPayParam1, null);
+                final String payText1 = evtLink.getEvtLinkForEveriPay(everiPayParam1, null);
 
                 final EvtLink.ParsedLink parsedLink = EvtLink.parseLink(payText1, false);
                 final EvtLink.Segment segment = parsedLink.getSegments().stream().filter(s -> s.getTypeKey() == 43)
@@ -150,7 +150,7 @@ class EvtLinkTest {
                 final long maxAmount2 = 4_294_967_299L;
                 final EvtLink.EveriPayParam everiPayParam2 = new EvtLink.EveriPayParam(1, EvtLink.getUniqueLinkId(),
                                 4_294_967_299L);
-                final String payText2 = evtLink.getEveriPayText(everiPayParam2, null);
+                final String payText2 = evtLink.getEvtLinkForEveriPay(everiPayParam2, null);
 
                 final EvtLink.ParsedLink parsedLink2 = EvtLink.parseLink(payText2, false);
                 final EvtLink.Segment segment2 = parsedLink2.getSegments().stream().filter(s -> s.getTypeKey() == 94)

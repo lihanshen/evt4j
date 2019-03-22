@@ -22,7 +22,7 @@ class TransactionServiceTest {
             NetParams netParams = new TestNetNetParams();
             EvtLink evtLink = new EvtLink(netParams);
             EvtLink.EveriPayParam everiPayParam = new EvtLink.EveriPayParam(20, EvtLink.getUniqueLinkId(), 2000);
-            String payText = evtLink.getEveriPayText(everiPayParam,
+            String payText = evtLink.getEvtLinkForEveriPay(everiPayParam,
                     SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
             EveriPayAction action = EveriPayAction.of(payText, "0.00001 " + "S#1",

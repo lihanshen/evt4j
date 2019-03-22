@@ -20,7 +20,7 @@ public class EveriPayActionExample {
         NetParams netParams = new TestNetNetParams();
         EvtLink evtLink = new EvtLink(netParams);
         EvtLink.EveriPayParam everiPayParam1 = new EvtLink.EveriPayParam(1, EvtLink.getUniqueLinkId(), maxAmount);
-        String payText = evtLink.getEveriPayText(everiPayParam1,
+        String payText = evtLink.getEvtLinkForEveriPay(everiPayParam1,
                 SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
         EveriPayAction action = EveriPayAction.of(payText, "0.00001 " + "S#1",

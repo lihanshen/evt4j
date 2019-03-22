@@ -21,7 +21,7 @@ public class EveriPassActionExample {
         // make sure the domain and token you use exist and has correct authorize keys
         EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "nd1545706101478",
                 "tk3091412207" + ".0522");
-        String passText = evtLink.getEveriPassText(everiPassParam,
+        String passText = evtLink.getEvtLinkForEveriPass(everiPassParam,
                 SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
         EveriPassAction everiPassAction = EveriPassAction.of(passText);

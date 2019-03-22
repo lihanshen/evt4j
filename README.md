@@ -1,5 +1,7 @@
 # evt4j<!-- omit in toc -->
 
+Official Java SDK for everiToken public chain.
+
 - [Install](#install)
   - [use with Maven project](#use-with-maven-project)
   - [use with Gradle project](#use-with-gradle-project)
@@ -9,8 +11,8 @@
 - [Api usage](#api-usage)
 - [Action usage](#action-usage)
 - [EvtLink usage](#evtlink-usage)
-
-Official Java SDK for everiToken public chain.
+- [EvtLink](#evtlink)
+  - [EvtLink generation](#evtlink-generation)
 
 ## Install
 
@@ -195,16 +197,16 @@ System.out.println(privateKey.toWif());
 
 By instantiate an `Api` instance, you will be able to use it to interact with the specified remote node.
 
-Please refer to [ApiExample.java](src/main/java/io/everitoken/sdk/java/example/ApiExample.java) in our [example package](src/main/java/io/everitoken/sdk/java/example/) for detailed code examples.
+> Refer to [ApiExample.java](src/main/java/io/everitoken/sdk/java/example/ApiExample.java) in our [example package](src/main/java/io/everitoken/sdk/java/example/) for detailed code examples.
 
 ## Action usage
 
 An **Action** in an instruction to perform a given task on everiToken public chain. In order to send **Action**, the workflow is to:
 
-Please check [example package](src/main/java/io/everitoken/sdk/java/example/) for more code examples of each **Action**.
-
 1. construct the given action locally
 2. instantiate an `TransactionService` to push the action (or actions) to the chain
+
+> Refer to [example package](src/main/java/io/everitoken/sdk/java/example/) for more code examples of each **Action**.
 
 <details>
 <summary>Here is the code example showing how to create a domain on everiToken public chain</summary>
@@ -217,7 +219,7 @@ final NetParams netParam = new TestNetNetParams();
 final String actionData = "...";
 final JSONObject json = new JSONObject(actionData);
 
-// use json data to build the *NewDomainAction*, alternatively you can also build with other constructs, check *NewDomainAction* class for more details
+// use json data to build the NewDomainAction, alternatively you can also build with other constructs, check NewDomainAction class for more details
 final NewDomainAction newDomainAction = NewDomainAction.ofRaw(json.getString("name"), json.getString("creator"),
         json.getJSONObject("issue"), json.getJSONObject("transfer"), json.getJSONObject("manage"));
 
@@ -244,3 +246,42 @@ try {
 </details>
 
 ## EvtLink usage
+
+## EvtLink
+
+### EvtLink generation
+
+`EvtLink` is the place to generate and parse QR Codes using `EVT Link`'s syntax. `EVT Link` can be used for `everiPass`, `everiPay`, `Address Code for Receiver`.
+
+For further information, read [Documentation for EvtLink / everiPass / everiPay](https://www.everitoken.io/developers/deep_dive/evtlink,_everipay,_everipass).
+
+**static** `getEvtLinkForEveriPass`
+
+Generate `EvtLink` for everiPass.
+
+<details>
+<summary>Click to see code example</summary>
+
+```java
+
+NetParams netParams = new TestNetNetParams();
+
+// Init new EvtLink instance with given net param
+EvtLink evtLink = new EvtLink(netParams);
+
+// make sure the domain and token you use exist and has correct authorize keys
+EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "domainName", "tokenName");
+
+String passText = evtLink.getEvtLinkForEveriPass(everiPassParam,
+        SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
+
+// will print out evt link
+System.out.println(passText);
+
+```
+
+</details>
+
+**static** `getEvtLinkForEveriPay`
+
+**static** `getEvtLinkForPayeeCode`
