@@ -1,19 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.everitoken</groupId>
-    <artifactId>wallet-sdk</artifactId>
-    <version>1.0-alpha-SNAPSHOT</version>
+    <groupId>io.everitoken.sdk</groupId>
+    <artifactId>chain-sdk</artifactId>
+    <version>1.0.0-rc</version>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/everitoken/evt4j/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/everitoken/evt4j</url>
+        <connection>scm:git:git@github.com:everitoken/evt4j.git</connection>
+        <developerConnection>scm:git:git@github.com:everitoken/evt4j.git</developerConnection>
+    </scm>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -57,6 +94,20 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -111,7 +162,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
+            <version>17.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -125,6 +176,22 @@
             <version>3.3.3</version>
         </dependency>
     </dependencies>
+    <name>evt4j</name>
+    <description>Official Java SDK for everiToken public chain. https://www.everitoken.io</description>
+    <url>https://github.com/everitoken/evt4j</url>
+    <organization>
+        <name>everiToken public chain</name>
+        <url>https://www.everitoken.io</url>
+    </organization>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/everitoken/evt4j/issues</url>
+    </issueManagement>
+    <developers>
+        <developer>
+            <name>Fei Liu (liu.feiwood@gmail.com)</name>
+        </developer>
+    </developers>
     <reporting>
         <plugins>
             <plugin>
@@ -134,4 +201,14 @@
             </plugin>
         </plugins>
     </reporting>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>

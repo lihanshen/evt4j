@@ -1,4 +1,4 @@
-# evt4j<!-- omit in toc -->
+# evt5j<!-- omit in toc -->
 
 Official Java SDK for everiToken public chain.
 
@@ -13,6 +13,7 @@ Official Java SDK for everiToken public chain.
 - [EvtLink usage](#evtlink-usage)
 - [EvtLink](#evtlink)
   - [EvtLink generation](#evtlink-generation)
+- [Deploy](#deploy)
 
 ## Install
 
@@ -21,6 +22,12 @@ Official Java SDK for everiToken public chain.
 ### use with Gradle project
 
 ### other
+
+Build jar with all the dependencies, run the following command
+
+`mvn clean compile assembly:single`
+
+It will generate jar with all dependencies under `target` folder
 
 ## Usage overview
 
@@ -285,3 +292,10 @@ System.out.println(passText);
 **static** `getEvtLinkForEveriPay`
 
 **static** `getEvtLinkForPayeeCode`
+
+## Deploy
+
+- setup user `settings.xml` for maven, where username and password should be specified
+- obtain the gpg key and password
+- run `mvn clean javadoc:jar deploy` which will deploy a **stage** version
+- run `mvn nexus-staging:release`
