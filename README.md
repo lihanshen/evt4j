@@ -1,4 +1,4 @@
-# evt5j<!-- omit in toc -->
+# evt4j<!-- omit in toc -->
 
 Official Java SDK for everiToken public chain.
 
@@ -299,3 +299,5 @@ System.out.println(passText);
 - obtain the gpg key and password
 - run `mvn clean javadoc:jar deploy` which will deploy a **stage** version
 - run `mvn nexus-staging:release`
+
+> use `master mvn clean compile assembly:single` to build with all dependencies
