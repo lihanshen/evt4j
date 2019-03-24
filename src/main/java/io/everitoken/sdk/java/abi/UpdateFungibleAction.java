@@ -9,9 +9,8 @@ import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Symbol;
 import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class UpdateFungibleAction extends Abi implements PushableAction {
+public class UpdateFungibleAction extends Abi {
     @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".fungible";
     @JSONField(deserialize = false, serialize = false)

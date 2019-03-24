@@ -9,9 +9,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import io.everitoken.sdk.java.Address;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class TransferAction extends Abi implements PushableAction {
+public class TransferAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String name = "transfer";

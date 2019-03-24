@@ -91,7 +91,8 @@ public class TransactionService {
         return new EvtLink(netParams).getStatusOfEvtLink(EvtLinkStatusParam.of(action.getLinkId()));
     }
 
-    public TransactionData push(TransactionConfiguration trxConfig, List<Abi> actions) throws ApiResponseException {
+    public TransactionData push(TransactionConfiguration trxConfig, List<? extends Abi> actions)
+            throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
         // get signable digest from node
@@ -113,7 +114,7 @@ public class TransactionService {
         }));
     }
 
-    public Charge estimateCharge(TransactionConfiguration trxConfig, List<Abi> actions,
+    public Charge estimateCharge(TransactionConfiguration trxConfig, List<? extends Abi> actions,
             List<PublicKey> availablePublicKeys) throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
@@ -134,7 +135,7 @@ public class TransactionService {
         }));
     }
 
-    public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<Abi> actions)
+    public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<? extends Abi> actions)
             throws ApiResponseException {
         List<String> serializedActions = actions.stream().map(action -> action.serialize(actionSerializeProvider))
                 .collect(Collectors.toList());

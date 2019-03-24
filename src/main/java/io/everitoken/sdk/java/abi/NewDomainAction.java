@@ -10,9 +10,8 @@ import org.json.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class NewDomainAction extends Abi implements PushableAction {
+public class NewDomainAction extends Abi {
     @JSONField(deserialize = false, serialize = false)
     private static final String key = ".create";
     @JSONField(deserialize = false, serialize = false)

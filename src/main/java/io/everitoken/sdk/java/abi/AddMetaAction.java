@@ -3,9 +3,8 @@ package io.everitoken.sdk.java.abi;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import io.everitoken.sdk.java.dto.AuthorizerRef;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class AddMetaAction extends Abi implements PushableAction {
+public class AddMetaAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String name = "addmeta";

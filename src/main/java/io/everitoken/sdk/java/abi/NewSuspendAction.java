@@ -6,10 +6,9 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.dto.PushableAction;
 import io.everitoken.sdk.java.dto.Transaction;
 
-public class NewSuspendAction extends Abi implements PushableAction {
+public class NewSuspendAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".suspend";

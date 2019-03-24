@@ -9,10 +9,9 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import io.everitoken.sdk.java.EvtLink;
-import io.everitoken.sdk.java.dto.PushableAction;
 import io.everitoken.sdk.java.exceptions.EvtLinkException;
 
-public class EveriPassAction extends Abi implements PushableAction {
+public class EveriPassAction extends Abi {
     @JSONField(deserialize = false, serialize = false)
     private static final String name = "everipass";
 

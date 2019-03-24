@@ -7,9 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Asset;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class IssueFungibleAction extends Abi implements PushableAction {
+public class IssueFungibleAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".fungible";

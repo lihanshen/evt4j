@@ -5,9 +5,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import org.jetbrains.annotations.NotNull;
 
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class ExecuteSuspendAction extends Abi implements PushableAction {
+public class ExecuteSuspendAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".suspend";

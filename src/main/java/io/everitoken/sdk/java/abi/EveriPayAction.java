@@ -12,9 +12,8 @@ import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.Utils;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class EveriPayAction extends Abi implements PushableAction {
+public class EveriPayAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".fungible";

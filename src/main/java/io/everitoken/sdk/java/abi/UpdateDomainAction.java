@@ -8,9 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.Permission;
-import io.everitoken.sdk.java.dto.PushableAction;
 
-public class UpdateDomainAction extends Abi implements PushableAction {
+public class UpdateDomainAction extends Abi {
     @JSONField(deserialize = false, serialize = false)
     private static final String key = ".update";
     @JSONField(deserialize = false, serialize = false)
