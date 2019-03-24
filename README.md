@@ -19,7 +19,32 @@ Official Java SDK for everiToken public chain.
 
 ### use with Maven project
 
+In project `pom.xml` file
+
+> You can also check [evt4j-maven-project-demo](https://github.com/everitoken/evt4j-maven-project-demo) for insights on how to use evt4j with maven project
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>io.everitoken.sdk</groupId>
+        <artifactId>chain-sdk</artifactId>
+        <version>1.0.0-rc1</version>
+    </dependency>
+</dependencies>
+```
+
 ### use with Gradle project
+
+In project `build.gradle` file
+
+> You can also check [evt4j-gradle-project-demo](https://github.com/everitoken/evt4j-gradle-project-demo) for insights on how to use evt4j with gradle project
+
+```gradle
+dependencies {
+    // other dependencies
+    implementation 'io.everitoken.sdk:chain-sdk:1.0.0-rc1'
+}
+```
 
 ### other
 
